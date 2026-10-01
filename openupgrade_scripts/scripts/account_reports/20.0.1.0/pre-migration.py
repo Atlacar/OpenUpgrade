@@ -41,6 +41,48 @@ _OBSOLETE_BANK_REC_LINES = [
 ]
 
 
+_OBSOLETE_BANK_REC_EXPRESSIONS = [
+    "account_financial_report_net_profit_after_allocations0_balance",
+    "balance_bank_expr",
+    "balance_bank_expr_forced_currency_amount",
+    "last_statement_balance_amount",
+    "last_statement_balance_forced_currency_amount",
+    "misc_operations_amount_forced_currency_amount",
+    "no_statement_unreconciled_payments_amount",
+    "no_statement_unreconciled_payments_amount_currency",
+    "no_statement_unreconciled_payments_currency",
+    "no_statement_unreconciled_payments_date",
+    "no_statement_unreconciled_payments_forced_currency_amount",
+    "no_statement_unreconciled_payments_forced_currency_amount_currency",
+    "no_statement_unreconciled_payments_label",
+    "no_statement_unreconciled_receipt_amount",
+    "no_statement_unreconciled_receipt_amount_currency",
+    "no_statement_unreconciled_receipt_currency",
+    "no_statement_unreconciled_receipt_date",
+    "no_statement_unreconciled_receipt_forced_currency_amount",
+    "no_statement_unreconciled_receipt_forced_currency_amount_currency",
+    "no_statement_unreconciled_receipt_label",
+    "outstanding_payments_currency",
+    "outstanding_receipts_currency",
+    "transaction_without_statement_expr",
+    "transaction_without_statement_expr_forced_currency_amount",
+    "unreconciled_last_statement_payments_amount",
+    "unreconciled_last_statement_payments_amount_currency",
+    "unreconciled_last_statement_payments_currency",
+    "unreconciled_last_statement_payments_date",
+    "unreconciled_last_statement_payments_forced_currency_amount",
+    "unreconciled_last_statement_payments_forced_currency_amount_currency",
+    "unreconciled_last_statement_payments_label",
+    "unreconciled_last_statement_receipts_amount",
+    "unreconciled_last_statement_receipts_amount_currency",
+    "unreconciled_last_statement_receipts_currency",
+    "unreconciled_last_statement_receipts_date",
+    "unreconciled_last_statement_receipts_forced_currency_amount",
+    "unreconciled_last_statement_receipts_forced_currency_amount_currency",
+    "unreconciled_last_statement_receipts_label",
+]
+
+
 def bank_reconciliation_report_lines(env):
     """The bank reconciliation report was restructured: the 19 lines
     no_statement_unreconciled_payments (code unreconciled_payments) etc. are
@@ -56,6 +98,11 @@ def bank_reconciliation_report_lines(env):
             AND imd.module = 'account_reports'
             AND imd.name IN ('misc_operations', 'outstanding')
         """
+    )
+    # expressions first: a renamed expression with the same (line, label) as a
+    # new one would hit account_report_expression_line_label_uniq at data load
+    openupgrade.delete_records_safely_by_xml_id(
+        env, ["account_reports." + name for name in _OBSOLETE_BANK_REC_EXPRESSIONS]
     )
     for name in _OBSOLETE_BANK_REC_LINES:
         openupgrade.delete_records_safely_by_xml_id(
