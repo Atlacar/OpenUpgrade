@@ -41,7 +41,4 @@
   <record id="sold_out_ribbon" model="product.ribbon">
     <field name="sequence">1</field>
   </record>
-  <record id="website.default_website" model="website">
-    <field name="salesperson_id" ref="base.user_admin"/>
-  </record>
 </odoo>
