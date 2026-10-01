@@ -177,3 +177,8 @@ def migrate(env, version):
     product_template_sale_delay(env)
     sale_order_line_sections(env)
     sale_order_document_tax_mode(env)
+    # the 19 window action got the same xmlid as the new server action of 20
+    # (found record of different model ir.actions.act_window at data load)
+    openupgrade.delete_records_safely_by_xml_id(
+        env, ["sale.action_accrued_revenue_entry_sale_order_line"]
+    )

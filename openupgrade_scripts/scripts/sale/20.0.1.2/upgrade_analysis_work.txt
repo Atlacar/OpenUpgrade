@@ -251,6 +251,7 @@ ir.actions.act_window: sales_team.mail_activity_type_action_config_sales (delete
 
 DEL ir.actions.act_window: sale.action_accrued_revenue_entry
 DEL ir.actions.act_window: sale.action_accrued_revenue_entry_sale_order_line
+# DONE: pre-migration: deleted explicitly, the xmlid is reused by the new ir.actions.server (run 9: found record of different model)
 DEL ir.actions.act_window: sale.action_orders_to_invoice
 DEL ir.actions.act_window: sale.action_orders_upselling
 DEL ir.actions.act_window: sale.mail_activity_plan_action_sale_order
