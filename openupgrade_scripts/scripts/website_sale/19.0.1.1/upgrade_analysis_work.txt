@@ -65,6 +65,9 @@ website_sale / product.tag              / visible_on_ecommerce (boolean): DEL
 
 website_sale / product.template         / is_seo_optimized (boolean)    : is now stored
 website_sale / product.template         / publish_date (datetime)       : NEW required, isfunction: function, stored
+
+# DONE: pre-migration: pre-created from create_date (key of the "Newest Arrivals" sort, see website#shop_default_sort)
+
 website_sale / product.template         / variants_default_code (char)  : NEW isfunction: function, stored
 
 # NOTHING TO DO
@@ -72,6 +75,10 @@ website_sale / product.template         / variants_default_code (char)  : NEW is
 website_sale / website                  / add_to_cart_action (selection): selection_keys removed: [force_dialog]
 
 # DONE: mapped force_dialog to stay
+
+# website / shop_default_sort (selection, function): not in the analysis (selection
+# from _get_product_sort_mapping): key 'create_date desc' is now 'publish_date desc'
+# DONE: post-migration: mapped, any other unknown key reset to the default
 
 website_sale / website                  / all_pricelist_ids (one2many)  : DEL relation: product.pricelist
 
