@@ -13,7 +13,8 @@ if not config.get("upgrade_path"):
             "Setting upgrade_path to the scripts directory inside the module "
             "location of openupgrade_scripts"
         )
-        config["upgrade_path"] = os.path.join(path, "scripts")
+        # Odoo >= 19 expects a list here (see odoo.modules.module.initialize_sys_path)
+        config["upgrade_path"] = [os.path.join(path, "scripts")]
 
 
 def openupgrade_test(cls):
