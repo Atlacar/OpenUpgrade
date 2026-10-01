@@ -1,0 +1,270 @@
+---Models in module 'appointment'---
+
+# NOTHING TO DO: transient wizard, replaced by the persistent model appointment.leave (no data to carry over)
+
+obsolete model appointment.manage.leaves [transient]
+
+# NOTHING TO DO: new model, no source data (the old wizard was transient)
+
+new model appointment.leave
+---Fields in module 'appointment'---
+
+# NOTHING TO DO: new model, no source data
+
+appointment  / appointment.leave        / appointment_type_ids (many2many): NEW relation: appointment.type, hasdefault: compute
+appointment  / appointment.leave        / date_from (datetime)          : NEW required, hasdefault: default
+appointment  / appointment.leave        / date_to (datetime)            : NEW required, hasdefault: default
+appointment  / appointment.leave        / leave_reason (char)           : NEW
+appointment  / appointment.leave        / leave_type (selection)        : NEW required, selection_keys: ['appointments', 'resources', 'users'], hasdefault: default
+appointment  / appointment.leave        / resource_ids (many2many)      : NEW relation: appointment.resource, hasdefault: compute
+appointment  / appointment.leave        / user_ids (many2many)          : NEW relation: res.users, hasdefault: compute
+
+# NOTHING TO DO: new optional field
+
+appointment  / appointment.type         / feedback_mail_template_id (many2one): NEW relation: mail.template
+
+# NOTHING TO DO: stored char becomes a related field (no appointment types in production)
+
+appointment  / appointment.type         / location (char)               : not a function anymore
+appointment  / appointment.type         / location (char)               : now related
+
+# DONE: pre-migration: column created and filled from the first staff user, else create_uid (0 appointment types in production)
+
+appointment  / appointment.type         / responsible_id (many2one)     : NEW relation: res.users, hasdefault: default
+
+# NOTHING TO DO: new non-stored field
+
+appointment  / appointment.type         / slot_creation_mode (selection): NEW selection_keys: ['single', 'split'], hasdefault: compute, stored: False
+appointment  / appointment.type         / slot_duration (float)         : NEW stored: False
+
+# NOTHING TO DO: new stored computed field (default 0), computed by the ORM
+
+appointment  / appointment.type         / slot_interval_capacity (integer): NEW hasdefault: default
+
+# NOTHING TO DO: website_message_ids is a non-stored one2many (no column)
+
+appointment  / appointment.type         / website_message_ids (one2many): DEL relation: mail.message
+
+# NOTHING TO DO: new many2many (inverse of appointment.type#reminder_ids), no data
+
+appointment  / calendar.alarm           / appointment_type_ids (many2many): NEW relation: appointment.type
+
+# NOTHING TO DO: flag 'default reminder of new appointment types' has no successor in 20 (reminders are no longer defaulted); production: 2 alarms flagged (Email 3 hours, SMS 1 hour), 0 appointment types; data dropped
+
+appointment  / calendar.alarm           / default_for_new_appointment_type (boolean): DEL
+
+# NOTHING TO DO: mode: modify of an existing field, no schema change
+
+appointment  / calendar.event           / alarm_ids (False)             : DEL mode: modify
+
+# NOTHING TO DO: new computed stored override of location, computed by the ORM
+
+appointment  / calendar.event           / location (False)              : NEW mode: modify, hasdefault: compute
+
+# NOTHING TO DO: new boolean, default False
+
+appointment  / calendar.event           / require_appointment_feedback_mail (boolean): NEW
+
+# DONE: post-migration: noupdate_changes.xml enables it on digest.digest_digest_default
+
+appointment  / digest.digest            / kpi_nbr_of_online_appointment (boolean): NEW
+
+# NOTHING TO DO: new many2many, no data
+
+appointment  / res.users                / appointment_type_ids (many2many): NEW relation: appointment.type
+---XML records in module 'appointment'---
+
+# NOTHING TO DO: only the noupdate flag of the xmlid changed, the record is updated from the module data like on a fresh install
+
+appointment.question: appointment.appointment_question_phone (noupdate switched)
+
+# NOTHING TO DO: access rights/rules: ir.access replaces ir.model.access and ir.rule in 20; module-defined rows are reloaded from the module data and the conversion of existing rows (and of their xmlids) is done by the base script
+
+NEW ir.access: appointment.access_appointment_booking_line_manager
+NEW ir.access: appointment.access_appointment_booking_line_user
+NEW ir.access: appointment.access_appointment_leave_manager
+NEW ir.access: appointment.access_appointment_question_answer_employee
+NEW ir.access: appointment.access_appointment_question_answer_input_manager
+NEW ir.access: appointment.access_appointment_question_answer_input_user
+NEW ir.access: appointment.access_appointment_question_answer_manager
+NEW ir.access: appointment.access_appointment_question_employee
+NEW ir.access: appointment.access_appointment_question_manager
+NEW ir.access: appointment.access_appointment_resource_manager
+NEW ir.access: appointment.access_appointment_resource_user
+NEW ir.access: appointment.access_calendar_alarm_public
+NEW ir.access: appointment.access_resource_resource_appointment_manager
+NEW ir.access: appointment.appointment_invite_rule_admin
+NEW ir.access: appointment.appointment_invite_rule_user_internal
+NEW ir.access: appointment.appointment_invite_rule_user_internal_write_unlink
+NEW ir.access: appointment.appointment_slot_rule_admin
+NEW ir.access: appointment.appointment_slot_rule_internal
+NEW ir.access: appointment.appointment_slot_rule_internal_published
+NEW ir.access: appointment.appointment_slot_rule_user
+NEW ir.access: appointment.appointment_slot_rule_user_write_unlink
+NEW ir.access: appointment.appointment_type_rule_admin
+NEW ir.access: appointment.appointment_type_rule_internal
+NEW ir.access: appointment.appointment_type_rule_internal_published
+NEW ir.access: appointment.appointment_type_rule_user
+NEW ir.access: appointment.appointment_type_rule_user_write_unlink
+
+# NOTHING TO DO: domain removed from the window action, handled by the module data update
+
+ir.actions.act_window: appointment.appointment_answer_input_action (deleted domain)
+
+# NOTHING TO DO: new view/menu/action, created by the module data
+
+NEW ir.actions.act_window: appointment.appointment_edit_slots_action
+
+# NOTHING TO DO: domain removed from the window action, handled by the module data update
+
+ir.actions.act_window: appointment.appointment_invite_action_stat (deleted domain)
+
+# NOTHING TO DO: new view/menu/action, created by the module data
+
+NEW ir.actions.act_window: appointment.appointment_leave_action
+
+# NOTHING TO DO: domain removed from the window action, handled by the module data update
+
+ir.actions.act_window: appointment.appointment_resource_action_stat (deleted domain)
+ir.actions.act_window: appointment.appointment_type_action (deleted domain)
+ir.actions.act_window: appointment.calendar_event_action_view_bookings_resources (deleted domain)
+
+# NOTHING TO DO: new view/menu/action, created by the module data
+
+NEW ir.actions.act_window: appointment.rating_rating_action_appointment
+DEL ir.actions.server: appointment.resource_calendar_leaves_action_show_appointment_resources
+
+# NOTHING TO DO: new cron created by the module data
+
+NEW ir.cron: appointment.ir_cron_appointment_send_feedback_emails
+
+# NOTHING TO DO: access rights/rules: ir.access replaces ir.model.access and ir.rule in 20; module-defined rows are reloaded from the module data and the conversion of existing rows (and of their xmlids) is done by the base script
+
+DEL ir.model.access: appointment.access_appointment_booking_line_all
+DEL ir.model.access: appointment.access_appointment_booking_line_manager
+DEL ir.model.access: appointment.access_appointment_booking_line_user
+DEL ir.model.access: appointment.access_appointment_invite_apt_user
+DEL ir.model.access: appointment.access_appointment_invite_manager
+DEL ir.model.access: appointment.access_appointment_invite_user
+DEL ir.model.access: appointment.access_appointment_manage_leaves_all
+DEL ir.model.access: appointment.access_appointment_manage_leaves_manager
+DEL ir.model.access: appointment.access_appointment_manage_leaves_user
+DEL ir.model.access: appointment.access_appointment_question_answer_employee
+DEL ir.model.access: appointment.access_appointment_question_answer_input_manager
+DEL ir.model.access: appointment.access_appointment_question_answer_input_user
+DEL ir.model.access: appointment.access_appointment_question_answer_manager
+DEL ir.model.access: appointment.access_appointment_question_employee
+DEL ir.model.access: appointment.access_appointment_question_manager
+DEL ir.model.access: appointment.access_appointment_resource_all
+DEL ir.model.access: appointment.access_appointment_resource_manager
+DEL ir.model.access: appointment.access_appointment_resource_user
+DEL ir.model.access: appointment.access_appointment_slot_apt_user
+DEL ir.model.access: appointment.access_appointment_slot_manager
+DEL ir.model.access: appointment.access_appointment_slot_user
+DEL ir.model.access: appointment.access_appointment_type_all
+DEL ir.model.access: appointment.access_appointment_type_apt_user
+DEL ir.model.access: appointment.access_appointment_type_manager
+DEL ir.model.access: appointment.access_appointment_type_user
+DEL ir.model.access: appointment.access_calendar_alarm_employee
+DEL ir.model.access: appointment.access_calendar_alarm_portal
+DEL ir.model.access: appointment.access_calendar_alarm_public
+DEL ir.model.access: appointment.access_resource_resource_appointment_manager
+
+# NOTHING TO DO: constraint definitions are now reflected as SQL objects, unchanged semantics (the ORM re-applies them)
+
+ir.model.constraint: appointment.constraint_appointment_answer_input_value_check (changed definition: is now 'False' ('CHECK(value_answer_id IS NOT NULL OR COALESCE(value_text_box, '') <> '')'))
+ir.model.constraint: appointment.constraint_appointment_booking_line_check_capacity_reserved (changed definition: is now 'False' ('CHECK(capacity_reserved >= 0)'))
+ir.model.constraint: appointment.constraint_appointment_invite_short_code_uniq (changed definition: is now 'False' ('UNIQUE (short_code)'))
+ir.model.constraint: appointment.constraint_appointment_question_check_default_question_is_reusable (changed definition: is now 'False' ('CHECK(is_default IS DISTINCT FROM TRUE OR is_reusable IS TRUE)'))
+ir.model.constraint: appointment.constraint_appointment_resource_check_capacity (changed definition: is now 'False' ('check(capacity >= 1)'))
+ir.model.constraint: appointment.constraint_appointment_slot_check_start_and_end_datetimes (changed definition: is now 'False' ('CHECK(   slot_type='recurring' OR (   start_datetime IS NOT NULL AND end_datetime IS NOT NULL AND (start_datetime <= end_datetime))  )'))
+ir.model.constraint: appointment.constraint_appointment_slot_check_start_and_end_hour (changed definition: is now 'False' ('CHECK(   ((end_hour=0 AND (start_hour BETWEEN 0 AND 23.99)) OR (start_hour BETWEEN 0 AND end_hour))   AND (end_hour=0 OR (end_hour BETWEEN start_hour AND 23.99))  )'))
+ir.model.constraint: appointment.constraint_appointment_type_check_capacity_positive (changed definition: is now 'False' ('check(user_capacity >= 1 AND max_bookings >= 1)'))
+ir.model.constraint: appointment.constraint_appointment_type_check_manual_confirmation_percentage (changed definition: is now 'False' ('check(manual_confirmation_percentage >= 0 and manual_confirmation_percentage <= 1)'))
+NEW ir.model.constraint: appointment.constraint_calendar_event_check_no_draft_bookings
+
+# NOTHING TO DO: access rights/rules: ir.access replaces ir.model.access and ir.rule in 20; module-defined rows are reloaded from the module data and the conversion of existing rows (and of their xmlids) is done by the base script
+
+DEL ir.rule: appointment.appointment_invite_rule_admin
+DEL ir.rule: appointment.appointment_invite_rule_user_internal
+DEL ir.rule: appointment.appointment_invite_rule_user_internal_write_unlink
+DEL ir.rule: appointment.appointment_slot_rule_admin
+DEL ir.rule: appointment.appointment_slot_rule_internal
+DEL ir.rule: appointment.appointment_slot_rule_internal_published
+DEL ir.rule: appointment.appointment_slot_rule_user
+DEL ir.rule: appointment.appointment_slot_rule_user_write_unlink
+DEL ir.rule: appointment.appointment_type_rule_admin
+DEL ir.rule: appointment.appointment_type_rule_internal
+DEL ir.rule: appointment.appointment_type_rule_internal_published
+DEL ir.rule: appointment.appointment_type_rule_user
+DEL ir.rule: appointment.appointment_type_rule_user_write_unlink
+
+# NOTHING TO DO: new view/menu/action, created by the module data
+
+NEW ir.ui.menu: appointment.menu_appointment_leave
+NEW ir.ui.menu: appointment.menu_appointment_reporting_ratings
+DEL ir.ui.menu: appointment.menu_appointment_resource_leaves
+NEW ir.ui.view: appointment.appointment_booking_resource_description
+NEW ir.ui.view: appointment.appointment_entity_card_selection
+NEW ir.ui.view: appointment.appointment_leave_view_form
+NEW ir.ui.view: appointment.appointment_leave_view_list
+NEW ir.ui.view: appointment.appointment_leave_view_search
+NEW ir.ui.view: appointment.appointment_list_item
+NEW ir.ui.view: appointment.appointment_type_view_form_quick_edit_slot
+NEW ir.ui.view: appointment.appointments_list
+NEW ir.ui.view: appointment.appointments_selection
+NEW ir.ui.view: appointment.calendar_alarm_view_kanban
+NEW ir.ui.view: appointment.calendar_alarm_view_list
+NEW ir.ui.view: appointment.calendar_alarm_view_search
+NEW ir.ui.view: appointment.calendar_event_view_kanban
+NEW ir.ui.view: appointment.digest_digest_view_form
+NEW ir.ui.view: appointment.rating_rating_view_form_appointment
+NEW ir.ui.view: appointment.rating_rating_view_kanban_appointment
+NEW ir.ui.view: appointment.rating_rating_view_list_appointment
+NEW ir.ui.view: appointment.rating_rating_view_search_appointment
+DEL ir.ui.view: appointment.appointment_calendar
+DEL ir.ui.view: appointment.appointment_manage_leaves_view_form
+DEL ir.ui.view: appointment.appointment_progress_bar
+DEL ir.ui.view: appointment.appointment_type_select
+DEL ir.ui.view: appointment.appointment_type_view_form_custom_share
+DEL ir.ui.view: appointment.appointments_list_layout
+DEL ir.ui.view: appointment.calendar_alarm_view_form
+DEL ir.ui.view: appointment.calendar_event_view_gantt_kanban_popover
+DEL ir.ui.view: appointment.portal_my_home_appointment
+DEL ir.ui.view: appointment.staff_user_select
+
+# NOTHING TO DO: only the noupdate flag of the xmlid changed, the record is updated from the module data like on a fresh install
+
+mail.message.subtype: appointment.mt_appointment_type_booked (noupdate switched)
+mail.message.subtype: appointment.mt_appointment_type_canceled (noupdate switched)
+
+# NOTHING TO DO: new record created by the module data
+
+NEW mail.message.subtype: appointment.mt_appointment_type_requested
+
+# NOTHING TO DO: only the noupdate flag of the xmlid changed, the record is updated from the module data like on a fresh install
+
+mail.message.subtype: appointment.mt_calendar_event_booked (noupdate switched)
+mail.message.subtype: appointment.mt_calendar_event_canceled (noupdate switched)
+
+# NOTHING TO DO: new record created by the module data
+
+NEW mail.message.subtype: appointment.mt_calendar_event_requested
+NEW mail.template: appointment.appointment_booking_mail_template
+NEW mail.template: appointment.appointment_feedback_mail_template
+
+# NOTHING TO DO: replaced by appointment_booking_mail_template; not noupdate, removed by the ORM (no appointment type exists in production)
+
+DEL mail.template: appointment.appointment_booked_mail_template
+
+# NOTHING TO DO: new record created by the module data
+
+NEW portal.entry: appointment.portal_appointment_entry
+
+# NOTHING TO DO: only the noupdate flag of the xmlid changed, the record is updated from the module data like on a fresh install
+
+resource.calendar: appointment.appointment_default_resource_calendar (noupdate switched)
+
+# NOTHING TO DO: new record created by the module data
+
+NEW web_tour.tour: appointment.appointment_tour

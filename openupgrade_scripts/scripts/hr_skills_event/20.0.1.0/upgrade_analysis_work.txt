@@ -1,0 +1,7 @@
+---Models in module 'hr_skills_event'---
+---Fields in module 'hr_skills_event'---
+---XML records in module 'hr_skills_event'---
+
+# NOTHING TO DO: domain removed from the window action, handled by the module data update
+
+ir.actions.act_window: hr_skills_event.event_training_onsite_action (deleted domain)

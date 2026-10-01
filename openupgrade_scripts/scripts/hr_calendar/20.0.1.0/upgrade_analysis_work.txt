@@ -1,0 +1,25 @@
+---Models in module 'hr_calendar'---
+---Fields in module 'hr_calendar'---
+---XML records in module 'hr_calendar'---
+
+# NOTHING TO DO: access rights/rules: ir.access replaces ir.model.access and ir.rule in 20; module-defined rows are reloaded from the module data and the conversion of existing rows (and of their xmlids) is done by the base script
+
+NEW ir.access: hr_calendar.homeworking_location_wizard_admin_rule
+NEW ir.access: hr_calendar.homeworking_location_wizard_own_rule
+
+# NOTHING TO DO: hr_homeworking_calendar is merged into hr_calendar (apriori, module not installed in production); same xmlid on both sides
+
+NEW ir.actions.act_window: hr_calendar.set_location_wizard_action [renamed from hr_homeworking_calendar module]
+DEL ir.actions.act_window: hr_homeworking_calendar.set_location_wizard_action [renamed to hr_calendar module]
+
+# NOTHING TO DO: access rights/rules: ir.access replaces ir.model.access and ir.rule in 20; module-defined rows are reloaded from the module data and the conversion of existing rows (and of their xmlids) is done by the base script
+
+DEL ir.model.access: hr_homeworking_calendar.access_homework_location_wizard
+DEL ir.rule: hr_homeworking_calendar.homeworking_location_wizard_admin_rule (noupdate)
+DEL ir.rule: hr_homeworking_calendar.homeworking_location_wizard_own_rule (noupdate)
+
+# NOTHING TO DO: new view/menu/action, created by the module data
+
+NEW ir.ui.menu: hr_calendar.menu_hr_homeworking_location_menu
+NEW ir.ui.view: hr_calendar.homework_location_wizard_view_form
+DEL ir.ui.view: hr_homeworking_calendar.homework_location_wizard_view_form

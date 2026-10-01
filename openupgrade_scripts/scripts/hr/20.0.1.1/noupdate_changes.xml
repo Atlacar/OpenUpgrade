@@ -1,11 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-  <record id="base.res_partner_bank_rule_user" model="ir.access">
-    <field name="active" eval="False"/>
-  </record>
-  <record id="base.res_partner_bank_rule_user_1" model="ir.access">
-    <field name="active" eval="False"/>
-  </record>
   <record id="contract_type_apprenticeship" model="hr.employee.type">
     <field name="sequence">6</field>
   </record>

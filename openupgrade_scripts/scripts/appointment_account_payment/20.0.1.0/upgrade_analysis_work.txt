@@ -1,0 +1,35 @@
+---Models in module 'appointment_account_payment'---
+---Fields in module 'appointment_account_payment'---
+---XML records in module 'appointment_account_payment'---
+
+# NOTHING TO DO: access rights/rules: ir.access replaces ir.model.access and ir.rule in 20; module-defined rows are reloaded from the module data and the conversion of existing rows (and of their xmlids) is done by the base script
+
+NEW ir.access: appointment_account_payment.access_calendar_booking_line_manager
+NEW ir.access: appointment_account_payment.access_calendar_booking_line_user
+NEW ir.access: appointment_account_payment.access_calendar_booking_manager
+NEW ir.access: appointment_account_payment.access_calendar_booking_user
+
+# NOTHING TO DO: domain removed from the window action, handled by the module data update
+
+ir.actions.act_window: appointment.appointment_answer_input_action (deleted domain)
+
+# NOTHING TO DO: access rights/rules: ir.access replaces ir.model.access and ir.rule in 20; module-defined rows are reloaded from the module data and the conversion of existing rows (and of their xmlids) is done by the base script
+
+DEL ir.model.access: appointment_account_payment.access_calendar_booking_line_manager
+DEL ir.model.access: appointment_account_payment.access_calendar_booking_line_user
+DEL ir.model.access: appointment_account_payment.access_calendar_booking_manager
+DEL ir.model.access: appointment_account_payment.access_calendar_booking_user
+
+# NOTHING TO DO: constraint definitions are now reflected as SQL objects, unchanged semantics (the ORM re-applies them)
+
+ir.model.constraint: appointment_account_payment.constraint_appointment_answer_input_check_event_or_booking (changed definition: is now 'False' ('CHECK(calendar_booking_id IS NOT NULL OR calendar_event_id IS NOT NULL)'))
+ir.model.constraint: appointment_account_payment.constraint_appointment_type_check_product_and_payment_step (changed definition: is now 'False' ('CHECK(has_payment_step IS NULL OR NOT has_payment_step OR product_id IS NOT NULL)'))
+
+# NOTHING TO DO: new view/menu/action, created by the module data
+
+NEW ir.ui.view: appointment_account_payment.appointment_list_item
+DEL ir.ui.view: appointment_account_payment.appointment_progress_bar
+
+# DONE: post-migration: delete_records_safely_by_xml_id (20 creates booking products by code; kept if referenced)
+
+DEL product.product: appointment_account_payment.default_booking_product (noupdate)

@@ -1,0 +1,7 @@
+---Models in module 'appointment_sms'---
+---Fields in module 'appointment_sms'---
+---XML records in module 'appointment_sms'---
+
+# NOTHING TO DO: only the noupdate flag of the xmlid changed, the record is updated from the module data like on a fresh install
+
+calendar.alarm: appointment_sms.calendar_alarm_data_1h_sms (noupdate switched)
