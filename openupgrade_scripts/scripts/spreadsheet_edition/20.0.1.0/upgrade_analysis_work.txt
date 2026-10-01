@@ -1,0 +1,30 @@
+---Models in module 'spreadsheet_edition'---
+---Fields in module 'spreadsheet_edition'---
+spreadsheet_edition / spreadsheet.cell.thread  / website_message_ids (one2many): DEL relation: mail.message
+
+# NOTHING TO DO: non stored o2m removed, no column
+
+spreadsheet_edition / spreadsheet.dashboard    / spreadsheet_image_ids (many2many): NEW relation: ir.attachment
+spreadsheet_edition / spreadsheet.dashboard.share / spreadsheet_image_ids (many2many): NEW relation: ir.attachment
+
+# NOTHING TO DO: new many2many to ir.attachment, empty
+
+---XML records in module 'spreadsheet_edition'---
+NEW ir.access: spreadsheet_edition.spreadsheet_no_access_rule
+NEW ir.access: spreadsheet_edition.spreadsheet_no_access_rule_1
+NEW ir.access: spreadsheet_edition.spreadsheet_revision
+
+# NOTHING TO DO: loaded from the module's security/ir.access.csv/xml (the old ir.model.access/ir.rule xmlids are dropped by the base pre-migration, so the same xmlid can be reused by ir.access)
+
+DEL ir.model.access: spreadsheet_edition.spreadsheet_cell_thread_system
+DEL ir.model.access: spreadsheet_edition.spreadsheet_cell_thread_user
+DEL ir.model.access: spreadsheet_edition.spreadsheet_revision
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+ir.model.constraint: spreadsheet_edition.constraint_spreadsheet_revision_initial_unique (changed definition: is now 'False' ('UNIQUE INDEX (res_model, res_id) WHERE parent_revision_id IS NULL'))
+ir.model.constraint: spreadsheet_edition.constraint_spreadsheet_revision_parent_unique (changed definition: is now 'False' ('UNIQUE INDEX (parent_revision_id, res_model, res_id) WHERE parent_revision_id IS NOT NULL'))
+ir.model.constraint: spreadsheet_edition.constraint_spreadsheet_revision_res_model_res_id_idx (changed definition: is now 'False' ('INDEX (res_model, res_id)'))
+
+# NOTHING TO DO: analysis artefact (constraints are table objects in 20.0, compared with the database comment and recreated by the ORM when the definition changed)
+

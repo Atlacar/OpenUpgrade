@@ -1,0 +1,49 @@
+---Models in module 'digest'---
+new model digest.test [transient]
+
+# NOTHING TO DO: new transient model (tests)
+
+---Fields in module 'digest'---
+digest       / res.users                / digest_ids (many2many)        : NEW relation: digest.digest
+
+# NOTHING TO DO: inverse many2many of digest.digest.user_ids (same relation table, already filled)
+
+---XML records in module 'digest'---
+digest.digest: digest.digest_digest_default (noupdate switched)
+
+# NOTHING TO DO: noupdate flag change only
+
+NEW ir.access: digest.access_digest_digest_system
+NEW ir.access: digest.access_digest_digest_user
+NEW ir.access: digest.access_digest_test
+NEW ir.access: digest.access_digest_tip_system
+NEW ir.access: digest.access_digest_tip_user
+
+# NOTHING TO DO: loaded from the module's security/ir.access.csv/xml (the old ir.model.access/ir.rule xmlids are dropped by the base pre-migration, so the same xmlid can be reused by ir.access)
+
+ir.config_parameter: digest.default_digest (noupdate switched)
+ir.config_parameter: digest.default_emails_digest (noupdate switched)
+
+# NOTHING TO DO: noupdate flag change only
+
+DEL ir.model.access: digest.access_digest_digest_system
+DEL ir.model.access: digest.access_digest_digest_user
+DEL ir.model.access: digest.access_digest_tip_system
+DEL ir.model.access: digest.access_digest_tip_user
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+ir.ui.view: digest.digest_mail_layout (noupdate switched)
+ir.ui.view: digest.digest_mail_main (noupdate switched)
+ir.ui.view: digest.digest_section_mobile (noupdate switched)
+
+# DONE: post-migration: noupdate_changes.xml is loaded (templates) and the translations of the arch are removed (the English source changed)
+
+NEW ir.ui.view: digest.digest_test_view_form
+
+# NOTHING TO DO: views/menus/actions are created or removed by the ORM
+
+ir.ui.view: digest.digest_tool_kpi (noupdate switched)
+
+# DONE: post-migration: noupdate_changes.xml is loaded (templates) and the translations of the arch are removed (the English source changed)
+

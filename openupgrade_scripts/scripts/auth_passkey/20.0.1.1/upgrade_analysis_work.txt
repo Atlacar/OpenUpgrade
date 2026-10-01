@@ -1,0 +1,30 @@
+---Models in module 'auth_passkey'---
+---Fields in module 'auth_passkey'---
+---XML records in module 'auth_passkey'---
+NEW ir.access: auth_passkey.rule_auth_passkey_key_admin
+NEW ir.access: auth_passkey.rule_auth_passkey_key_create_portal
+NEW ir.access: auth_passkey.rule_auth_passkey_key_create_portal_1
+NEW ir.access: auth_passkey.rule_auth_passkey_key_user
+NEW ir.access: auth_passkey.rule_auth_passkey_key_user_1
+NEW ir.access: auth_passkey.rule_auth_passkey_key_user_2
+
+# NOTHING TO DO: loaded from the module's security/ir.access.csv/xml (the old ir.model.access/ir.rule xmlids are dropped by the base pre-migration, so the same xmlid can be reused by ir.access)
+
+DEL ir.model.access: auth_passkey.access_auth_passkey_key
+DEL ir.model.access: auth_passkey.access_auth_passkey_key_admin
+DEL ir.model.access: auth_passkey.access_auth_passkey_key_create
+DEL ir.model.access: auth_passkey.access_auth_passkey_key_create_portal
+DEL ir.model.access: auth_passkey.access_auth_passkey_key_portal
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+ir.model.constraint: auth_passkey.constraint_auth_passkey_key_unique_identifier (changed definition: is now 'False' ('UNIQUE(credential_identifier)'))
+
+# NOTHING TO DO: analysis artefact (constraints are table objects in 20.0, compared with the database comment and recreated by the ORM when the definition changed)
+
+DEL ir.rule: auth_passkey.rule_auth_passkey_key_admin (noupdate)
+DEL ir.rule: auth_passkey.rule_auth_passkey_key_create_portal (noupdate)
+DEL ir.rule: auth_passkey.rule_auth_passkey_key_user (noupdate)
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+

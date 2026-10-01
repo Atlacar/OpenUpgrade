@@ -1,0 +1,12 @@
+---Models in module 'website_partner'---
+---Fields in module 'website_partner'---
+---XML records in module 'website_partner'---
+mail.message.subtype: website_partner.mt_partner_published (noupdate switched)
+mail.message.subtype: website_partner.mt_partner_unpublished (noupdate switched)
+
+# NOTHING TO DO: noupdate flag only; changed values (if any) are in noupdate_changes.xml / the records are not touched
+
+res.partner: base.main_partner (noupdate switched)
+
+# NOTHING TO DO: noupdate flag only
+

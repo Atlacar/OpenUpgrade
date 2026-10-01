@@ -1,0 +1,24 @@
+---Models in module 'website_sale_collect'---
+---Fields in module 'website_sale_collect'---
+website_sale_collect / payment.provider         / custom_mode (False)           : selection_keys added: [pay_on_invoice] (most likely nothing to do)
+
+# NOTHING TO DO: new selection key
+
+---XML records in module 'website_sale_collect'---
+delivery.carrier: website_sale_collect.carrier_pick_up_in_store (noupdate switched)
+
+# DONE: post-migration: noupdate_changes.xml loaded
+
+NEW ir.ui.view: website_sale_collect.payment_provider_form
+NEW ir.ui.view: website_sale_collect.sale_order_view_form
+
+# NOTHING TO DO: new record loaded by the module data
+
+DEL ir.ui.view: website_sale_collect_wishlist.unavailable_products_warning
+
+# NOTHING TO DO: record removed from the module data (xmlid not noupdate), deleted by the ORM when the update ends
+
+product.product: website_sale_collect.product_pick_up_in_store (noupdate switched)
+
+# DONE: post-migration: noupdate_changes.xml loaded
+

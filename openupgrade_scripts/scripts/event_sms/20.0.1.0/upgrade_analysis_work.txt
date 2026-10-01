@@ -1,0 +1,15 @@
+---Models in module 'event_sms'---
+---Fields in module 'event_sms'---
+---XML records in module 'event_sms'---
+NEW ir.access: event_sms.access_sms_template_event_manager
+NEW ir.access: event_sms.ir_rule_sms_template_event_manager
+DEL ir.model.access: event_sms.access_sms_template_event_manager
+DEL ir.rule: event_sms.ir_rule_sms_template_event_manager (noupdate)
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+sms.template: event_sms.sms_template_data_event_registration (noupdate switched)
+sms.template: event_sms.sms_template_data_event_reminder (noupdate switched)
+
+# DONE: post-migration: noupdate_changes.xml loaded (reminder body), translation of the body deleted
+

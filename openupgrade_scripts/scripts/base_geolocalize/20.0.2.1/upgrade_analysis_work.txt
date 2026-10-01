@@ -1,0 +1,19 @@
+---Models in module 'base_geolocalize'---
+---Fields in module 'base_geolocalize'---
+base_geolocalize / res.partner              / should_be_geolocalized (boolean): NEW hasdefault: default
+
+# DONE: pre-migration: column pre-created with False for all partners; the stored compute would flag every partner with coordinates (44 in prod) and the new cron would geocode all of them
+
+---XML records in module 'base_geolocalize'---
+NEW ir.access: base_geolocalize.access_base_geo_provider
+
+# NOTHING TO DO: loaded from the module's security/ir.access.csv/xml (the old ir.model.access/ir.rule xmlids are dropped by the base pre-migration, so the same xmlid can be reused by ir.access)
+
+NEW ir.cron: base_geolocalize.ir_cron_geolocalize_required_partners
+
+# NOTHING TO DO: new cron (processes the partners flagged should_be_geolocalized)
+
+DEL ir.model.access: base_geolocalize.access_base_geo_provider
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+

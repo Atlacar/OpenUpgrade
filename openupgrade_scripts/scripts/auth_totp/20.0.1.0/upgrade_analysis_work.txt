@@ -1,0 +1,29 @@
+---Models in module 'auth_totp'---
+---Fields in module 'auth_totp'---
+---XML records in module 'auth_totp'---
+NEW ir.access: auth_totp.access_auth_totp_wizard
+NEW ir.access: auth_totp.api_key_admin
+NEW ir.access: auth_totp.api_key_user
+NEW ir.access: auth_totp.api_key_user_1
+NEW ir.access: auth_totp.rule_auth_totp_wizard
+
+# NOTHING TO DO: loaded from the module's security/ir.access.csv/xml (the old ir.model.access/ir.rule xmlids are dropped by the base pre-migration, so the same xmlid can be reused by ir.access)
+
+DEL ir.model.access: auth_totp.access_auth_totp_device_access_employee
+DEL ir.model.access: auth_totp.access_auth_totp_device_access_portal
+DEL ir.model.access: auth_totp.access_auth_totp_rate_limit_log
+DEL ir.model.access: auth_totp.access_auth_totp_wizard
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+ir.model.constraint: auth_totp.constraint_auth_totp_rate_limit_log_user_id_limit_type_create_date_idx (changed definition: is now 'False' ('INDEX (user_id, limit_type, create_date)'))
+
+# NOTHING TO DO: analysis artefact (constraints are table objects in 20.0, compared with the database comment and recreated by the ORM when the definition changed)
+
+DEL ir.rule: auth_totp.api_key_admin
+DEL ir.rule: auth_totp.api_key_public
+DEL ir.rule: auth_totp.api_key_user
+DEL ir.rule: auth_totp.rule_auth_totp_wizard
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+

@@ -1,0 +1,69 @@
+---Models in module 'website_appointment'---
+---Fields in module 'website_appointment'---
+website_appointment / appointment.invite       / publish_on (datetime)         : NEW
+
+# NOTHING TO DO: new publication scheduling field of website.published.mixin (publish_on) / published_date: stamped for already published records in website end-migration
+
+website_appointment / appointment.invite       / published_date (datetime)     : NEW
+
+# DONE: end-migration (website): published_date backfilled from create_date for already published records of every model with the mixin
+
+website_appointment / appointment.type         / publish_on (datetime)         : NEW
+
+# NOTHING TO DO: new publication scheduling field of website.published.mixin (publish_on) / published_date: stamped for already published records in website end-migration
+
+website_appointment / appointment.type         / published_date (datetime)     : NEW
+
+# DONE: end-migration (website): published_date backfilled from create_date for already published records of every model with the mixin
+
+website_appointment / website.track            / appointment_type_id (many2one): NEW relation: appointment.type
+
+# NOTHING TO DO: new field (feature of 20.0), default/compute applied by the ORM
+
+---XML records in module 'website_appointment'---
+NEW ir.access: website_appointment.appointment_type_rule_public
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+NEW ir.actions.act_window: website_appointment.website_appointment_visitor_appointment_type_action
+
+# NOTHING TO DO: new record loaded by the module data
+
+DEL ir.model.access: website_appointment.access_appointment_type_portal
+DEL ir.model.access: website_appointment.access_appointment_type_public
+DEL ir.rule: website_appointment.appointment_type_rule_public (noupdate)
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+NEW ir.ui.view: website_appointment.appointment_card
+NEW ir.ui.view: website_appointment.appointment_entity_card_selection
+NEW ir.ui.view: website_appointment.appointment_list_item
+NEW ir.ui.view: website_appointment.appointment_picture_item
+NEW ir.ui.view: website_appointment.appointments_pictures
+NEW ir.ui.view: website_appointment.appointments_selection_layout
+NEW ir.ui.view: website_appointment.opt_appointments_index_cards
+NEW ir.ui.view: website_appointment.opt_appointments_index_pictures
+NEW ir.ui.view: website_appointment.s_appointments_carousel
+NEW ir.ui.view: website_appointment.s_appointments_carousel_preview_card
+NEW ir.ui.view: website_appointment.s_appointments_carousel_preview_data
+NEW ir.ui.view: website_appointment.website_appointment_visitor_page_view_search
+NEW ir.ui.view: website_appointment.website_appointment_visitor_page_view_tree
+NEW ir.ui.view: website_appointment.website_appointment_visitor_track_view_tree
+NEW ir.ui.view: website_appointment.website_appointment_visitor_view_form
+NEW ir.ui.view: website_appointment.website_appointment_visitor_view_tree
+
+# NOTHING TO DO: new record loaded by the module data
+
+DEL ir.ui.view: website_appointment.appointment_booking_resource_description
+DEL ir.ui.view: website_appointment.appointment_progress_bar
+DEL ir.ui.view: website_appointment.appointment_select_operator
+DEL ir.ui.view: website_appointment.appointments_cards_layout
+DEL ir.ui.view: website_appointment.appointments_list_layout
+DEL ir.ui.view: website_appointment.opt_appointments_list_cards
+
+# NOTHING TO DO: record removed from the module data (xmlid not noupdate), deleted by the ORM when the update ends
+
+website.menu: website_appointment.menu_appointment (noupdate switched)
+
+# NOTHING TO DO: noupdate flag only
+

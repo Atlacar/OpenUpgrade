@@ -1,0 +1,62 @@
+---Models in module 'web_studio'---
+---Fields in module 'web_studio'---
+web_studio   / studio.approval.rule     / child_ids (one2many)          : NEW relation: studio.approval.rule
+web_studio   / studio.approval.rule     / parent_id (many2one)          : NEW relation: studio.approval.rule
+
+# NOTHING TO DO: new hierarchy fields (parent_id NULL for the existing rules; prod has 0 studio approval rules)
+
+web_studio   / studio.approval.rule     / website_message_ids (one2many): DEL relation: mail.message
+
+# NOTHING TO DO: non stored o2m to mail.message removed (the mail thread of the rules is not website-published anymore), no column
+
+---XML records in module 'web_studio'---
+NEW ir.access: web_studio.access_studio_approval_approver
+NEW ir.access: web_studio.access_studio_approval_delegate
+NEW ir.access: web_studio.access_studio_approval_request_settings
+NEW ir.access: web_studio.access_studio_approval_rule_settings
+NEW ir.access: web_studio.access_studio_approval_rule_user
+NEW ir.access: web_studio.access_studio_export_model
+NEW ir.access: web_studio.access_studio_export_wizard
+NEW ir.access: web_studio.access_studio_export_wizard_data
+NEW ir.access: web_studio.studio_approval_entry_group_system_rule
+NEW ir.access: web_studio.studio_approval_entry_group_user_rule
+
+# NOTHING TO DO: loaded from the module's security/ir.access.csv/xml (the old ir.model.access/ir.rule xmlids are dropped by the base pre-migration, so the same xmlid can be reused by ir.access)
+
+ir.actions.act_window: web_studio.webhook_automation_act (deleted domain)
+
+# NOTHING TO DO: views/menus/actions are created or removed by the ORM
+
+DEL ir.model.access: web_studio.access_studio_approval_approver
+DEL ir.model.access: web_studio.access_studio_approval_delegate
+DEL ir.model.access: web_studio.access_studio_approval_entry_settings
+DEL ir.model.access: web_studio.access_studio_approval_entry_user
+DEL ir.model.access: web_studio.access_studio_approval_request_settings
+DEL ir.model.access: web_studio.access_studio_approval_rule_settings
+DEL ir.model.access: web_studio.access_studio_approval_rule_user
+DEL ir.model.access: web_studio.access_studio_export_model
+DEL ir.model.access: web_studio.access_studio_export_wizard
+DEL ir.model.access: web_studio.access_studio_export_wizard_data
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+ir.model.constraint: web_studio.constraint_studio_approval_entry_model_res_id_idx (changed definition: is now 'False' ('INDEX (model, res_id)'))
+ir.model.constraint: web_studio.constraint_studio_approval_entry_uniq_combination (changed definition: is now 'False' ('unique(rule_id,model,res_id)'))
+ir.model.constraint: web_studio.constraint_studio_approval_rule_method_or_action_together (changed definition: is now 'False' ('CHECK(method IS NULL OR action_id IS NULL)'))
+ir.model.constraint: web_studio.constraint_studio_export_model_unique_model (changed definition: is now 'False' ('unique(model_id)'))
+
+# NOTHING TO DO: analysis artefact (constraints are table objects in 20.0, compared with the database comment and recreated by the ORM when the definition changed)
+
+DEL ir.model.constraint: web_studio.constraint_studio_approval_rule_method_or_action_not_null
+
+# DONE: pre-migration: the database constraint is dropped (merged into method_or_action_together, same name, whose new definition the ORM applies)
+
+DEL ir.rule: web_studio.studio_approval_entry_group_system_rule (noupdate)
+DEL ir.rule: web_studio.studio_approval_entry_group_user_rule (noupdate)
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+NEW ir.ui.menu: web_studio.menu_technical_studio_approvals
+
+# NOTHING TO DO: views/menus/actions are created or removed by the ORM
+

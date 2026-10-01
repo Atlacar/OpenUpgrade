@@ -1,0 +1,25 @@
+---Models in module 'web_tour'---
+---Fields in module 'web_tour'---
+web_tour     / web_tour.tour            / active (boolean)              : NEW hasdefault: default
+
+# NOTHING TO DO: new boolean with default True, filled by the ORM
+
+---XML records in module 'web_tour'---
+NEW ir.access: web_tour.access_web_tour_tour_admin
+NEW ir.access: web_tour.access_web_tour_tour_readonly
+NEW ir.access: web_tour.access_web_tour_tour_step_admin
+NEW ir.access: web_tour.access_web_tour_tour_step_readonly
+
+# NOTHING TO DO: loaded from the module's security/ir.access.csv/xml (the old ir.model.access/ir.rule xmlids are dropped by the base pre-migration, so the same xmlid can be reused by ir.access)
+
+DEL ir.model.access: web_tour.access_web_tour_tour_admin
+DEL ir.model.access: web_tour.access_web_tour_tour_readonly
+DEL ir.model.access: web_tour.access_web_tour_tour_step_admin
+DEL ir.model.access: web_tour.access_web_tour_tour_step_readonly
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+ir.model.constraint: web_tour.constraint_web_tour_tour_uniq_name (changed definition: is now 'False' ('unique(name)'))
+
+# NOTHING TO DO: analysis artefact (constraints are table objects in 20.0, compared with the database comment and recreated by the ORM when the definition changed)
+

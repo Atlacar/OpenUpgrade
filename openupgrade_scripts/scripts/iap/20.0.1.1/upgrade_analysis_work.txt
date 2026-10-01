@@ -1,0 +1,62 @@
+---Models in module 'iap'---
+new model iap.service.pack
+
+# NOTHING TO DO: new model/fields, the packs are synchronised from the IAP server at runtime (no existing rows)
+
+---Fields in module 'iap'---
+iap          / iap.account              / balance (char)                : not stored anymore
+iap          / iap.account              / balance (char)                : now a function
+
+# DONE: pre-migration: the amount is parsed into balance_amount (1 prod row: '0 enrichments'); the char column is kept and not used anymore (computed from balance_amount)
+
+iap          / iap.account              / balance_amount (float)        : NEW
+
+# DONE: pre-migration: column created and filled by parsing the numeric prefix of the old char balance ('<amount> <unit>')
+
+iap          / iap.service              / name (char)                   : now translatable
+
+# NOTHING TO DO: translatable conversion (varchar -> jsonb) done natively by the ORM
+
+iap          / iap.service              / pack_ids (one2many)           : NEW relation: iap.service.pack
+iap          / iap.service              / price_description (char)      : NEW translate
+iap          / iap.service.pack         / credit (float)                : NEW required
+iap          / iap.service.pack         / iap_service_pack_identifier (integer): NEW required
+iap          / iap.service.pack         / name (char)                   : NEW required
+iap          / iap.service.pack         / price (float)                 : NEW required
+iap          / iap.service.pack         / service_id (many2one)         : NEW relation: iap.service, required
+
+# NOTHING TO DO: new model/fields, the packs are synchronised from the IAP server at runtime (no existing rows)
+
+---XML records in module 'iap'---
+NEW ir.access: iap.access_iap_service_manager
+NEW ir.access: iap.access_iap_service_pack
+NEW ir.access: iap.access_iap_service_user
+NEW ir.access: iap.user_iap_account
+NEW ir.access: iap.user_iap_account_1
+
+# NOTHING TO DO: loaded from the module's security/ir.access.csv/xml (the old ir.model.access/ir.rule xmlids are dropped by the base pre-migration, so the same xmlid can be reused by ir.access)
+
+DEL ir.model.access: iap.access_client_iap_account_manager
+DEL ir.model.access: iap.access_client_iap_account_user
+DEL ir.model.access: iap.access_iap_service_manager
+DEL ir.model.access: iap.access_iap_service_user
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+NEW ir.model.constraint: iap.constraint_iap_service_pack_unique_iap_service_pack_identifier
+
+# NOTHING TO DO: handled by the ORM
+
+ir.model.constraint: iap.constraint_iap_service_unique_technical_name (changed definition: is now 'False' ('UNIQUE(technical_name)'))
+
+# NOTHING TO DO: analysis artefact (constraints are table objects in 20.0, compared with the database comment and recreated by the ORM when the definition changed)
+
+DEL ir.rule: iap.user_iap_account (noupdate)
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+NEW ir.ui.view: iap.iap_service_pack_view_tree
+NEW ir.ui.view: iap.view_iap_users_tree
+
+# NOTHING TO DO: views/menus/actions are created or removed by the ORM
+

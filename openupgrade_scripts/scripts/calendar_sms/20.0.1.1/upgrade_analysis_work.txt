@@ -1,0 +1,11 @@
+---Models in module 'calendar_sms'---
+---Fields in module 'calendar_sms'---
+---XML records in module 'calendar_sms'---
+NEW ir.ui.view: calendar_sms.calendar_alarm_view_kanban
+
+# NOTHING TO DO: new record loaded by the module data
+
+sms.template: calendar_sms.sms_template_data_calendar_reminder (noupdate switched)
+
+# NOTHING TO DO: noupdate flag only; changed values (if any) are in noupdate_changes.xml / the records are not touched
+

@@ -1,0 +1,17 @@
+---Models in module 'website_sale_loyalty'---
+---Fields in module 'website_sale_loyalty'---
+---XML records in module 'website_sale_loyalty'---
+NEW ir.access: website_sale_loyalty.access_coupon_share_manager
+DEL ir.model.access: website_sale_loyalty.access_coupon_share_manager
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+NEW ir.ui.view: website_sale_loyalty.promotion_progress_bar
+
+# NOTHING TO DO: new record loaded by the module data
+
+DEL ir.ui.view: website_sale_loyalty.cart_discount
+DEL ir.ui.view: website_sale_loyalty.reduction_coupon_code
+
+# NOTHING TO DO: record removed from the module data (xmlid not noupdate), deleted by the ORM when the update ends
+

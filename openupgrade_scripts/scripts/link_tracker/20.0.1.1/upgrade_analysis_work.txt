@@ -1,0 +1,29 @@
+---Models in module 'link_tracker'---
+---Fields in module 'link_tracker'---
+link_tracker / link.tracker             / utm_reference (reference)     : NEW
+
+# NOTHING TO DO: new reference field, empty
+
+---XML records in module 'link_tracker'---
+NEW ir.access: link_tracker.access_link_tracker_click_system
+NEW ir.access: link_tracker.access_link_tracker_click_user
+NEW ir.access: link_tracker.access_link_tracker_code_system
+NEW ir.access: link_tracker.access_link_tracker_code_user
+NEW ir.access: link_tracker.access_link_tracker_system
+NEW ir.access: link_tracker.access_link_tracker_user
+DEL ir.model.access: link_tracker.access_link_tracker_click_public
+DEL ir.model.access: link_tracker.access_link_tracker_click_system
+DEL ir.model.access: link_tracker.access_link_tracker_click_user
+DEL ir.model.access: link_tracker.access_link_tracker_code_public
+DEL ir.model.access: link_tracker.access_link_tracker_code_system
+DEL ir.model.access: link_tracker.access_link_tracker_code_user
+DEL ir.model.access: link_tracker.access_link_tracker_public
+DEL ir.model.access: link_tracker.access_link_tracker_system
+DEL ir.model.access: link_tracker.access_link_tracker_user
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+ir.model.constraint: link_tracker.constraint_link_tracker_code_code (changed definition: is now 'False' ('unique( code )'))
+
+# NOTHING TO DO: constraint (re)created by the ORM at module load (the 'changed definition' is a formatting difference of the analysis)
+

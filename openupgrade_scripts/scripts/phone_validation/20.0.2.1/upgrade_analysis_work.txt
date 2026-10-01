@@ -1,0 +1,26 @@
+---Models in module 'phone_validation'---
+---Fields in module 'phone_validation'---
+---XML records in module 'phone_validation'---
+NEW ir.access: phone_validation.access_phone_blacklist_remove_system
+NEW ir.access: phone_validation.access_phone_blacklist_system
+
+# NOTHING TO DO: loaded from the module's security/ir.access.csv/xml (the old ir.model.access/ir.rule xmlids are dropped by the base pre-migration, so the same xmlid can be reused by ir.access)
+
+DEL ir.model.access: phone_validation.access_phone_blacklist_all
+DEL ir.model.access: phone_validation.access_phone_blacklist_remove_system
+DEL ir.model.access: phone_validation.access_phone_blacklist_system
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+ir.model.constraint: phone_validation.constraint_phone_blacklist_unique_number (changed definition: is now 'False' ('unique (number)'))
+
+# NOTHING TO DO: analysis artefact (constraints are table objects in 20.0, compared with the database comment and recreated by the ORM when the definition changed)
+
+NEW ir.ui.view: phone_validation.mail_activity_schedule_view_form
+NEW ir.ui.view: phone_validation.res_partner_view_form
+NEW ir.ui.view: phone_validation.res_partner_view_kanban
+NEW ir.ui.view: phone_validation.res_partner_view_list
+NEW ir.ui.view: phone_validation.res_partner_view_simple_form
+
+# NOTHING TO DO: views/menus/actions are created or removed by the ORM
+

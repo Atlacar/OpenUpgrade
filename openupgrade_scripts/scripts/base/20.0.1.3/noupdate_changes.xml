@@ -170,9 +170,6 @@
   <record id="lc" model="res.country">
     <field name="zip_applicability">not_applicable</field>
   </record>
-  <record id="main_partner" model="res.partner">
-    <field name="is_company" eval="False"/>
-  </record>
   <record id="ml" model="res.country">
     <field name="zip_applicability">not_applicable</field>
   </record>

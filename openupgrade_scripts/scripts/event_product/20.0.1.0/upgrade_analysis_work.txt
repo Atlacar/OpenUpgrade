@@ -1,0 +1,20 @@
+---Models in module 'event_product'---
+---Fields in module 'event_product'---
+event_product / event.event.ticket       / additional_product_ids (many2many): NEW relation: product.product
+
+# NOTHING TO DO: new field (feature of 20.0), default/compute applied by the ORM
+
+event_product / event.event.ticket       / price_incl (float)            : DEL stored: False
+
+# NOTHING TO DO: not stored
+
+event_product / event.type.ticket        / additional_product_ids (many2many): NEW relation: product.product
+
+# NOTHING TO DO: new field (feature of 20.0), default/compute applied by the ORM
+
+---XML records in module 'event_product'---
+product.category: event_product.product_category_events (noupdate switched)
+product.product: event_product.product_product_event (noupdate switched)
+
+# NOTHING TO DO: noupdate flag only; changed values (if any) are in noupdate_changes.xml / the records are not touched
+

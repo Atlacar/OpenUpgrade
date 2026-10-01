@@ -1,0 +1,17 @@
+---Models in module 'web_map'---
+---Fields in module 'web_map'---
+web_map      / ir.actions.act_window.view / view_mode (False)             : selection_keys added: [activity] (most likely nothing to do)
+web_map      / ir.ui.view               / type (False)                  : selection_keys added: [activity, card] (most likely nothing to do)
+
+# NOTHING TO DO: new view types in a selection, not stored data
+
+web_map      / res.partner              / contact_address_complete (char): module is now 'web_enterprise' ('web_map')
+web_map      / res.users                / contact_address_complete (char): module is now 'web_enterprise' ('web_map')
+
+# DONE: pre-migration: update_module_moved_fields moves the xmlid of the field from web_map to web_enterprise (res.partner and res.users, field not stored)
+
+---XML records in module 'web_map'---
+DEL ir.ui.view: web_map.res_config_settings_view_form
+
+# NOTHING TO DO: view moved to web_enterprise (res_config_settings_view_form), handled by the ORM
+

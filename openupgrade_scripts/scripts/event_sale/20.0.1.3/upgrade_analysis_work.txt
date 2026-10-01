@@ -1,0 +1,22 @@
+---Models in module 'event_sale'---
+---Fields in module 'event_sale'---
+---XML records in module 'event_sale'---
+NEW ir.access: event_sale.access_event_event_configurator
+NEW ir.access: event_sale.access_event_sale_report_manager
+NEW ir.access: event_sale.access_registration_editor
+NEW ir.access: event_sale.access_registration_editor_line
+NEW ir.access: event_sale.event_sale_registration_portal_rule
+NEW ir.access: event_sale.event_sale_registration_user_portal_rule
+NEW ir.access: event_sale.event_sale_report_comp_rule
+DEL ir.model.access: event_sale.access_event_event_configurator
+DEL ir.model.access: event_sale.access_event_sale_report_manager
+DEL ir.model.access: event_sale.access_registration_editor
+DEL ir.model.access: event_sale.access_registration_editor_line
+DEL ir.rule: event_sale.event_sale_report_comp_rule (noupdate)
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+product.product: event_product.product_product_event (noupdate switched)
+
+# NOTHING TO DO: noupdate flag only; changed values (if any) are in noupdate_changes.xml / the records are not touched
+

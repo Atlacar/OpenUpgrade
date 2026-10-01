@@ -1,0 +1,11 @@
+---Models in module 'auth_totp_mail'---
+---Fields in module 'auth_totp_mail'---
+---XML records in module 'auth_totp_mail'---
+mail.template: auth_totp_mail.mail_template_totp_invite (noupdate switched)
+
+# NOTHING TO DO: noupdate flag; only email_layout_xmlid changed in noupdate_changes.xml (loaded in post-migration)
+
+mail.template: auth_totp_mail.mail_template_totp_mail_code (noupdate switched)
+
+# DONE: post-migration: noupdate_changes.xml is loaded and the translations of body_html are removed (the English source changed)
+

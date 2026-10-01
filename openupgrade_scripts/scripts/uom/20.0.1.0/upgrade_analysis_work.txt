@@ -1,0 +1,72 @@
+---Models in module 'uom'---
+---Fields in module 'uom'---
+---XML records in module 'uom'---
+decimal.precision: uom.decimal_product_uom (noupdate switched)
+
+# NOTHING TO DO: noupdate flag change only, no value change
+
+NEW ir.access: uom.access_uom_uom_manager
+NEW ir.access: uom.access_uom_uom_user
+
+# NOTHING TO DO: loaded from the module's security/ir.access.csv/xml (the old ir.model.access/ir.rule xmlids are dropped by the base pre-migration, so the same xmlid can be reused by ir.access)
+
+NEW ir.actions.act_window: uom.uom_uom_action_list
+DEL ir.actions.act_window: uom.product_uom_form_action
+
+# NOTHING TO DO: views/menus/actions are created or removed by the ORM
+
+DEL ir.model.access: uom.access_uom_uom_manager
+DEL ir.model.access: uom.access_uom_uom_user
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
+ir.model.constraint: uom.constraint_uom_uom_factor_gt_zero (changed definition: is now 'False' ('CHECK (relative_factor!=0)'))
+
+# NOTHING TO DO: analysis artefact (constraints are table objects in 20.0, compared with the database comment and recreated by the ORM when the definition changed)
+
+NEW ir.ui.view: uom.uom_uom_view_form
+NEW ir.ui.view: uom.uom_uom_view_list
+DEL ir.ui.view: uom.product_uom_form_view
+DEL ir.ui.view: uom.product_uom_tree_view
+
+# NOTHING TO DO: views/menus/actions are created or removed by the ORM
+
+uom.uom: uom.product_uom_cm (noupdate switched)
+uom.uom: uom.product_uom_cubic_foot (noupdate switched)
+uom.uom: uom.product_uom_cubic_inch (noupdate switched)
+uom.uom: uom.product_uom_cubic_meter (noupdate switched)
+uom.uom: uom.product_uom_day (noupdate switched)
+uom.uom: uom.product_uom_dozen (noupdate switched)
+uom.uom: uom.product_uom_floz (noupdate switched)
+uom.uom: uom.product_uom_foot (noupdate switched)
+uom.uom: uom.product_uom_gal (noupdate switched)
+uom.uom: uom.product_uom_gram (noupdate switched)
+uom.uom: uom.product_uom_hour (noupdate switched)
+uom.uom: uom.product_uom_inch (noupdate switched)
+uom.uom: uom.product_uom_kgm (noupdate switched)
+uom.uom: uom.product_uom_km (noupdate switched)
+uom.uom: uom.product_uom_kwh (noupdate switched)
+uom.uom: uom.product_uom_lb (noupdate switched)
+uom.uom: uom.product_uom_litre (noupdate switched)
+uom.uom: uom.product_uom_meter (noupdate switched)
+uom.uom: uom.product_uom_mile (noupdate switched)
+uom.uom: uom.product_uom_milliliter (noupdate switched)
+uom.uom: uom.product_uom_millimeter (noupdate switched)
+uom.uom: uom.product_uom_minute (noupdate switched)
+uom.uom: uom.product_uom_oz (noupdate switched)
+uom.uom: uom.product_uom_pack_6 (noupdate switched)
+uom.uom: uom.product_uom_qt (noupdate switched)
+uom.uom: uom.product_uom_square_foot (noupdate switched)
+uom.uom: uom.product_uom_square_meter (noupdate switched)
+
+# NOTHING TO DO: noupdate flag change only, no value change
+
+uom.uom: uom.product_uom_ton (noupdate switched)
+
+# DONE: post-migration: noupdate_changes.xml (name 'Ton' -> 't')
+
+uom.uom: uom.product_uom_unit (noupdate switched)
+uom.uom: uom.product_uom_yard (noupdate switched)
+
+# NOTHING TO DO: noupdate flag change only, no value change
+

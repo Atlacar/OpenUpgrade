@@ -1,0 +1,49 @@
+---Models in module 'sales_team'---
+---Fields in module 'sales_team'---
+---XML records in module 'sales_team'---
+crm.team: sales_team.pos_sales_team (noupdate switched)
+crm.team: sales_team.salesteam_website_sales (noupdate switched)
+crm.team: sales_team.team_sales_department (noupdate switched)
+crm.team.member: sales_team.crm_team_member_admin_sales (noupdate switched)
+
+# NOTHING TO DO: noupdate flag only
+
+NEW ir.access: sales_team.access_crm_tag_manager
+NEW ir.access: sales_team.access_crm_tag_salesman
+NEW ir.access: sales_team.access_crm_team
+NEW ir.access: sales_team.access_crm_team_member_manager
+NEW ir.access: sales_team.access_crm_team_member_user
+NEW ir.access: sales_team.crm_rule_all_salesteam
+NEW ir.access: sales_team.sale_team_comp_rule
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+ir.actions.act_window: sales_team.mail_activity_type_action_config_sales (deleted domain)
+
+# NOTHING TO DO: domain removed from the stock action, the action is reloaded with the module data
+
+DEL ir.actions.act_window: sales_team.crm_team_action_sales
+
+# NOTHING TO DO: record removed from the module data (xmlid not noupdate), deleted by the ORM when the update ends
+
+DEL ir.model.access: sales_team.access_crm_tag
+DEL ir.model.access: sales_team.access_crm_tag_manager
+DEL ir.model.access: sales_team.access_crm_tag_salesman
+DEL ir.model.access: sales_team.access_crm_team
+DEL ir.model.access: sales_team.access_crm_team_manager
+DEL ir.model.access: sales_team.access_crm_team_member_all
+DEL ir.model.access: sales_team.access_crm_team_member_manager
+DEL ir.model.access: sales_team.access_crm_team_member_user
+DEL ir.model.access: sales_team.access_crm_team_user
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+ir.model.constraint: sales_team.constraint_crm_tag_name_uniq (changed definition: is now 'False' ('unique (name)'))
+
+# NOTHING TO DO: constraint (re)created by the ORM at module load (the 'changed definition' is a formatting difference of the analysis)
+
+DEL ir.rule: sales_team.crm_rule_all_salesteam (noupdate)
+DEL ir.rule: sales_team.sale_team_comp_rule (noupdate)
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+

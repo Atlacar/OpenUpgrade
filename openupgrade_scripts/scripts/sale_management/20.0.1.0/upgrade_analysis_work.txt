@@ -1,0 +1,92 @@
+---Models in module 'sale_management'---
+---Fields in module 'sale_management'---
+sale_management / product.attribute.custom.value / sale_order_template_line_id (many2one): NEW relation: sale.order.template.line
+
+# NOTHING TO DO: new field (feature of 20.0), default/compute applied by the ORM
+
+sale_management / res.company              / sale_order_template_id (many2one): DEL relation: sale.order.template
+
+# NOTHING TO DO: data dropped, 0 rows (aquila has no quotation template)
+
+sale_management / sale.order.template      / currency_id (many2one)        : NEW relation: res.currency
+
+# NOTHING TO DO: new field (feature of 20.0), default/compute applied by the ORM (0 templates in aquila)
+
+sale_management / sale.order.template      / name (char)                   : now translatable
+
+# NOTHING TO DO: converted to jsonb by the ORM (0 templates in aquila)
+
+sale_management / sale.order.template      / require_payment (boolean)     : DEL
+
+# NOTHING TO DO: data dropped, 0 templates
+
+sale_management / sale.order.template      / share_template (boolean)      : NEW hasdefault: default
+sale_management / sale.order.template      / team_ids (many2many)          : NEW relation: crm.team
+sale_management / sale.order.template      / template_type (selection)     : NEW required, selection_keys: ['quotation', 'section'], hasdefault: default
+
+# NOTHING TO DO: new field (feature of 20.0), default/compute applied by the ORM (0 templates in aquila)
+
+sale_management / sale.order.template.line / collapse_composition (boolean): NEW
+sale_management / sale.order.template.line / collapse_prices (boolean)     : NEW
+sale_management / sale.order.template.line / discount (float)              : NEW
+sale_management / sale.order.template.line / price_unit (float)            : NEW
+sale_management / sale.order.template.line / product_custom_attribute_value_ids (one2many): NEW relation: product.attribute.custom.value, hasdefault: compute
+sale_management / sale.order.template.line / product_no_variant_attribute_value_ids (many2many): NEW relation: product.template.attribute.value, hasdefault: compute
+sale_management / sale.order.template.line / product_template_id (many2one): NEW relation: product.template, hasdefault: compute, stored: False
+sale_management / sale.order.template.line / section_qty (float)           : NEW hasdefault: compute
+sale_management / sale.order.template.line / section_uom_id (many2one)     : NEW relation: uom.uom, hasdefault: compute
+sale_management / sale.order.template.line / tax_ids (many2many)           : NEW relation: account.tax
+
+# NOTHING TO DO: new field (feature of 20.0), default/compute applied by the ORM (0 template lines in aquila; section_qty/section_uom_id of section lines are computed by the ORM)
+
+---XML records in module 'sale_management'---
+digest.digest: digest.digest_digest_default (noupdate switched)
+
+# NOTHING TO DO: noupdate flag only; changed values (if any) are in noupdate_changes.xml / the records are not touched
+
+NEW ir.access: sale_management.access_sale_order_template_line
+NEW ir.access: sale_management.access_sale_order_template_line_manager
+NEW ir.access: sale_management.sale_order_template_rule_company
+NEW ir.access: sale_management.sale_order_template_rule_visibility_manager
+NEW ir.access: sale_management.sale_order_template_rule_visibility_salesman
+NEW ir.access: sale_management.sale_order_template_rule_visibility_system
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+NEW ir.actions.server: sale_management.model_sale_order_action_create_quotation_template
+
+# NOTHING TO DO: new record loaded by the module data
+
+DEL ir.model.access: sale_management.access_sale_order_template
+DEL ir.model.access: sale_management.access_sale_order_template_line
+DEL ir.model.access: sale_management.access_sale_order_template_line_manager
+DEL ir.model.access: sale_management.access_sale_order_template_manager
+DEL ir.model.access: sale_management.access_sale_order_template_system
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+NEW ir.model.constraint: sale_management.constraint_product_attribute_custom_value_sotl_custom_value_unique
+
+# NOTHING TO DO: new constraint created by the ORM; no existing data violates it
+
+ir.model.constraint: sale_management.constraint_sale_order_template_line_accountable_product_id_required (changed definition: is now 'False' ('CHECK(display_type IS NOT NULL OR (product_id IS NOT NULL AND product_uom_id IS NOT NULL))'))
+ir.model.constraint: sale_management.constraint_sale_order_template_line_non_accountable_fields_null (changed definition: is now 'False' ('CHECK(display_type IS NULL OR (product_id IS NULL AND product_uom_qty = 0 AND product_uom_id IS NULL))'))
+
+# NOTHING TO DO: constraint (re)created by the ORM at module load (the 'changed definition' is a formatting difference of the analysis)
+
+NEW ir.model.constraint: sale_management.constraint_sale_order_template_line_section_fields_null
+
+# NOTHING TO DO: new constraint created by the ORM; no existing data violates it
+
+DEL ir.rule: sale_management.sale_order_template_rule_company (noupdate)
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+NEW ir.ui.view: sale_management.sale_order_template_view_form_mandatory_product
+
+# NOTHING TO DO: new record loaded by the module data
+
+DEL res.groups: sale_management.group_sale_order_template
+
+# NOTHING TO DO: group removed (the quotation templates are always available in 20.0); its memberships are deleted with it
+

@@ -1,0 +1,17 @@
+---Models in module 'sale_account_accountant'---
+---Fields in module 'sale_account_accountant'---
+sale_account_accountant / sale.order.line          / deferred_revenue (boolean)    : module is now 'sale' ('sale_account_accountant')
+sale_account_accountant / sale.order.line          / invoice_to_be_issued (boolean): module is now 'sale' ('sale_account_accountant')
+
+# DONE: field moved to another module of the same upgrade: the xmlid is moved to the new owner by its pre-migration (tolerant move_fields), table and column are kept
+
+---XML records in module 'sale_account_accountant'---
+ir.actions.act_window: sale_account_accountant.sale_order_line_accrual_deferred_revenues_action (deleted domain)
+ir.actions.act_window: sale_account_accountant.sale_order_line_accrual_to_bill_action (deleted domain)
+
+# NOTHING TO DO: domain removed from the stock action, the action is reloaded with the module data
+
+NEW ir.ui.view: sale_account_accountant.res_config_settings_view_form
+
+# NOTHING TO DO: new record loaded by the module data
+

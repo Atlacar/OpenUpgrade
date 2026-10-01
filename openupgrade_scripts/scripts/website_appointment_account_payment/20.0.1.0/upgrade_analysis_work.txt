@@ -1,0 +1,12 @@
+---Models in module 'website_appointment_account_payment'---
+---Fields in module 'website_appointment_account_payment'---
+---XML records in module 'website_appointment_account_payment'---
+NEW ir.ui.view: website_appointment_account_payment.appointment_picture_item
+
+# NOTHING TO DO: new record loaded by the module data
+
+DEL ir.ui.view: website_appointment_account_payment.appointments_template_list
+DEL ir.ui.view: website_appointment_account_payment.appointments_template_picture
+
+# NOTHING TO DO: record removed from the module data (xmlid not noupdate), deleted by the ORM when the update ends
+

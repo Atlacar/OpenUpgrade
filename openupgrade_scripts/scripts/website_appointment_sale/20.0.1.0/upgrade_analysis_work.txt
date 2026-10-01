@@ -1,0 +1,20 @@
+---Models in module 'website_appointment_sale'---
+new model calendar.event.sale.order.create [transient]
+
+# NOTHING TO DO: new model, table created by the ORM
+
+---Fields in module 'website_appointment_sale'---
+---XML records in module 'website_appointment_sale'---
+NEW ir.access: website_appointment_sale.access_calendar_event_sale_order_create
+
+# NOTHING TO DO: ir.model.access and ir.rule are merged into ir.access in 20.0 (odoo20_key_changes.md); module-defined records are reloaded from the module data, the conversion of the legacy rows is done by the base script
+
+NEW ir.ui.view: website_appointment_sale.appointment_form
+NEW ir.ui.view: website_appointment_sale.appointment_list_item
+NEW ir.ui.view: website_appointment_sale.appointment_picture_item
+NEW ir.ui.view: website_appointment_sale.calendar_event_sale_order_create_view_form
+NEW ir.ui.view: website_appointment_sale.calendar_event_view_gantt_booking_resource
+NEW ir.ui.view: website_appointment_sale.calendar_event_view_kanban
+
+# NOTHING TO DO: new record loaded by the module data
+

@@ -1,0 +1,7 @@
+---Models in module 'bus'---
+---Fields in module 'bus'---
+---XML records in module 'bus'---
+DEL ir.model.access: bus.access_bus_bus
+
+# NOTHING TO DO: handled by the base pre-migration (old xmlids of ir.model.access/ir.rule are dropped; the 20.0 data defines the ir.access records, or the access is gone)
+
