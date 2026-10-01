@@ -404,19 +404,19 @@ NEW account.report.line: account_reports.unreconciled_transactions
 DEL account.report.line: account_reports.account_financial_report_net_profit_after_allocations0
 # NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
 DEL account.report.line: account_reports.balance_bank
-# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+# DONE: pre-migration: deleted explicitly (bank_reconciliation_report_lines); otherwise the new line unreconciled_payments hits the unique (report_id, code) constraint at data load (run 6)
 DEL account.report.line: account_reports.last_statement_balance
-# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+# DONE: pre-migration: deleted explicitly (bank_reconciliation_report_lines); otherwise the new line unreconciled_payments hits the unique (report_id, code) constraint at data load (run 6)
 DEL account.report.line: account_reports.no_statement_unreconciled_payments
-# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+# DONE: pre-migration: deleted explicitly (bank_reconciliation_report_lines); otherwise the new line unreconciled_payments hits the unique (report_id, code) constraint at data load (run 6)
 DEL account.report.line: account_reports.no_statement_unreconciled_receipt
-# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+# DONE: pre-migration: deleted explicitly (bank_reconciliation_report_lines); otherwise the new line unreconciled_payments hits the unique (report_id, code) constraint at data load (run 6)
 DEL account.report.line: account_reports.transaction_without_statement
-# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+# DONE: pre-migration: deleted explicitly (bank_reconciliation_report_lines); otherwise the new line unreconciled_payments hits the unique (report_id, code) constraint at data load (run 6)
 DEL account.report.line: account_reports.unreconciled_last_statement_payments
-# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+# DONE: pre-migration: deleted explicitly (bank_reconciliation_report_lines); otherwise the new line unreconciled_payments hits the unique (report_id, code) constraint at data load (run 6)
 DEL account.report.line: account_reports.unreconciled_last_statement_receipts
-# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+# DONE: pre-migration: deleted explicitly (bank_reconciliation_report_lines); otherwise the new line unreconciled_payments hits the unique (report_id, code) constraint at data load (run 6)
 NEW account.return.audit.cycle: account_reports.audit_cycle_equity
 # NOTHING TO DO: new audit cycles / check template loaded from data
 NEW account.return.audit.cycle: account_reports.audit_cycle_fixed_assets
