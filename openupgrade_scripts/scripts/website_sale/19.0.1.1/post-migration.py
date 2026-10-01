@@ -30,12 +30,13 @@ def website_shop_default_sort(env):
     (e.g. set by a custom module) falls back to the field default; an invalid
     value makes /shop crash.
     """
-    openupgrade.map_values(
+    openupgrade.logged_query(
         env.cr,
-        "shop_default_sort",
-        "shop_default_sort",
-        [("create_date desc", "publish_date desc")],
-        table="website",
+        """
+        UPDATE website
+        SET shop_default_sort = 'publish_date desc'
+        WHERE shop_default_sort = 'create_date desc'
+        """,
     )
     valid = [key for key, _label in env["website"]._get_product_sort_mapping()]
     openupgrade.logged_query(
