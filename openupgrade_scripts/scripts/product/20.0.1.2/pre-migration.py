@@ -148,6 +148,11 @@ def _convert_pricelist_item_compute_price(env):
 def migrate(env, version):
     for model, fields, old_module in _moved_fields:
         _move_fields(env, model, fields, old_module, "product")
+    # product.product.qty_available is now a stored company_dependent float (jsonb)
+    # in 'product' (stock turns it back into a non stored computed field); the old
+    # numeric column is a stale leftover of a non stored field (recomputed by stock)
+    # and the ORM cannot cast numeric to jsonb.
+    openupgrade.drop_columns(env.cr, [("product_product", "qty_available")])
     _rename_base_unit_model(env)
     openupgrade.rename_xmlids(env.cr, _renamed_xmlids)
     openupgrade.rename_fields(env, _renamed_fields)
