@@ -71,8 +71,9 @@ def stock_move_value(env):
     an outgoing move is reused as a positive amount, for example by
     `_get_value_from_returns` (value of a return) or `_get_cogs_price_unit`.
     So the sign of the layers is reverted for outgoing moves (negative valued
-    quantity). Dropshipped moves have an incoming and an outgoing layer in v18
-    that cancel each other: take the incoming one.
+    quantity). Dropshipped moves (supplier <-> customer) have an incoming and an
+    outgoing layer in v18 that cancel each other: take the incoming one. Other moves
+    whose layers cancel each other (eg. done quantity corrected to 0) keep 0.
     """
     openupgrade.logged_query(
         env.cr,
@@ -81,17 +82,20 @@ def stock_move_value(env):
         SET value=aggregated_values.agg_value
         FROM (
             SELECT
-            stock_move_id,
+            svl.stock_move_id,
             CASE
-                WHEN SUM(quantity) < 0 THEN -SUM(value)
-                WHEN SUM(quantity) = 0 AND BOOL_OR(quantity > 0)
-                    THEN SUM(value) FILTER (WHERE quantity > 0)
-                ELSE SUM(value)
+                WHEN SUM(svl.quantity) < 0 THEN -SUM(svl.value)
+                WHEN SUM(svl.quantity) = 0
+                    AND src.usage IN ('supplier', 'customer')
+                    AND dest.usage IN ('supplier', 'customer')
+                    THEN COALESCE(SUM(svl.value) FILTER (WHERE svl.quantity > 0), 0)
+                ELSE SUM(svl.value)
             END AS agg_value
-            FROM
-            stock_valuation_layer
-            WHERE stock_move_id IS NOT NULL
-            GROUP BY stock_move_id
+            FROM stock_valuation_layer svl
+            JOIN stock_move sm ON sm.id = svl.stock_move_id
+            JOIN stock_location src ON src.id = sm.location_id
+            JOIN stock_location dest ON dest.id = sm.location_dest_id
+            GROUP BY svl.stock_move_id, src.usage, dest.usage
         ) aggregated_values
         WHERE aggregated_values.stock_move_id=stock_move.id
         """,
