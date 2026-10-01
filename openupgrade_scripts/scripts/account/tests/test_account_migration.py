@@ -37,6 +37,10 @@ class TestAccountMigration(TransactionCase):
         self.assertIn(
             exchange_move, full_reconcile.partial_reconcile_ids.exchange_move_id
         )
+        # the match must not be counted twice: the reconciled lines stay reconciled
+        reconciled_lines = full_reconcile.reconciled_line_ids
+        self.assertTrue(all(reconciled_lines.mapped("reconciled")))
+        self.assertFalse(any(reconciled_lines.mapped("amount_residual")))
 
     def test_reconcile_model_partner_mapping(self):
         """

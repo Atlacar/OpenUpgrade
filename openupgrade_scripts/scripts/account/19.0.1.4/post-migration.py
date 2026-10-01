@@ -1,11 +1,14 @@
 # Copyright 2026 Hunki Enterprises BV
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import logging
 import re
 
 from openupgradelib import openupgrade
 
 from odoo.orm.commands import Command
+
+_logger = logging.getLogger(__name__)
 
 
 def account_reconcile_model(env):
@@ -143,25 +146,72 @@ def account_tax_original_tax_ids(env):
 
 def account_full_reconcile_exchange_move_id(env):
     """
-    account.full.reconcile#exchange_move_id has been scrapped, clone a partial
-    reconciliation and link the exchange move to it
+    account.full.reconcile#exchange_move_id has been scrapped: the exchange move is
+    linked to a partial reconciliation of the full reconcile instead, as v19 does in
+    account.move.line#_create_reconciliation_partials (it sets exchange_move_id on an
+    existing partial).
+
+    The last partial of the full reconcile gets the exchange move when it has none.
+    Otherwise a copy of it carrying the exchange move is created with zero amounts: a
+    copy with the original amount would count the same match twice (residuals of
+    both lines become -/+amount, invoices go back to partial, payments to in_process).
     """
     env.cr.execute(
         """
-        SELECT id, exchange_move_id
-        FROM account_full_reconcile
-        WHERE exchange_move_id IS NOT NULL
+        SELECT afr.id, afr.exchange_move_id, last_partial.id,
+            last_partial.exchange_move_id IS NOT NULL
+        FROM account_full_reconcile afr
+        JOIN LATERAL (
+            SELECT apr.id, apr.exchange_move_id
+            FROM account_partial_reconcile apr
+            WHERE apr.full_reconcile_id = afr.id
+            ORDER BY apr.id DESC
+            LIMIT 1
+        ) last_partial ON TRUE
+        WHERE afr.exchange_move_id IS NOT NULL
         """
     )
-    AccountFullReconcile = env["account.full.reconcile"]
-
-    for full_reconcile_id, exchange_move_id in env.cr.fetchall():
-        AccountFullReconcile.browse(full_reconcile_id).partial_reconcile_ids[-1:].copy(
-            {
-                "exchange_move_id": exchange_move_id,
-                "full_reconcile_id": full_reconcile_id,
-            }
+    rows = env.cr.fetchall()
+    free = [(move_id, partial_id) for _fr, move_id, partial_id, used in rows if not used]
+    for exchange_move_id, partial_id in free:
+        env.cr.execute(
+            "UPDATE account_partial_reconcile SET exchange_move_id = %s WHERE id = %s",
+            (exchange_move_id, partial_id),
         )
+    copies = env["account.partial.reconcile"]
+    for full_reconcile_id, exchange_move_id, partial_id, used in rows:
+        if not used:
+            continue
+        copies |= (
+            env["account.partial.reconcile"]
+            .browse(partial_id)
+            .copy(
+                {
+                    "exchange_move_id": exchange_move_id,
+                    "full_reconcile_id": full_reconcile_id,
+                    "amount": 0.0,
+                    "debit_amount_currency": 0.0,
+                    "credit_amount_currency": 0.0,
+                }
+            )
+        )
+    if copies:
+        # the copies carry no amount, but make sure the residuals / payment states
+        # of the reconciled items are (re)computed from the real partials
+        lines = copies.debit_move_id | copies.credit_move_id
+        aml_fields = env["account.move.line"]._fields
+        for fname in ("amount_residual", "amount_residual_currency", "reconciled"):
+            env.add_to_compute(aml_fields[fname], lines)
+        move_fields = env["account.move"]._fields
+        for fname in ("amount_residual", "amount_residual_signed", "payment_state"):
+            env.add_to_compute(move_fields[fname], lines.move_id)
+        env.flush_all()
+    _logger.info(
+        "account_full_reconcile_exchange_move_id: exchange move set on %s existing "
+        "partial(s), %s zero-amount partial copy(ies)",
+        len(free),
+        len(copies),
+    )
 
 
 def account_move_line_no_followup(env):
