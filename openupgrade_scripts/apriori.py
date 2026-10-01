@@ -9,6 +9,7 @@ renamed_modules = {
     "l10n_in_edi_ewaybill": "l10n_in_ewaybill",
     "pos_viva_wallet": "pos_viva_com",
     # odoo/enterprise
+    "account_auto_transfer": "account_transfer",
     # OCA/mail
     "mail_debrand": "mail_debranding",
     # OCA/timesheet
@@ -51,6 +52,9 @@ merged_modules = {
     "pos_self_order_epson_printer": "pos_self_order",
     "sale_async_emails": "sale",
     "web_editor": "html_editor",
+    # removed in 19.0 without successor (only hr.employee CURP/RFC fields, moved
+    # to l10n_mx_hr_payroll_account_edi): merge into its only dependency
+    "l10n_mx_hr": "hr",
     # odoo/enterprise
     # OCA/account-invoicing
     "account_tax_legal_notes_translate": "account",
