@@ -57,7 +57,70 @@ def update_from_coa_generic(env, spec):
                 if filtered:
                     filtered_records[record_id] = filtered
             company_data[model_name] = filtered_records
+        missing_data = _missing_referenced_records(
+            env, company, AccountChartTemplate, template_data, company_data, ref_or_id
+        )
+        if missing_data:
+            AccountChartTemplate._load_data(missing_data)
         AccountChartTemplate._load_data(company_data)
+
+
+def _missing_referenced_records(
+    env, company, AccountChartTemplate, template_data, company_data, ref_or_id
+):
+    """
+    Return the template data of the records referenced by company_data that don't
+    exist yet for this company because they were added to the template in the new
+    version (eg. l10n_mx's cuenta505_01 and cuenta501_02, set as
+    account_stock_expense_id/account_stock_variation_id of cuenta115_01).
+    As when reloading the chart template, an existing account with the same code is
+    used (by giving it the template xmlid) instead of creating a new one.
+    """
+    missing = {}
+    for model_name, records in company_data.items():
+        for values in records.values():
+            for fname, value in values.items():
+                field = env[model_name]._fields.get(fname)
+                if not field or field.type != "many2one" or not isinstance(value, str):
+                    continue
+                comodel = field.comodel_name
+                if value not in template_data.get(comodel, {}) or ref_or_id(
+                    value, comodel
+                ):
+                    continue
+                missing.setdefault(comodel, {})[value] = dict(
+                    template_data[comodel][value]
+                )
+    Account = env["account.account"].with_company(company)
+    for xmlid, values in list(missing.get("account.account", {}).items()):
+        account = Account.search(
+            [
+                *Account._check_company_domain(company),
+                ("code", "=", values.get("code")),
+            ],
+            limit=1,
+        )
+        if account:
+            env["ir.model.data"]._update_xmlids(
+                [
+                    {
+                        "xml_id": AccountChartTemplate.company_xmlid(xmlid, company),
+                        "record": account,
+                        "noupdate": True,
+                    }
+                ]
+            )
+            del missing["account.account"][xmlid]
+    for model_name, records in missing.items():
+        for xmlid in records:
+            openupgrade.logger.info(
+                "Creating %s %s from chart template %s for company %s",
+                model_name,
+                xmlid,
+                company.chart_template,
+                company.name,
+            )
+    return {model_name: records for model_name, records in missing.items() if records}
 
 
 def update_from_coa(env):
