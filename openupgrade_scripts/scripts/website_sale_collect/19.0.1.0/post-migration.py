@@ -20,24 +20,36 @@ def _mark_pickup_auxiliary_addresses(env):
     """
     pickup_locations = (
         env["delivery.carrier"]
+        .with_context(active_test=False)
         .search([("delivery_type", "=", "in_store")])
         .warehouse_ids.partner_id
     )
     for p in pickup_locations:
+        if not p.street:
+            # Avoid flagging every address-less delivery contact
+            continue
+        # Same matching criteria as `sale.order._action_confirm` in `delivery`
+        # (a domain `('field', '=', False)` matches NULL, hence IS NOT DISTINCT FROM)
         openupgrade.logged_query(
             env.cr,
             """
             UPDATE res_partner
-            SET is_pickup_location = True
+            SET is_pickup_location = TRUE
             WHERE
-                street = %s,
-                city = %s,
-                state_id = %s,
-                country_id = %s,
-                parent_id != False,
-                type = 'delivery',
+                street IS NOT DISTINCT FROM %s
+                AND city IS NOT DISTINCT FROM %s
+                AND state_id IS NOT DISTINCT FROM %s
+                AND country_id IS NOT DISTINCT FROM %s
+                AND parent_id IS NOT NULL
+                AND type = 'delivery'
+                AND is_pickup_location IS NOT TRUE
             """,
-            (p.street, p.city, p.state_id, p.country_id),
+            (
+                p.street or None,
+                p.city or None,
+                p.state_id.id or None,
+                p.country_id.id or None,
+            ),
         )
 
 
