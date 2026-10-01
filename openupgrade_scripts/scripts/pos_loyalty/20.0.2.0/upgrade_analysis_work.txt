@@ -1,0 +1,68 @@
+---Models in module 'pos_loyalty'---
+---Fields in module 'pos_loyalty'---
+pos_loyalty  / pos.order                / active_payment_programs (json): NEW hasdefault: default
+pos_loyalty  / pos.order                / active_rewards (json)         : NEW hasdefault: default
+pos_loyalty  / pos.order                / applied_codes (json)          : NEW hasdefault: default
+pos_loyalty  / pos.order                / disabled_program_ids (json)   : NEW hasdefault: default
+
+# NOTHING TO DO: new field (default/compute applied by the ORM) (json defaults)
+
+pos_loyalty  / pos.order.line           / card_id (many2one)            : NEW relation: loyalty.card
+
+# DONE: pre-migration: rename_fields coupon_id -> card_id (0 rows)
+
+pos_loyalty  / pos.order.line           / coupon_id (many2one)          : DEL relation: loyalty.card
+
+# DONE: pre-migration: rename_fields to card_id (0 rows)
+
+pos_loyalty  / pos.order.line           / gift_card_vals (json)         : NEW
+
+# NOTHING TO DO: new feature
+
+pos_loyalty  / pos.order.line           / reward_identifier_code (char) : DEL
+
+# NOTHING TO DO: field removed in v20 (0 rows in aquila), data dropped
+
+---XML records in module 'pos_loyalty'---
+barcode.rule: pos_loyalty.barcode_rule_coupon (noupdate switched)
+
+# NOTHING TO DO: only the noupdate flag changed
+
+NEW ir.access: pos_loyalty.access_applicability_pos_manager
+NEW ir.access: pos_loyalty.access_applicability_pos_user
+NEW ir.access: pos_loyalty.access_communication_pos_manager
+NEW ir.access: pos_loyalty.access_communication_pos_user
+NEW ir.access: pos_loyalty.access_coupon_pos_manager
+NEW ir.access: pos_loyalty.access_coupon_pos_user
+NEW ir.access: pos_loyalty.access_loyalty_card_update_balance_pos_user
+NEW ir.access: pos_loyalty.access_loyalty_history_pos_user
+NEW ir.access: pos_loyalty.access_program_pos_manager
+NEW ir.access: pos_loyalty.access_program_pos_user
+NEW ir.access: pos_loyalty.access_reward_pos_manager
+NEW ir.access: pos_loyalty.access_reward_pos_user
+NEW ir.access: pos_loyalty.access_sale_coupon_generate
+DEL ir.model.access: pos_loyalty.access_applicability_pos_manager
+DEL ir.model.access: pos_loyalty.access_applicability_pos_user
+DEL ir.model.access: pos_loyalty.access_communication_pos_manager
+DEL ir.model.access: pos_loyalty.access_communication_pos_user
+DEL ir.model.access: pos_loyalty.access_coupon_pos_manager
+DEL ir.model.access: pos_loyalty.access_coupon_pos_user
+DEL ir.model.access: pos_loyalty.access_loyalty_card_update_balance_pos_user
+DEL ir.model.access: pos_loyalty.access_loyalty_history_pos_user
+DEL ir.model.access: pos_loyalty.access_program_pos_manager
+DEL ir.model.access: pos_loyalty.access_program_pos_user
+DEL ir.model.access: pos_loyalty.access_reward_pos_manager
+DEL ir.model.access: pos_loyalty.access_reward_pos_user
+DEL ir.model.access: pos_loyalty.access_sale_coupon_generate
+
+# NOTHING TO DO: ir.model.access / ir.rule -> ir.access conversion is handled by the base script (see odoo20_key_changes.md); the module CSV/xml is reloaded
+
+NEW ir.ui.view: pos_loyalty.pos_order_receipt
+
+# NOTHING TO DO: new record, created by the module data/ORM
+
+product.product: loyalty.ewallet_product_50 (noupdate switched)
+product.product: loyalty.gift_card_product_50 (noupdate switched)
+
+# NOTHING TO DO: only the noupdate flag changed
+

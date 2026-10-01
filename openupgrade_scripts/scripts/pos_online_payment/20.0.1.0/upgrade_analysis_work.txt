@@ -1,0 +1,16 @@
+---Models in module 'pos_online_payment'---
+---Fields in module 'pos_online_payment'---
+pos_online_payment / pos.payment.method       / is_online_payment (boolean)   : DEL
+
+# DONE: post-migration: type = 'online' where is_online_payment (0 rows)
+
+---XML records in module 'pos_online_payment'---
+NEW ir.access: pos_online_payment.payment_provider_pos_manager
+
+# NOTHING TO DO: ir.model.access / ir.rule -> ir.access conversion is handled by the base script (see odoo20_key_changes.md); the module CSV/xml is reloaded
+
+NEW ir.ui.view: pos_online_payment.pos_payment_status
+NEW ir.ui.view: pos_online_payment.pos_state_header
+
+# NOTHING TO DO: new record, created by the module data/ORM
+

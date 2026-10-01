@@ -1,0 +1,43 @@
+---Models in module 'pos_sale'---
+---Fields in module 'pos_sale'---
+pos_sale     / pos.config               / default_product_id (many2one) : NEW relation: product.product, required, hasdefault: default
+
+# DONE: ORM init_storage (_init_column_default_products) creates the product; post-migration: fallback fill of NULLs
+
+pos_sale     / pos.config               / down_payment_product_id (many2one): now required
+
+# DONE: ORM init_storage fills the NULL of the 1 config; post-migration: fallback fill of NULLs
+
+pos_sale     / sale.order               / amount_unpaid (float)         : module is now 'sale' ('pos_sale')
+
+# NEEDS DECISION: field moved to sale; update_module_moved_fields pos_sale -> sale has to run in the sale pre-migration (sale loads before pos_sale); the stored values (2137 rows, v19 'amount to pay in POS') are not recomputed with the new sale formula: see scripts_pos.md
+
+---XML records in module 'pos_sale'---
+crm.team: sales_team.pos_sales_team (noupdate switched)
+
+# NOTHING TO DO: only the noupdate flag changed
+
+NEW ir.access: pos_sale.pos_sale_rule_pos_channel_pos_manager
+NEW ir.access: pos_sale.rule_pos_sale_order
+NEW ir.access: pos_sale.rule_pos_sale_order_line
+DEL ir.model.access: pos_sale.access_crm_team_pos_manager
+DEL ir.rule: pos_sale.pos_sale_rule_pos_channel_pos_manager (noupdate)
+
+# NOTHING TO DO: ir.model.access / ir.rule -> ir.access conversion is handled by the base script (see odoo20_key_changes.md); the module CSV/xml is reloaded
+
+NEW ir.ui.view: pos_sale.pos_orderline_receipt_information
+
+# NOTHING TO DO: new record, created by the module data/ORM
+
+DEL ir.ui.view: pos_sale.message_body
+
+# NOTHING TO DO: non-noupdate record, removed by the ORM cleanup after the module update
+
+product.product: pos_sale.default_downpayment_product (noupdate switched)
+
+# NOTHING TO DO: only the noupdate flag changed
+
+NEW product.product: pos_sale.default_sol_product
+
+# NOTHING TO DO: new record, created by the module data/ORM
+

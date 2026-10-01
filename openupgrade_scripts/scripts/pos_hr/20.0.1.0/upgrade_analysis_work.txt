@@ -1,0 +1,40 @@
+---Models in module 'pos_hr'---
+---Fields in module 'pos_hr'---
+pos_hr       / pos.config               / advanced_employee_ids (many2many): DEL relation: hr.employee
+
+# DONE: pre-migration: relation table renamed to pos_hr_manager_employee_hr_employee (manager role)
+
+pos_hr       / pos.config               / basic_employee_ids (many2many): DEL relation: hr.employee
+
+# DONE: pre-migration: relation table renamed to pos_hr_cashier_employee_hr_employee (cashier role)
+
+pos_hr       / pos.config               / cashier_employee_ids (many2many): NEW relation: hr.employee
+
+# DONE: pre-migration: filled by the table rename of basic_employee_ids
+
+pos_hr       / pos.config               / manager_employee_ids (many2many): NEW relation: hr.employee
+
+# DONE: pre-migration: filled by the table rename of advanced_employee_ids
+
+pos_hr       / pos.config               / minimal_employee_ids (many2many): DEL relation: hr.employee
+
+# DONE: pre-migration: relation table renamed to pos_hr_restrictive_employee_hr_employee (restrictive role)
+
+pos_hr       / pos.config               / restrictive_employee_ids (many2many): NEW relation: hr.employee
+
+# DONE: pre-migration: filled by the table rename of minimal_employee_ids
+
+pos_hr       / pos.config               / supervised_employee_ids (many2many): NEW relation: hr.employee
+
+# NOTHING TO DO: new role without v19 equivalent
+
+pos_hr       / pos.session              / logged_employee_ids (many2many): NEW relation: hr.employee, isfunction: function, stored
+
+# DONE: post-migration: filled from pos.session#employee_id
+
+---XML records in module 'pos_hr'---
+NEW ir.ui.view: pos_hr.view_pos_config_kanban_inherit_pos_hr
+NEW ir.ui.view: pos_hr.view_pos_session_form_inherit_pos_hr
+
+# NOTHING TO DO: new record, created by the module data/ORM
+
