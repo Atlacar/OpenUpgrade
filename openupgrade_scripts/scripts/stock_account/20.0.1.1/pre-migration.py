@@ -94,7 +94,7 @@ def _map_cost_method_fifo(env):
             UPDATE product_category
             SET property_cost_method = REPLACE(
                 property_cost_method::text, '"fifo"', '"average"')::jsonb
-            WHERE property_cost_method::text LIKE '%"fifo"%'
+            WHERE property_cost_method::text LIKE '%%"fifo"%%'
             """,
         )
     openupgrade.logged_query(
