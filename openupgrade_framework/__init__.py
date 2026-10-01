@@ -6,6 +6,16 @@ from odoo.tools import config
 
 from . import odoo_patch
 
+# Odoo 20 no longer re-exports the convert_* helpers from odoo.tools (only
+# convert_file is), but openupgradelib (load_data) still looks them up as
+# tools.convert_xml_import / tools.convert_csv_import. Restore the aliases.
+import odoo.tools as _tools  # noqa: E402
+from odoo.tools import convert as _convert  # noqa: E402
+
+for _name in ("convert_xml_import", "convert_csv_import", "convert_sql_import"):
+    if not hasattr(_tools, _name) and hasattr(_convert, _name):
+        setattr(_tools, _name, getattr(_convert, _name))
+
 if not config.get("upgrade_path"):
     path = get_module_path("openupgrade_scripts", display_warning=False)
     if path and os.path.isdir(os.path.join(path, "scripts")):
