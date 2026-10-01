@@ -1,0 +1,10 @@
+---Models in module 'account_online_synchronization'---
+---Fields in module 'account_online_synchronization'---
+account_online_synchronization / account.journal          / renewal_contact_email (char)  : not stored anymore
+account_online_synchronization / account.journal          / renewal_contact_email (char)  : now related
+account_online_synchronization / account.online.account   / available_balance (float)     : NEW
+account_online_synchronization / account.online.link      / provider_data (char)          : DEL
+account_online_synchronization / account.online.link      / renewal_contact_email (char)  : NEW hasdefault: default
+---XML records in module 'account_online_synchronization'---
+NEW ir.ui.view: account_online_synchronization.view_bank_statement_line_search_bank_rec_widget_inherit
+DEL mail.activity.type: account_online_synchronization.bank_sync_activity_update_consent

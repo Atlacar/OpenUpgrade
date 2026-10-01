@@ -1,0 +1,19 @@
+---Models in module 'account_online_synchronization'---
+---Fields in module 'account_online_synchronization'---
+account_online_synchronization / account.journal          / renewal_contact_email (char)  : not stored anymore
+account_online_synchronization / account.journal          / renewal_contact_email (char)  : now related
+account_online_synchronization / account.online.link      / renewal_contact_email (char)  : NEW hasdefault: default
+# DONE: pre-migration: pre-created and filled from the journals of the link
+
+account_online_synchronization / account.online.account   / available_balance (float)     : NEW
+# NOTHING TO DO: filled at next synchronization
+
+account_online_synchronization / account.online.link      / provider_data (char)          : DEL
+# NOTHING TO DO: provider token not used anymore (kept as legacy column)
+
+---XML records in module 'account_online_synchronization'---
+NEW ir.ui.view: account_online_synchronization.view_bank_statement_line_search_bank_rec_widget_inherit
+# NOTHING TO DO
+
+DEL mail.activity.type: account_online_synchronization.bank_sync_activity_update_consent
+# DONE: post-migration: pending activities moved to To-Do, record deleted safely

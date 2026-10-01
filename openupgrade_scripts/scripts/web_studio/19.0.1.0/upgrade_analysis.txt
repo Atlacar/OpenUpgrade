@@ -1,0 +1,9 @@
+---Models in module 'web_studio'---
+---Fields in module 'web_studio'---
+web_studio   / ir.model                 / abstract (boolean)            : module is now 'base' ('web_studio')
+web_studio   / mail.activity            / studio_approval_request_id (many2one): NEW relation: studio.approval.request
+web_studio   / mail.activity.type       / category (False)              : DEL selection_keys: ['default', 'grant_approval', 'meeting', 'phonecall', 'upload_file'], mode: modify
+---XML records in module 'web_studio'---
+NEW ir.actions.act_window: web_studio.webhook_automation_act
+NEW ir.model.constraint: web_studio.constraint_studio_approval_entry_model_res_id_idx
+DEL mail.activity.type: web_studio.mail_activity_data_approve (noupdate)
