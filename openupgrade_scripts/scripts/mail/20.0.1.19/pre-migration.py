@@ -140,6 +140,35 @@ def _starred_to_bookmarked(env):
         )
 
 
+def _channel_member_xmlids(env):
+    """Odoo 20 ships noupdate discuss.channel.member records for the admin
+    partner in the general and admin channels. The member rows already exist
+    on a migrated DB (without xmlid for the admin channel), so give them the
+    xmlid before the data file inserts a duplicate (unique channel/partner)."""
+    for name, channel_xmlid in (
+        ("channel_member_general_channel_for_admin", "channel_all_employees"),
+        ("channel_member_channel_admin_partner_admin", "channel_admin"),
+    ):
+        openupgrade.logged_query(
+            env.cr,
+            """
+            INSERT INTO ir_model_data
+                (module, name, model, res_id, noupdate, create_date, write_date)
+            SELECT 'mail', %s, 'discuss.channel.member', m.id, TRUE, NOW(), NOW()
+            FROM discuss_channel_member m
+            JOIN ir_model_data c ON c.model = 'discuss.channel'
+                AND c.module = 'mail' AND c.name = %s AND c.res_id = m.channel_id
+            JOIN ir_model_data p ON p.model = 'res.partner'
+                AND p.module = 'base' AND p.name = 'partner_admin'
+                AND p.res_id = m.partner_id
+            WHERE NOT EXISTS (
+                SELECT 1 FROM ir_model_data d
+                WHERE d.module = 'mail' AND d.name = %s)
+            """,
+            (name, channel_xmlid, name),
+        )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     _drop_legacy_access_xmlids(env)
@@ -147,3 +176,4 @@ def migrate(env, version):
     _drop_not_null_on_removed_fields(env)
     _activity_type_suggested_next(env)
     _starred_to_bookmarked(env)
+    _channel_member_xmlids(env)
