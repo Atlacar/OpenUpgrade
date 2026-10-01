@@ -53,6 +53,11 @@ DEL ir.asset: website.s_searchbar_000_js
 DEL ir.asset: website.s_share_000_js
 DEL ir.asset: website.s_table_of_content_000_js
 DEL ir.asset: website.s_website_form_000_js
+
+# ir.asset website.ripple_effect_js: path changed (js/content -> interactions), not
+# visible here. DONE: end-migration: website-specific COW copies of generic assets
+# re-synced from their generic record (path/bundle/directive/target)
+
 NEW ir.attachment: website.app_store_image
 NEW ir.attachment: website.google_play_image
 NEW ir.attachment: website.s_banner_categories_default_image_1
