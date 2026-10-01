@@ -29,7 +29,16 @@ def account_return_generic_state(env):
             )
 
 
+_OBSOLETE_REPORT_COLUMNS = [
+    "bank_reconciliation_report_currency",
+    "customer_statement_report_balance",
+    "followup_report_report_amount_currency",
+    "followup_report_report_balance",
+    "journal_report_code",
+]
+
 _OBSOLETE_BANK_REC_LINES = [
+    "account_financial_report_net_profit_after_allocations0",
     # deleted lines of the bank reconciliation report, listed leaves first
     "unreconciled_last_statement_receipts",
     "unreconciled_last_statement_payments",
@@ -103,6 +112,10 @@ def bank_reconciliation_report_lines(env):
     # new one would hit account_report_expression_line_label_uniq at data load
     openupgrade.delete_records_safely_by_xml_id(
         env, ["account_reports." + name for name in _OBSOLETE_BANK_REC_EXPRESSIONS]
+    )
+    # deleted report columns (same expression_label may be re-created by the data)
+    openupgrade.delete_records_safely_by_xml_id(
+        env, ["account_reports." + name for name in _OBSOLETE_REPORT_COLUMNS]
     )
     for name in _OBSOLETE_BANK_REC_LINES:
         openupgrade.delete_records_safely_by_xml_id(
