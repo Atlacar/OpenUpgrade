@@ -11,7 +11,6 @@
     <field name="sequence">50</field>
   </record>
   <record id="payment.payment_provider_transfer" model="payment.provider">
-    <field name="payment_method_ids" eval="None"/>
     <field name="pending_msg" type="html">
       <p>Please find the payment details below.</p>
     </field>

@@ -1,0 +1,687 @@
+---Models in module 'account_reports'---
+obsolete model account.ec.sales.report.handler [abstract]
+# NOTHING TO DO: abstract handler replaced by account.ec.sales.report.handler.common / with.tags / with.taxes (no table)
+new model account.ec.sales.report.handler.common [abstract]
+# NOTHING TO DO: new abstract model (no table)
+new model account.ec.sales.with.tags.report.handler [abstract]
+# NOTHING TO DO: new abstract model (no table)
+new model account.ec.sales.with.taxes.report.handler [abstract]
+# NOTHING TO DO: new abstract model (no table)
+new model account.executive.summary.report.handler [abstract]
+# NOTHING TO DO: new abstract model (no table)
+new model account.interco.comparison.report.handler [abstract]
+# NOTHING TO DO: new abstract model (no table)
+new model account.report.snapshot
+# NOTHING TO DO: new model, records created by the 20 data (cycles) / by the new crons (snapshots)
+new model account.return.audit.cycle
+# NOTHING TO DO: new model, records created by the 20 data (cycles) / by the new crons (snapshots)
+---Fields in module 'account_reports'---
+account_reports / account.report           / force_pdf_engine (selection)  : NEW selection_keys: function
+# NOTHING TO DO: new field, NULL/ORM default
+account_reports / account.report           / snapshot_ids (one2many)       : NEW relation: account.report.snapshot
+# NOTHING TO DO: new field, NULL/ORM default
+account_reports / account.report.snapshot  / company_id (many2one)         : NEW relation: res.company, required
+# NOTHING TO DO: new model (snapshots created by the new cron), no migration data
+account_reports / account.report.snapshot  / date (date)                   : NEW required
+# NOTHING TO DO: new model (snapshots created by the new cron), no migration data
+account_reports / account.report.snapshot  / date_scope (char)             : NEW required
+# NOTHING TO DO: new model (snapshots created by the new cron), no migration data
+account_reports / account.report.snapshot  / engine_func (char)            : NEW required
+# NOTHING TO DO: new model (snapshots created by the new cron), no migration data
+account_reports / account.report.snapshot  / engine_version (integer)      : NEW required
+# NOTHING TO DO: new model (snapshots created by the new cron), no migration data
+account_reports / account.report.snapshot  / groupby (char)                : NEW
+# NOTHING TO DO: new model (snapshots created by the new cron), no migration data
+account_reports / account.report.snapshot  / report_id (many2one)          : NEW relation: account.report, required
+# NOTHING TO DO: new model (snapshots created by the new cron), no migration data
+account_reports / account.report.snapshot  / result (json)                 : NEW required
+# NOTHING TO DO: new model (snapshots created by the new cron), no migration data
+account_reports / account.report.snapshot  / serialized_formulas_dict (json): NEW required
+# NOTHING TO DO: new model (snapshots created by the new cron), no migration data
+account_reports / account.report.snapshot  / serialized_options (json)     : NEW required
+# NOTHING TO DO: new model (snapshots created by the new cron), no migration data
+account_reports / account.return           / cycle_ids (many2many)         : NEW relation: account.return.audit.cycle
+# NOTHING TO DO: new m2m, empty (0 returns in prod)
+account_reports / account.return           / generic_state_only_pay (selection): selection_keys removed: [new]
+# DONE: pre-migration: account_return_generic_state: 'new' -> NULL (prod: 0 returns)
+account_reports / account.return           / generic_state_review (selection): selection_keys removed: [new]
+# DONE: pre-migration: account_return_generic_state: 'new' -> NULL (prod: 0 returns)
+account_reports / account.return           / generic_state_review_submit (selection): selection_keys removed: [new]
+# DONE: pre-migration: account_return_generic_state: 'new' -> NULL (prod: 0 returns)
+account_reports / account.return           / generic_state_tax_report (selection): selection_keys removed: [new]
+# DONE: pre-migration: account_return_generic_state: 'new' -> NULL (prod: 0 returns)
+account_reports / account.return           / skipped_check_cycles (char)   : DEL
+# NOTHING TO DO: replaced by cycle_ids m2m; prod 0 returns, data dropped (0 rows)
+account_reports / account.return           / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account_reports / account.return.audit.cycle / code (char)                   : NEW required
+# NOTHING TO DO: new model, the 11 cycles are created by the 20 data file
+account_reports / account.return.audit.cycle / name (char)                   : NEW required, translate
+# NOTHING TO DO: new model, the 11 cycles are created by the 20 data file
+account_reports / account.return.check     / message (text)                : type is now 'html' ('text')
+# NOTHING TO DO: text -> html (same column type); prod 0 checks
+account_reports / account.return.check     / notes (text)                  : NEW
+# NOTHING TO DO: new text, NULL
+account_reports / account.return.check.template / cycle (selection)             : DEL required, selection_keys: ['equity', 'fixed_assets', 'inventory', 'operating_expenses', 'other', 'payroll', 'purchases', 'regulatory_compliance', 'sales', 'state', 'treasury_financing']
+# DONE: post-migration: account_return_check_template_cycle maps the old selection key to cycle_id by cycle code (prod: 49 shipped templates, reloaded from data too)
+account_reports / account.return.check.template / cycle_id (many2one)           : NEW relation: account.return.audit.cycle, required, hasdefault: default
+# DONE: post-migration: account_return_check_template_cycle (cycle codes = old selection keys)
+account_reports / account.return.check.template / model (selection)             : selection_keys added: [account.account] (most likely nothing to do)
+# NOTHING TO DO: new selection key, existing values still valid
+account_reports / account.return.type      / active_fallback (boolean)     : NEW hasdefault: default
+# NOTHING TO DO: active is now computed from active_selection/active_fallback; there was no stored active before (default True for the 2 prod return types)
+account_reports / account.return.type      / active_selection (selection)  : NEW selection_keys: ['False', 'True']
+# NOTHING TO DO: active is now computed from active_selection/active_fallback; there was no stored active before (default True for the 2 prod return types)
+account_reports / account.return.type      / company_advance_tax_payment_account_id (many2one): NEW relation: account.account
+# NOTHING TO DO: new company dependent accounts, NULL (the old equivalents on account.tax.group were empty in prod, 0 rows)
+account_reports / account.return.type      / company_tax_payable_account_id (many2one): NEW relation: account.account
+# NOTHING TO DO: new company dependent accounts, NULL (the old equivalents on account.tax.group were empty in prod, 0 rows)
+account_reports / account.return.type      / company_tax_receivable_account_id (many2one): NEW relation: account.account
+# NOTHING TO DO: new company dependent accounts, NULL (the old equivalents on account.tax.group were empty in prod, 0 rows)
+account_reports / account.return.type      / payment_partner_bank_id (many2one): now a function
+# NOTHING TO DO: stays stored (computed from payment_partner_id now, existing values kept; prod NULL)
+account_reports / account.return.type      / payment_partner_id (many2one) : is now stored
+# DONE: post-migration: account_return_type_payment_partner: filled from the partner of the bank account
+account_reports / account.return.type      / payment_partner_id (many2one) : not related anymore
+# DONE: post-migration: account_return_type_payment_partner: filled from the partner of the bank account
+account_reports / account.return.type      / states_workflow (selection)   : now required
+# NOTHING TO DO: now required, all rows have a value (prod 2 types)
+account_reports / account.return.type      / tax_closing_rounding_loss_account_id (many2one): NEW relation: account.account
+# NOTHING TO DO: new company dependent accounts, NULL (the old equivalents on account.tax.group were empty in prod, 0 rows)
+account_reports / account.return.type      / tax_closing_rounding_profit_account_id (many2one): NEW relation: account.account
+# NOTHING TO DO: new company dependent accounts, NULL (the old equivalents on account.tax.group were empty in prod, 0 rows)
+account_reports / account.return.type      / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account_reports / res.company              / account_reports_negative_format (selection): NEW selection_keys: ['minus_before', 'parentheses'], hasdefault: default
+# NOTHING TO DO: new selection with default, ORM default
+---XML records in module 'account_reports'---
+NEW account.report: account_reports.interco_comparison_report
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.column: account_reports.followup_report_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.column: account_reports.followup_report_amount_residual
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.column: account_reports.followup_report_amount_residual_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.column: account_reports.followup_report_follow_up
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.column: account_reports.interco_comparison_counterpart
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.column: account_reports.interco_comparison_difference
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.column: account_reports.interco_comparison_main_company
+# NOTHING TO DO: new report/ledger group definition loaded from data
+DEL account.report.column: account_reports.bank_reconciliation_report_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.column: account_reports.customer_statement_report_balance
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.column: account_reports.followup_report_report_amount_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.column: account_reports.followup_report_report_balance
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.column: account_reports.journal_report_code
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+NEW account.report.expression: account_reports.account_financial_report_current_liabilities_credit_card_balance
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.account_report_expression_cta
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.customer_statement_report_expression_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.customer_statement_report_expression_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.customer_statement_report_expression_currency_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.customer_statement_report_expression_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.customer_statement_report_expression_invoice_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.ec_sales_report_generic_line_balance
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.ec_sales_report_generic_line_country_code
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.ec_sales_report_generic_line_vat_number
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.ending_balance_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.ending_balance_forced_currency_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.followup_report_expression_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.followup_report_expression_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.followup_report_expression_amount_residual
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.followup_report_expression_amount_residual_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.followup_report_expression_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.followup_report_expression_invoice_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.followup_report_expression_no_followup
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.folluwup_report_expression_currency_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.folluwup_report_expression_currency_amount_residual_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.general_ledger_line_init_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.general_ledger_line_init_balance
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.general_ledger_line_init_credit
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.general_ledger_line_init_debit
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.general_ledger_line_period_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.general_ledger_line_period_balance
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.general_ledger_line_period_credit
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.general_ledger_line_period_debit
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.gl_balance_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.gl_balance_forced_currency_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.interco_comparison_line_counterpart
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.interco_comparison_line_difference
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.interco_comparison_line_main_company
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.misc_operations_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.misc_operations_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.misc_operations_forced_currency_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.misc_operations_forced_currency_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.misc_operations_label
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_account_code
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_balance
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_credit
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_currency_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_currency_residual_currency_at_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_date_maturity
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_debit
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_init_balance
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_invoice_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_journal_code
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_matching_number
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.partner_ledger_report_expression_period_balance
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_payments_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_payments_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_payments_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_payments_forced_currency_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_payments_forced_currency_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_payments_label
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_receipts_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_receipts_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_receipts_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_receipts_forced_currency_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_receipts_forced_currency_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_receipts_label
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_transactions_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.reconciled_transactions_forced_currency_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.starting_balance_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.starting_balance_forced_currency_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_payments_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_payments_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_payments_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_payments_forced_currency_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_payments_forced_currency_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_payments_label
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_receipts_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_receipts_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_receipts_date
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_receipts_forced_currency_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_receipts_forced_currency_amount_currency
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_receipts_label
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_transactions_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.expression: account_reports.unreconciled_transactions_forced_currency_amount
+# NOTHING TO DO: new report/ledger group definition loaded from data
+DEL account.report.expression: account_reports.account_financial_report_net_profit_after_allocations0_balance
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.balance_bank_expr
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.balance_bank_expr_forced_currency_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.last_statement_balance_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.last_statement_balance_forced_currency_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.misc_operations_amount_forced_currency_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_amount_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_date
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_forced_currency_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_forced_currency_amount_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_label
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_amount_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_date
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_forced_currency_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_forced_currency_amount_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_label
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.outstanding_payments_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.outstanding_receipts_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.transaction_without_statement_expr
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.transaction_without_statement_expr_forced_currency_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_amount_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_date
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_forced_currency_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_forced_currency_amount_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_label
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_amount_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_date
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_forced_currency_amount
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_forced_currency_amount_currency
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_label
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+NEW account.report.horizontal.group: account_reports.horizontal_group_ledger
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.horizontal.group.rule: account_reports.horizontal_group_ledger_rule
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.account_financial_report_cumulative_translation_adjustments
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.account_financial_report_current_liabilities_credit_card
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.account_financial_report_other_comprehensive_income
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.bank_name
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.customer_statement_report_line
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.ec_sales_report_generic_line
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.ending_balance
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.followup_report_line
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.gl_balance
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.interco_comparison_line
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.partner_ledger_report_line
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.reconciled_payments
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.reconciled_receipts
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.reconciled_transactions
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.starting_balance
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.unreconciled_payments
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.unreconciled_receipts
+# NOTHING TO DO: new report/ledger group definition loaded from data
+NEW account.report.line: account_reports.unreconciled_transactions
+# NOTHING TO DO: new report/ledger group definition loaded from data
+DEL account.report.line: account_reports.account_financial_report_net_profit_after_allocations0
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.line: account_reports.balance_bank
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.line: account_reports.last_statement_balance
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.line: account_reports.no_statement_unreconciled_payments
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.line: account_reports.no_statement_unreconciled_receipt
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.line: account_reports.transaction_without_statement
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.line: account_reports.unreconciled_last_statement_payments
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+DEL account.report.line: account_reports.unreconciled_last_statement_receipts
+# NOTHING TO DO: report definition removed in 20 (bank reconciliation / journal report rework), deleted by the ORM (non noupdate data)
+NEW account.return.audit.cycle: account_reports.audit_cycle_equity
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.audit.cycle: account_reports.audit_cycle_fixed_assets
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.audit.cycle: account_reports.audit_cycle_inventory
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.audit.cycle: account_reports.audit_cycle_operating_expenses
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.audit.cycle: account_reports.audit_cycle_other
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.audit.cycle: account_reports.audit_cycle_payroll
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.audit.cycle: account_reports.audit_cycle_purchases
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.audit.cycle: account_reports.audit_cycle_regulatory_compliance
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.audit.cycle: account_reports.audit_cycle_sales
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.audit.cycle: account_reports.audit_cycle_state
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.audit.cycle: account_reports.audit_cycle_treasury_financing
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW account.return.check.template: account_reports.account_return_check_template_bank_transaction_missing_document
+# NOTHING TO DO: new audit cycles / check template loaded from data
+NEW ir.access: account_reports.access_account_audit_account_status_acc_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_multicurrency_revaluation_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_annotation
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_annotation_invoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_annotation_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_budget_ac_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_budget_item_ac_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_budget_item_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_budget_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_file_download_error_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_horizontal_group_ac_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_horizontal_group_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_horizontal_group_rule_ac_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_horizontal_group_rule_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_send
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_report_snapshot_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_reports_export_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_reports_export_wizard_format
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_acc_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_audit_cycle
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_audit_cycle_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_basic
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_check_acc_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_check_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_check_template_acc_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_creation_wizard_acc_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_payment_wizard_acc_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_submission_wizard_acc_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_type_acc_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_type_basic
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_return_type_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_tax_unit_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_account_tax_unit_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.access_qr_code_payment_wizard_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.account_report_budget_company_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.account_report_snapshot_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.account_return_check_company_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.account_return_check_read_company_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.account_return_company_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_reports.account_return_read_company_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+ir.actions.act_window: account_reports.account_return_check_template_non_recoverable_vat_gross_accounting_action (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account_reports.action_view_account_audit (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account_reports.action_view_account_audit_checks (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account_reports.action_view_account_return (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+NEW ir.actions.act_window: account_reports.interco_comparison_report_audit_action
+# NOTHING TO DO: new action loaded from data
+NEW ir.actions.client: account_reports.action_account_report_interco_comparison
+# NOTHING TO DO: new action loaded from data
+NEW ir.actions.server: account_reports.action_audit_custom_target
+# NOTHING TO DO: new action loaded from data
+NEW ir.actions.server: account_reports.action_audit_report
+# NOTHING TO DO: new action loaded from data
+NEW ir.cron: account_reports.ir_cron_create_snapshots
+# NOTHING TO DO: new data loaded from XML
+NEW ir.cron: account_reports.ir_cron_garbage_collect_snapshots
+# NOTHING TO DO: new data loaded from XML
+DEL ir.model.access: account_reports.access_account_audit_account_status_acc_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_multicurrency_revaluation_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_annotation
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_annotation_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_annotation_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_budget_ac_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_budget_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_budget_item_ac_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_budget_item_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_budget_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_file_download_error_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_ac_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_rule_ac_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_rule_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_rule_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_report_send
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_reports_export_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_reports_export_wizard_format
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_acc_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_check_acc_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_check_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_check_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_check_template_acc_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_creation_wizard_acc_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_payment_wizard_acc_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_submission_wizard_acc_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_type_acc_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_type_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_return_type_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_tax_unit_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_tax_unit_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_account_tax_unit_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_reports.access_qr_code_payment_wizard_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+ir.model.constraint: account_reports.constraint_account_report_horizontal_group_name_uniq (changed definition: is now 'False' ('unique (name)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only)
+NEW ir.model.constraint: account_reports.constraint_account_report_snapshot_unique
+# NOTHING TO DO: new constraint, created by the ORM (no violating data in prod)
+NEW ir.model.constraint: account_reports.constraint_account_return_audit_cycle_code_uniq
+# NOTHING TO DO: new constraint, created by the ORM (no violating data in prod)
+NEW ir.model.constraint: account_reports.constraint_account_return_check_unique_code_per_return
+# NOTHING TO DO: new constraint, created by the ORM (no violating data in prod)
+DEL ir.rule: account_reports.account_return_check_company_rule
+# NOTHING TO DO: noupdate rule replaced by ir.access (ir.rule merged into ir.access), conversion is in base
+DEL ir.rule: account_reports.account_return_company_rule
+# NOTHING TO DO: noupdate rule replaced by ir.access (ir.rule merged into ir.access), conversion is in base
+DEL ir.rule: account_reports.account_return_read_company_rule
+# NOTHING TO DO: noupdate rule replaced by ir.access (ir.rule merged into ir.access), conversion is in base
+NEW ir.ui.menu: account_reports.menu_action_account_report_annual_statements
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.menu: account_reports.menu_action_account_report_customer_statement
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.menu: account_reports.menu_action_stock_account_report_stock_valuation [renamed from stock_accountant module]
+# DONE: pre-migration: xmlid renamed from stock_accountant
+DEL ir.ui.menu: account_reports.account_reports_audit_menu [renamed to accountant module]
+# DONE: accountant pre-migration renames the xmlid account_reports.X -> accountant.X (menu kept)
+DEL ir.ui.menu: account_reports.menu_action_account_report_balance_sheet [renamed to accountant module]
+# DONE: accountant pre-migration renames the xmlid account_reports.X -> accountant.X (menu kept)
+DEL ir.ui.menu: account_reports.menu_action_account_report_cash_flow [renamed to accountant module]
+# DONE: accountant pre-migration renames the xmlid account_reports.X -> accountant.X (menu kept)
+DEL ir.ui.menu: account_reports.menu_action_account_report_coa [renamed to accountant module]
+# DONE: accountant pre-migration renames the xmlid account_reports.X -> accountant.X (menu kept)
+DEL ir.ui.menu: account_reports.menu_action_account_report_exec_summary [renamed to accountant module]
+# DONE: accountant pre-migration renames the xmlid account_reports.X -> accountant.X (menu kept)
+DEL ir.ui.menu: account_reports.menu_action_account_report_general_ledger [renamed to accountant module]
+# DONE: accountant pre-migration renames the xmlid account_reports.X -> accountant.X (menu kept)
+DEL ir.ui.menu: account_reports.menu_action_account_report_gt [renamed to accountant module]
+# DONE: accountant pre-migration renames the xmlid account_reports.X -> accountant.X (menu kept)
+DEL ir.ui.menu: account_reports.menu_action_account_report_profit_and_loss [renamed to accountant module]
+# DONE: accountant pre-migration renames the xmlid account_reports.X -> accountant.X (menu kept)
+NEW ir.ui.view: account_reports.account_audit_form_view
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.audit_pdf_export_main
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.audit_pdf_export_main_table_body
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.audit_pdf_export_main_table_header
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.duplicate_vat_partner_tree_view
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.interco_comparison_report_audit_view
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.snpashots_list_view
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.view_audit_check_invoices_list
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.view_audit_move_line_filter
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.view_audit_move_line_list
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.view_cumulative_translation_adjustment_audit_tree
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.view_move_line_account
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_reports.view_multi_currency_report_audit
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: account_reports.duplicated_vat_partner_tree_view
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: account_reports.view_draft_entries_tree
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW mail.template: account_reports.email_template_tax_return_deadline
+# NOTHING TO DO: new template loaded from data

@@ -1,0 +1,483 @@
+---Models in module 'account_asset'---
+new model account.asset.variant
+# DONE: post-migration: assets_to_asset_variants creates one main variant per existing asset (prod: 0 real assets)
+new model account.depreciation.model
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): the asset models are copied here
+new model depreciation.ledger.wizard [transient]
+# NOTHING TO DO: new transient wizard
+---Fields in module 'account_asset'---
+account_asset / account.account          / asset_depreciation_account_id (many2one): NEW relation: account.account
+# DONE: post-migration: filled from the accumulated depreciation account of the (first) asset model of the account (prod: NULL on all 9 models)
+account_asset / account.account          / asset_expense_account_id (many2one): NEW relation: account.account
+# DONE: post-migration: filled from the expense account of the (first) asset model of the account (prod: NULL on all 9 models)
+account_asset / account.account          / asset_model_ids (many2many)   : DEL relation: account.asset
+# DONE: post-migration: first model -> account.depreciation_model_id (prod: account 173.01.01 -> Deferred Expenses); other models of an account are dropped (20 has a single default model per account)
+account_asset / account.account          / asset_properties_definition (properties_definition): NEW
+# NOTHING TO DO: property definition now on the account; the old definition on asset models is NULL in prod (0 rows)
+account_asset / account.account          / create_asset (selection)      : DEL required, selection_keys: ['draft', 'no', 'validate']
+# NOTHING TO DO: replaced by the presence of depreciation_model_id (20 always creates and validates the asset, can_create_asset needs asset_fixed). Prod: 1 account with 'draft' (173.01.01, asset_current), 66 'no': the draft/validate distinction is lost, see report
+account_asset / account.account          / depreciation_model_id (many2one): NEW relation: account.depreciation.model
+# DONE: post-migration: filled from asset_model_ids (see above)
+account_asset / account.account          / ledger_depreciation_model_ids (many2many): NEW relation: account.depreciation.model
+# NOTHING TO DO: new multi-ledger feature, no data (no journal groups in prod)
+account_asset / account.account          / multiple_assets_per_line (boolean): DEL
+# NOTHING TO DO: option removed in 20; prod: 2 accounts with False, no data lost
+account_asset / account.asset            / account_depreciation_expense_id (many2one): DEL relation: account.account
+# DONE: post-migration: copied to the main variant (assets_to_asset_variants); model rows had NULL
+account_asset / account.asset            / account_depreciation_id (many2one): DEL relation: account.account
+# DONE: post-migration: copied to the main variant (assets_to_asset_variants); model rows had NULL
+account_asset / account.asset            / already_depreciated_amount_import (float): not stored anymore
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / already_depreciated_amount_import (float): now related
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / asset_paused_days (float)     : DEL
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / asset_properties_definition (properties_definition): DEL
+# NOTHING TO DO: definition moved to account.account (prod: NULL everywhere)
+account_asset / account.asset            / book_value (float)            : not a function anymore
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / book_value (float)            : not stored anymore
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / book_value (float)            : now related
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / children_ids (one2many)       : DEL relation: account.asset
+# NOTHING TO DO: replaced by account.asset.variant#children_ids (parent_id copied to the variant, assets_to_asset_variants)
+account_asset / account.asset            / depreciation_entries_count (integer): not a function anymore
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / depreciation_entries_count (integer): now related
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / depreciation_move_ids (one2many): not stored anymore
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / depreciation_move_ids (one2many): now related
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / derived_asset_ids (one2many)  : NEW relation: account.asset
+# NOTHING TO DO: new fields, NULL
+account_asset / account.asset            / disposal_date (date)          : DEL
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / gross_increase_count (integer): not a function anymore
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / gross_increase_count (integer): now related
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / gross_increase_value (float)  : not a function anymore
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / gross_increase_value (float)  : now related
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / import_account_depreciation_expense_id (many2one): NEW relation: account.account, stored: False
+# NOTHING TO DO: new non stored import helper
+account_asset / account.asset            / import_account_depreciation_id (many2one): NEW relation: account.account, stored: False
+# NOTHING TO DO: new non stored import helper
+account_asset / account.asset            / journal_id (many2one)         : not stored anymore
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / journal_id (many2one)         : now related
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / main_variant_id (many2one)    : NEW relation: account.asset.variant, isfunction: function, stored
+# DONE: post-migration: set to the variant created for the asset
+account_asset / account.asset            / method (selection)            : not stored anymore
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / method (selection)            : now related
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / method (selection)            : selection_keys is now 'function' ('['degressive', 'degressive_then_linear', 'linear']')
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / method_number (integer)       : DEL
+# DONE: post-migration: moved to the depreciation model (existing model, or one generated for assets whose configuration differs); models: prod 9
+account_asset / account.asset            / method_period (selection)     : DEL selection_keys: ['1', '12']
+# DONE: post-migration: moved to the depreciation model (existing model, or one generated for assets whose configuration differs); models: prod 9
+account_asset / account.asset            / method_progress_factor (float): DEL
+# DONE: post-migration: moved to the depreciation model (existing model, or one generated for assets whose configuration differs); models: prod 9
+account_asset / account.asset            / model_id (many2one)           : not stored anymore
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / model_id (many2one)           : now related
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / model_id (many2one)           : relation is now 'account.depreciation.model' ('account.asset') [nothing to do]
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / name (char)                   : now translatable
+# NOTHING TO DO: varchar -> jsonb translation conversion done natively by the ORM
+account_asset / account.asset            / net_gain_on_sale (float)      : DEL
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / origin_asset_id (many2one)    : NEW relation: account.asset
+# NOTHING TO DO: new fields, NULL
+account_asset / account.asset            / parent_id (many2one)          : not stored anymore
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / parent_id (many2one)          : now related
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / parent_id (many2one)          : relation is now 'account.asset.variant' ('account.asset') [nothing to do]
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / prorata_computation_type (selection): not stored anymore
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / prorata_computation_type (selection): now related
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / prorata_computation_type (selection): selection_keys is now 'function' ('['constant_periods', 'daily_computation', 'none']')
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / prorata_date (date)           : not stored anymore
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / prorata_date (date)           : now related
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / salvage_value (float)         : not stored anymore
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / salvage_value (float)         : now related
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / salvage_value_pct (float)     : DEL
+# DONE: post-migration: moved to the depreciation model (existing model, or one generated for assets whose configuration differs); models: prod 9
+account_asset / account.asset            / state (selection)             : not stored anymore
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / state (selection)             : now a function
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / state (selection)             : selection_keys removed: [model]
+# DONE: post-migration: assets_to_asset_variants: value moved to the main account.asset.variant (prod: 0 real assets)
+account_asset / account.asset            / total_depreciation_entries_count (integer): not a function anymore
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / total_depreciation_entries_count (integer): now related
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / value_residual (float)        : not a function anymore
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / value_residual (float)        : now related
+# DONE: post-migration: stored value copied to the main variant where stored (book_value); the others are computed/related; depreciation moves relinked to the variant (account_move.asset_id -> asset_variant_id)
+account_asset / account.asset            / variant_ids (one2many)        : NEW relation: account.asset.variant
+# NOTHING TO DO: inverse of the variants created by assets_to_asset_variants
+account_asset / account.asset            / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account_asset / account.asset.variant    / account_depreciation_expense_id (many2one): NEW relation: account.account, hasdefault: compute
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / account_depreciation_id (many2one): NEW relation: account.account, hasdefault: compute
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / already_depreciated_amount_import (float): NEW
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / asset_id (many2one)           : NEW relation: account.asset, required
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / asset_paused_days (float)     : NEW
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / book_value (float)            : NEW isfunction: function, stored
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / children_ids (one2many)       : NEW relation: account.asset.variant
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / depreciation_move_ids (one2many): NEW relation: account.move
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / disposal_date (date)          : NEW hasdefault: compute
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / journal_id (many2one)         : NEW relation: account.journal, isfunction: function, stored
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / model_id (many2one)           : NEW relation: account.depreciation.model, required, hasdefault: compute
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / net_gain_on_sale (float)      : NEW
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / parent_id (many2one)          : NEW relation: account.asset.variant
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / prorata_computation_type (selection): NEW required, selection_keys: ['constant_periods', 'daily_computation', 'none'], hasdefault: compute
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / prorata_date (date)           : NEW required, hasdefault: compute
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / recovery_account_id (many2one): NEW relation: account.account, hasdefault: compute
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / salvage_value (float)         : NEW hasdefault: compute
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.asset.variant    / state (selection)             : NEW selection_keys: ['cancelled', 'close', 'draft', 'open', 'paused']
+# DONE: post-migration: assets_to_asset_variants fills the stored columns (state, journal, prorata, accounts, salvage, book value, parent...) from the old asset row; the rest is computed (prod: 0 assets)
+account_asset / account.depreciation.model / active (boolean)              : NEW hasdefault: default
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / activity_ids (one2many)       : NEW relation: mail.activity
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / asset_ids (one2many)          : NEW relation: account.asset.variant
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / company_id (many2one)         : NEW relation: res.company
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / is_name_custom (boolean)      : NEW hasdefault: default
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / journal_id (many2one)         : NEW relation: account.journal, hasdefault: compute
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / ledger_depreciation_account_id (many2one): NEW relation: account.account
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / ledger_expense_account_id (many2one): NEW relation: account.account
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / ledger_recovery_account_id (many2one): NEW relation: account.account
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / message_follower_ids (one2many): NEW relation: mail.followers
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / message_ids (one2many)        : NEW relation: mail.message
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / method (selection)            : NEW required, selection_keys: ['degressive', 'degressive_then_linear', 'linear', 'no_depreciation'], hasdefault: default
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / method_mode (selection)       : NEW selection_keys: ['duration', 'rate'], hasdefault: default
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / method_number (float)         : NEW required, hasdefault: default
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / method_period (selection)     : NEW required, selection_keys: ['1', '12'], hasdefault: default
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / method_progress_factor (float): NEW hasdefault: default
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / name (char)                   : NEW isfunction: function, stored
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / prorata_computation_type (selection): NEW required, selection_keys: ['constant_periods', 'daily_computation', 'none'], hasdefault: default
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / rating_ids (one2many)         : NEW relation: rating.rating
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.depreciation.model / salvage_value_percent (float) : NEW hasdefault: default
+# DONE: post-migration: asset_models_to_depreciation_models (prod: 9 models in account_asset state='model'): fields filled from the old model row (name kept as custom name, method/number/period/factor/prorata/salvage, journal as company dependent value)
+account_asset / account.move             / asset_id (many2one)           : DEL relation: account.asset
+# DONE: post-migration: depreciation entries relinked to the variant (asset_variant_id); prod: 0 entries
+account_asset / account.move             / asset_variant_id (many2one)   : NEW relation: account.asset.variant
+# DONE: post-migration: filled from the old asset_id
+account_asset / account.move.line        / depreciation_model_id (many2one): NEW relation: account.depreciation.model, hasdefault: compute
+# NOTHING TO DO: new stored compute from the account depreciation model, computed by the ORM at install
+---XML records in module 'account_asset'---
+NEW account.depreciation.model: account_asset.asset_10_year_linear
+# NOTHING TO DO: new default depreciation models shipped by the module (separate from the 9 converted ones, which keep their old xmlids)
+NEW account.depreciation.model: account_asset.asset_20_year_linear
+# NOTHING TO DO: new default depreciation models shipped by the module (separate from the 9 converted ones, which keep their old xmlids)
+NEW account.depreciation.model: account_asset.asset_3_year_linear
+# NOTHING TO DO: new default depreciation models shipped by the module (separate from the 9 converted ones, which keep their old xmlids)
+NEW account.depreciation.model: account_asset.asset_5_year_linear
+# NOTHING TO DO: new default depreciation models shipped by the module (separate from the 9 converted ones, which keep their old xmlids)
+NEW account.depreciation.model: account_asset.asset_no_depreciation
+# NOTHING TO DO: new default depreciation models shipped by the module (separate from the 9 converted ones, which keep their old xmlids)
+NEW account.report: account_asset.account_grouped_assets_report
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report: account_asset.asset_grouped_assets_report
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_acquisition_date
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_assets_date_to
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_assets_minus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_assets_plus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_balance
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_date_from
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_depre_date_from
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_depre_date_to
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_depre_minus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_depre_plus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_duration_rate
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.account_grouped_assets_report_first_method
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_acquisition_date
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_assets_date_to
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_assets_minus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_assets_plus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_balance
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_date_from
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_depre_date_from
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_depre_date_to
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_depre_minus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_depre_plus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_duration_rate
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.column: account_asset.asset_grouped_assets_report_first_method
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_acquisition_date
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_assets_date_from
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_assets_date_to
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_assets_minus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_assets_plus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_balance
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_depre_date_from
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_depre_date_to
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_depre_minus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_depre_plus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_duration_rate
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_method
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_acquisition_date
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_assets_date_from
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_assets_date_to
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_assets_minus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_assets_plus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_balance
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_depre_date_from
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_depre_date_to
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_depre_minus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_depre_plus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_duration_rate
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_method
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_acquisition_date
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_assets_date_from
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_assets_date_to
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_assets_minus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_assets_plus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_balance
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_depre_date_from
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_depre_date_to
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_depre_minus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_depre_plus
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_duration_rate
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.expression: account_asset.depreciation_schedule_line_method
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.line: account_asset.account_grouped_depreciation_schedule_line
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.line: account_asset.asset_grouped_depreciation_schedule_line
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW account.report.line: account_asset.depreciation_schedule_line
+# NOTHING TO DO: new report definitions loaded from data (not noupdate)
+NEW ir.access: account_asset.access_account_asset
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_account_asset_group
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_account_asset_group_manager
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_account_asset_invoicing_payment
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_account_asset_manager
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_account_asset_variant
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_account_asset_variant_invoicing_payment
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_account_asset_variant_manager
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_account_depreciation_model
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_account_depreciation_model_manager
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_asset_modify
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.access_depreciation_ledger_wizard
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.account_asset_group_multi_company_rule
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.account_asset_multi_company_rule
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.account_asset_variant_multi_company_rule
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.access: account_asset.account_depreciation_model_multi_company_rule
+# NOTHING TO DO: ir.access conversion is central in base
+ir.actions.act_window: account_asset.action_account_asset_form (deleted domain)
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+NEW ir.actions.act_window: account_asset.action_account_asset_variant_form
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+NEW ir.actions.act_window: account_asset.action_account_depreciation_model_form
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+DEL ir.actions.act_window: account_asset.action_account_asset_model_form
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+NEW ir.exports: account_asset.account_asset_export_template
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports: account_asset.account_depreciation_model_export_template
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_account_asset_id
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_account_depreciation_expense_id
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_account_depreciation_id
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_acquisition_date
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_already_depreciated_amount_import
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_method
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_method_number
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_method_period
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_method_progress_factor
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_name
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_original_value
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_asset_export_template_line_prorata_date
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_company_id
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_journal_id
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_method
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_method_mode
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_method_number
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_method_period
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_method_progress_factor
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_prorata_computation_type
+# NOTHING TO DO: new import/export templates loaded from data
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_salvage_value_percent
+# NOTHING TO DO: new import/export templates loaded from data
+DEL ir.model.access: account_asset.access_account_asset
+# NOTHING TO DO: ir.access conversion is central in base
+DEL ir.model.access: account_asset.access_account_asset_group
+# NOTHING TO DO: ir.access conversion is central in base
+DEL ir.model.access: account_asset.access_account_asset_group_manager
+# NOTHING TO DO: ir.access conversion is central in base
+DEL ir.model.access: account_asset.access_account_asset_invoicing_payment
+# NOTHING TO DO: ir.access conversion is central in base
+DEL ir.model.access: account_asset.access_account_asset_manager
+# NOTHING TO DO: ir.access conversion is central in base
+DEL ir.model.access: account_asset.access_asset_modify
+# NOTHING TO DO: ir.access conversion is central in base
+DEL ir.rule: account_asset.account_asset_group_multi_company_rule (noupdate)
+# NOTHING TO DO: ir.access conversion is central in base
+DEL ir.rule: account_asset.account_asset_multi_company_rule (noupdate)
+# NOTHING TO DO: ir.access conversion is central in base
+NEW ir.ui.menu: account_asset.menu_action_account_depreciation_model_form
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+DEL ir.ui.menu: account_asset.menu_action_account_asset_model_form
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_asset.depreciation_ledger_wizard_form
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_asset.view_account_asset_variant_tree
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_asset.view_account_depreciation_model_form
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_asset.view_account_depreciation_model_kanban
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_asset.view_account_depreciation_model_search
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+NEW ir.ui.view: account_asset.view_account_depreciation_model_tree
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+DEL ir.ui.view: account_asset.view_account_asset_model_search
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)
+DEL ir.ui.view: account_asset.view_account_asset_model_tree
+# NOTHING TO DO: view/action/menu data handled by the ORM load (not noupdate)

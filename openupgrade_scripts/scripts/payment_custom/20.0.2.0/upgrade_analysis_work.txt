@@ -1,0 +1,21 @@
+---Models in module 'payment_custom'---
+---Fields in module 'payment_custom'---
+payment_custom / payment.provider         / custom_mode (selection)       : selection_keys added: [pay_on_invoice] (most likely nothing to do)
+# NOTHING TO DO: new selection key pay_on_invoice, existing values still valid (wire_transfer / on_site / cash_on_delivery)
+payment_custom / payment.provider         / partner_bank_id (many2one)    : NEW relation: res.partner.bank, hasdefault: compute
+# NOTHING TO DO: new stored compute (bank account of the wire transfer), computed by the ORM
+---XML records in module 'payment_custom'---
+ir.model.constraint: payment_custom.constraint_payment_provider_custom_providers_setup (changed definition: is now 'False' ('CHECK(custom_mode IS NULL OR (code = 'custom' AND custom_mode IS NOT NULL))'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only)
+NEW ir.ui.view: payment_custom.custom_payment_transfer_details
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: payment_custom.payment_provider_kanban
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: payment_custom.redirect_form
+# NOTHING TO DO: redirect form replaced by payment.generic_redirect_form (set on the provider by load_data)
+NEW payment.method: payment_custom.payment_method_pay_on_invoice
+# NOTHING TO DO: new method created by the data load
+payment.method: payment_custom.payment_method_wire_transfer (noupdate switched)
+# DONE: post-migration: load_data sets provider_id (also filled in payment pre-migration)
+payment.provider: payment.payment_provider_transfer (noupdate switched)
+# DONE: post-migration: load_data applies is_live, generic redirect form and pending message to the Wire Transfer provider (payment_method_ids = None line removed from noupdate_changes.xml)

@@ -1,0 +1,235 @@
+---Models in module 'l10n_mx'---
+---Fields in module 'l10n_mx'---
+l10n_mx      / res.bank                 / fiscal_country_codes (char)   : DEL stored: False
+# NOTHING TO DO: model res.bank removed in 20; denormalization into res.partner.bank is in the base script (prod: 106 res.bank rows, 9 bank accounts)
+l10n_mx      / res.bank                 / l10n_mx_edi_code (char)       : DEL
+# NOTHING TO DO: model res.bank removed in 20; denormalization into res.partner.bank is in the base script (prod: 106 res.bank rows, 9 bank accounts)
+l10n_mx      / res.partner.bank         / fiscal_country_codes (char)   : DEL stored: False
+# NOTHING TO DO: non stored field
+l10n_mx      / res.partner.bank         / l10n_mx_edi_clabe (char)      : DEL
+# DONE: post-migration: res_partner_bank_clabe: CLABE is the account number in 20 (8 of 9 prod accounts already equal); the different one is kept in the notes (prod 9 CLABEs)
+---XML records in module 'l10n_mx'---
+DEL ir.ui.view: l10n_mx.view_partner_bank_form_l10n_mx_edi_bank
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: l10n_mx.view_partner_bank_tree_l10n_mx_edi_bank
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: l10n_mx.view_res_bank_inherit_l10n_mx_edi_bank
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: l10n_mx.view_res_partner_bank_inherit_l10n_mx_edi_bank
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL res.bank: l10n_mx.acc_bank_002_BANAMEX
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_006_BANCOMEXT
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_009_BANOBRAS
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_012_BBVA_BANCOMER
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_014_SANTANDER
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_019_BANJERCITO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_021_HSBC
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_030_BAJIO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_036_INBURSA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_037_INTERACCIONES
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_042_MIFEL
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_044_SCOTIABANK
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_058_BANREGIO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_059_INVEX
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_060_BANSI
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_062_AFIRME
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_072_BANORTE
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_102_THE_ROYAL_BANK
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_103_AMERICAN_EXPRESS
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_106_BAMSA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_108_TOKYO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_110_JP_MORGAN
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_112_BMONEX
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_113_VE_POR_MAS
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_124_DEUTSCHE
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_126_CREDIT_SUISSE
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_127_AZTECA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_128_AUTOFIN
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_129_BARCLAYS
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_130_COMPARTAMOS
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_131_BANCO_FAMSA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_132_BMULTIVA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_133_ACTINVER
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_135_NAFIN
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_136_INTERBANCO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_136_INTERCAM_BANCO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_137_BANCOPPEL
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_138_ABC_CAPITAL
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_139_UBS_BANK
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_140_CONSUBANCO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_141_VOLKSWAGEN
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_143_CIBANCO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_145_BBASE
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_147_BANKAOOL
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_148_PAGATODO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_149_FORJADORES
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_150_INMOBILIARIO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_151_DONDÉ
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_152_BANCREA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_153_PROGRESO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_154_BANCO_FINTERRA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_155_ICBC
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_156_SABADELL
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_157_SHINHAN
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_158_MIZUHO_BANK
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_159_BANK_OF_CHINA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_160_BANCO_S3
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_166_BANSEFI
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_168_HIPOTECARIA_FEDERAL
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_600_MONEXCB
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_601_GBM
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_602_MASARI
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_605_VALUE
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_606_ESTRUCTURADORES
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_607_TIBER
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_608_VECTOR
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_610_BB
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_614_ACCIVAL
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_615_MERRILL_LYNCH
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_616_FINAMEX
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_617_VALMEX
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_618_UNICA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_619_MAPFRE
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_620_PROFUTURO
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_621_CB_ACTINVER
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_622_OACTIN
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_623_SKANDIA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_626_CBDEUTSCHE
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_627_ZURICH
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_628_ZURICHVI
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_629_SU_CASITA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_630_CB_INTERCAM
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_631_CI_BOLSA_CI
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_632_BULLTICK_CB
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_633_STERLING
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_634_FINCOMUN
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_636_HDI_SEGUROS
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_637_ORDER
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_638_AKALA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_640_CB_JPMORGAN
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_642_REFORMA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_646_STP
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_647_TELECOMM
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_648_EVERCORE
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_649_SKANDIA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_651_SEGMTY
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_652_ASEA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_653_KUSPIT
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_655_SOFIEXPRESS
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_656_UNAGRA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_659_OPCIONES_EMPRESARIALES_DEL_NOROESTE
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_670_LIBERTAD
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_901_CLS
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_902_INDEVAL
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+DEL res.bank: l10n_mx.acc_bank_999_NA
+# NOTHING TO DO: res.bank removed in 20 (standard Mexican bank catalog, data dropped, base denormalizes the used banks into res.partner.bank)
+uom.uom: l10n_mx.product_uom_activity (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only
+uom.uom: l10n_mx.product_uom_job (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only
+uom.uom: l10n_mx.product_uom_service_unit (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only

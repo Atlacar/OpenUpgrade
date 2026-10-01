@@ -1,0 +1,33 @@
+---Models in module 'account_payment'---
+---Fields in module 'account_payment'---
+account_payment / payment.provider         / available_pricelist_ids (many2many): NEW relation: product.pricelist
+# NOTHING TO DO: new m2m, empty = available for all pricelists (same behaviour as 19)
+---XML records in module 'account_payment'---
+NEW ir.access: account_payment.payment_link_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_payment.payment_refund_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_payment.payment_token_billing_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_payment.payment_transaction_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+ir.config_parameter: account_payment.enable_portal_payment (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only, no value change that matters (no noupdate_changes.xml entry)
+DEL ir.model.access: account_payment.payment_link_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_payment.payment_refund_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_payment.payment_transaction_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.rule: account_payment.payment_token_billing_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (ir.rule merged into ir.access), conversion is in base
+DEL ir.ui.menu: account_payment.payment_method_menu
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.menu: account_payment.payment_token_menu
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.menu: account_payment.payment_transaction_menu
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: account_payment.portal_my_home_account_payment
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW portal.entry: account_payment.portal_entry_overdue_invoices
+# NOTHING TO DO: new data loaded from XML

@@ -1,0 +1,9 @@
+---Models in module 'account_base_import'---
+---Fields in module 'account_base_import'---
+---XML records in module 'account_base_import'---
+NEW ir.access: account_base_import.access_account_import_summary
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.actions.client: account_base_import.action_depreciation_model_import
+# NOTHING TO DO: new client action loaded from data
+DEL ir.model.access: account_base_import.access_account_import_summary
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base

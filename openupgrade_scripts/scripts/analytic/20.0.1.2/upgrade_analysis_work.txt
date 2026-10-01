@@ -1,0 +1,51 @@
+---Models in module 'analytic'---
+---Fields in module 'analytic'---
+analytic     / account.analytic.distribution.model / analytic_distribution (json)  : now required
+# NOTHING TO DO: required json on account.analytic.distribution.model; prod 0 rows
+analytic     / account.analytic.line    / x_plan1_id (many2one)         : NEW relation: account.analytic.account
+# NOTHING TO DO: dynamic plan column of the test DB; in prod the project plan (id 1, analytic.project_plan=1) uses account_id and there is no other plan
+---XML records in module 'analytic'---
+account.analytic.plan: analytic.analytic_plan_projects (noupdate switched)
+# DONE: post-migration: load_data of noupdate_changes.xml (name 'Project Plan' on the default plan, forcecreate=0; prod plan name is 'Project')
+decimal.precision: analytic.decimal_percentage_analytic (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only
+NEW ir.access: analytic.access_account_analytic_account
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: analytic.access_account_analytic_applicability
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: analytic.access_account_analytic_distribution_model
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: analytic.access_account_analytic_plan
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: analytic.analytic_applicability_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: analytic.analytic_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: analytic.analytic_distribution_model_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: analytic.analytic_line_analytic
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: analytic.analytic_line_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+ir.actions.act_window: analytic.account_analytic_line_action (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: analytic.account_analytic_plan_action (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+DEL ir.model.access: analytic.access_account_analytic_account
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: analytic.access_account_analytic_applicability
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: analytic.access_account_analytic_distribution_model
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: analytic.access_account_analytic_line
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: analytic.access_account_analytic_plan
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.rule: analytic.analytic_applicability_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (ir.rule merged into ir.access), conversion is in base
+DEL ir.rule: analytic.analytic_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (ir.rule merged into ir.access), conversion is in base
+DEL ir.rule: analytic.analytic_distribution_model_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (ir.rule merged into ir.access), conversion is in base
+DEL ir.rule: analytic.analytic_line_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (ir.rule merged into ir.access), conversion is in base

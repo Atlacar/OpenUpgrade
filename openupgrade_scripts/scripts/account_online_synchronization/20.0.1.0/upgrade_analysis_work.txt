@@ -1,0 +1,69 @@
+---Models in module 'account_online_synchronization'---
+---Fields in module 'account_online_synchronization'---
+account_online_synchronization / account.bank.statement.line / online_link_id (many2one)     : DEL relation: account.online.link
+# NOTHING TO DO: removed (now related/derived from online_account_id.account_online_link_id); prod 0 rows
+account_online_synchronization / account.bank.statement.line / online_partner_information (char): DEL
+# NOTHING TO DO: field removed in 20; prod 0 rows (statement lines and partners)
+account_online_synchronization / account.online.link      / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account_online_synchronization / res.partner              / online_partner_information (char): DEL
+# NOTHING TO DO: field removed in 20; prod 0 rows (statement lines and partners)
+---XML records in module 'account_online_synchronization'---
+NEW ir.access: account_online_synchronization.access_account_bank_selection
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_online_synchronization.access_account_bank_statement_line_transient
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_online_synchronization.access_account_duplicate_transaction_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_online_synchronization.access_account_missing_transaction_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_online_synchronization.access_account_online_account_id
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_online_synchronization.access_account_online_account_id_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_online_synchronization.access_account_online_link_id
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_online_synchronization.access_account_online_link_id_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_online_synchronization.account_online_sync_account_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account_online_synchronization.account_online_sync_link_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+ir.config_parameter: account_online_synchronization.config_online_sync_proxy_mode (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only, no value change that matters (no noupdate_changes.xml entry)
+ir.config_parameter: account_online_synchronization.config_online_sync_request_timeout (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only, no value change that matters (no noupdate_changes.xml entry)
+ir.cron: account_online_synchronization.online_sync_cron (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only, no value change that matters (no noupdate_changes.xml entry)
+ir.cron: account_online_synchronization.online_sync_cron_waiting_synchronization (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only, no value change that matters (no noupdate_changes.xml entry)
+ir.cron: account_online_synchronization.online_sync_mail_cron (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only, no value change that matters (no noupdate_changes.xml entry)
+ir.cron: account_online_synchronization.online_sync_unused_connection_cron (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only, no value change that matters (no noupdate_changes.xml entry)
+DEL ir.model.access: account_online_synchronization.access_account_bank_selection
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_online_synchronization.access_account_bank_selection_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_online_synchronization.access_account_bank_statement_line_transient
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_online_synchronization.access_account_duplicate_transaction_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_online_synchronization.access_account_missing_transaction_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_online_synchronization.access_account_online_account_id
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_online_synchronization.access_account_online_account_id_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_online_synchronization.access_account_online_account_id_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_online_synchronization.access_account_online_link_id
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_online_synchronization.access_account_online_link_id_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account_online_synchronization.access_account_online_link_id_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.rule: account_online_synchronization.account_online_sync_account_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (ir.rule merged into ir.access), conversion is in base
+DEL ir.rule: account_online_synchronization.account_online_sync_link_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (ir.rule merged into ir.access), conversion is in base

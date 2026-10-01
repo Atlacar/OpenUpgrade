@@ -1,0 +1,1133 @@
+---Models in module 'account'---
+obsolete model account.group
+# DONE: post-migration: account_group_to_parent_accounts: groups that are ancestors of an existing account (prod: 1079 groups, 69 accounts) become inactive parent accounts (parent_id/parent_path); xmlids moved, table kept
+new model account.stock.valuation.report (renamed from stock_account.stock.valuation.report in module stock_account) [abstract]
+# NOTHING TO DO: abstract SQL report model (no table); renamed from stock_account.stock.valuation.report, no data
+new model res.currency.rate.consolidation.mixin [abstract]
+# NOTHING TO DO: new abstract mixin
+---Fields in module 'account'---
+account      / account.account          / _order                        : _order is now 'code_path, account_type, name_path' ('code, placeholder_code')
+# NOTHING TO DO: _order only
+account      / account.account          / account_stock_expense_id (many2one): previously in module stock_account
+# NOTHING TO DO: field (and column) moved stock_account -> account, ownership of ir_model_data/xmlid is handled natively
+account      / account.account          / account_stock_variation_id (many2one): previously in module stock_account
+# NOTHING TO DO: field (and column) moved stock_account -> account, ownership of ir_model_data/xmlid is handled natively
+account      / account.account          / parent_id (many2one)          : NEW relation: account.account
+# DONE: post-migration: filled from the old account.group hierarchy (account_group_to_parent_accounts)
+account      / account.account          / parent_path (char)            : NEW
+# DONE: post-migration: _parent_store_compute() after parent_id is filled
+account      / account.account          / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account      / account.bank.statement   / is_statement_posted (boolean) : NEW hasdefault: default
+# DONE: post-migration: default True by ORM; statements with a draft line move set to False (prod: 0 statements)
+account      / account.bank.statement.line / invoice_outstanding_credits_debits_widget (binary): type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.bank.statement.line / invoice_payments_widget (binary): type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.bank.statement.line / needed_terms (binary)         : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.bank.statement.line / payment_term_details (binary) : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.bank.statement.line / tax_totals (binary)           : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.cash.rounding    / _order                        : _order is now 'sequence, id' ('id')
+# NOTHING TO DO: _order only
+account      / account.cash.rounding    / active (boolean)              : NEW hasdefault: default
+# NOTHING TO DO: new field, ORM default/NULL (company_id NULL = all companies) is valid for existing cash roundings
+account      / account.cash.rounding    / company_id (many2one)         : NEW relation: res.company
+# NOTHING TO DO: new field, ORM default/NULL (company_id NULL = all companies) is valid for existing cash roundings
+account      / account.cash.rounding    / currency_ids (many2many)      : NEW relation: res.currency
+# NOTHING TO DO: new field, ORM default/NULL (company_id NULL = all companies) is valid for existing cash roundings
+account      / account.cash.rounding    / partner_category_ids (many2many): NEW relation: res.partner.category
+# NOTHING TO DO: new field, ORM default/NULL (company_id NULL = all companies) is valid for existing cash roundings
+account      / account.cash.rounding    / payment_method_line_ids (many2many): NEW relation: account.payment.method.line
+# NOTHING TO DO: new field, ORM default/NULL (company_id NULL = all companies) is valid for existing cash roundings
+account      / account.cash.rounding    / sequence (integer)            : NEW required, hasdefault: default
+# NOTHING TO DO: new field, ORM default/NULL (company_id NULL = all companies) is valid for existing cash roundings
+account      / account.fiscal.position  / _order                        : _order is now 'sequence, id' ('sequence')
+# NOTHING TO DO: _order only
+account      / account.fiscal.position  / account_map (binary)          : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.fiscal.position  / tax_map (binary)              : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.group            / code_prefix_end (char)        : DEL
+# NOTHING TO DO: model account.group is obsolete, data converted to parent accounts (see obsolete model line); remaining columns are kept in the legacy table
+account      / account.group            / code_prefix_start (char)      : DEL
+# NOTHING TO DO: model account.group is obsolete, data converted to parent accounts (see obsolete model line); remaining columns are kept in the legacy table
+account      / account.group            / company_id (many2one)         : DEL relation: res.company, required
+# NOTHING TO DO: model account.group is obsolete, data converted to parent accounts (see obsolete model line); remaining columns are kept in the legacy table
+account      / account.group            / name (char)                   : DEL required
+# NOTHING TO DO: model account.group is obsolete, data converted to parent accounts (see obsolete model line); remaining columns are kept in the legacy table
+account      / account.group            / parent_id (many2one)          : DEL relation: account.group
+# NOTHING TO DO: model account.group is obsolete, data converted to parent accounts (see obsolete model line); remaining columns are kept in the legacy table
+account      / account.journal          / disable_dashboard_graph (boolean): NEW
+# NOTHING TO DO: new boolean, default NULL/False
+account      / account.journal          / display_invoice_template_pdf_report_id (boolean): now a function
+# NOTHING TO DO: non stored (no column)
+account      / account.journal          / journal_group_id (many2one)   : NEW relation: account.journal.group
+# NOTHING TO DO: new m2o of the reworked journal groups; no account.journal.group data in prod (0 rows)
+account      / account.journal          / journal_group_ids (many2many) : DEL relation: account.journal.group
+# NOTHING TO DO: new m2o of the reworked journal groups; no account.journal.group data in prod (0 rows)
+account      / account.journal          / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account      / account.journal.group    / company_id (many2one)         : DEL relation: res.company
+# NOTHING TO DO: journal groups reworked (excluded -> included journals); 0 rows in prod
+account      / account.journal.group    / excluded_journal_ids (many2many): DEL relation: account.journal
+# NOTHING TO DO: journal groups reworked (excluded -> included journals); 0 rows in prod
+account      / account.journal.group    / included_journal_ids (one2many): NEW relation: account.journal
+# NOTHING TO DO: journal groups reworked (excluded -> included journals); 0 rows in prod
+account      / account.move             / checked (boolean)             : DEL
+# DONE: pre-migration: account_move_review_state: checked -> review_state (reviewed / todo for unchecked posted / no_review); prod 5286 checked
+account      / account.move             / document_tax_mode (selection) : NEW selection_keys: ['tax_excluded', 'tax_included'], hasdefault: compute
+# DONE: pre-migration: account_move_document_tax_mode: invoice-like moves get the company account_price_include (prod: tax_excluded)
+account      / account.move             / import_source_attachment_id (many2one): NEW relation: ir.attachment
+# NOTHING TO DO: new m2o, NULL
+account      / account.move             / inventory_closing (boolean)   : NEW hasdefault: default
+# NOTHING TO DO: new boolean default False (ORM)
+account      / account.move             / invoice_outstanding_credits_debits_widget (binary): type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.move             / invoice_payments_widget (binary): type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.move             / journal_group_id (many2one)   : now related
+# NOTHING TO DO: now related to journal (no data to migrate, no journal groups)
+account      / account.move             / journal_line_ids (one2many)   : DEL relation: account.move.line
+# NOTHING TO DO: removed one2many (no column)
+account      / account.move             / made_sequence_gap (boolean)   : not a function anymore
+# NOTHING TO DO: stays a stored boolean (no more computed), existing values kept
+account      / account.move             / narration (html)              : now a function
+# NOTHING TO DO: stays stored, existing values kept; only the compute (company terms) is new for new records
+account      / account.move             / needed_terms (binary)         : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.move             / payment_term_details (binary) : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.move             / review_state (selection)      : NEW required, selection_keys: ['anomaly', 'no_review', 'reviewed', 'supervised', 'todo'], hasdefault: default
+# DONE: pre-migration: column created and filled from checked (account_move_review_state)
+account      / account.move             / tax_totals (binary)           : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.move             / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account      / account.move.line        / cogs_origin_id (many2one)     : previously in module stock_account
+# NOTHING TO DO: field (and column) moved stock_account -> account, handled natively
+account      / account.move.line        / deductible_amount (float)     : DEL
+# DONE: pre-migration: account_move_line_deductible_percentage: deductible_amount / 100 (prod 55758 rows, all 100)
+account      / account.move.line        / deductible_percentage (float) : NEW hasdefault: default
+# DONE: pre-migration: column pre-created from deductible_amount / 100
+account      / account.move.line        / discount_allocation_key (binary): type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.move.line        / discount_allocation_needed (binary): type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.move.line        / epd_key (binary)              : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.move.line        / epd_needed (binary)           : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.move.line        / journal_group_id (many2one)   : now related
+# NOTHING TO DO: now related (no data)
+account      / account.move.line        / name (char)                   : type is now 'text' ('char')
+# NOTHING TO DO: varchar -> text conversion done by the ORM (prod 55710 rows, no data change)
+account      / account.move.line        / open_on (date)                : NEW stored: False
+# NOTHING TO DO: new non stored field
+account      / account.move.line        / term_key (binary)             : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / account.payment          / commercial_partner_id (many2one): NEW relation: res.partner, isfunction: function, stored
+# NOTHING TO DO: new stored related, computed by the ORM at install
+account      / account.payment          / return_partner_bank_id (many2one): NEW relation: res.partner.bank, hasdefault: compute
+# NOTHING TO DO: new stored compute, computed by the ORM at install
+account      / account.payment          / state (selection)             : selection_keys added: [reconciled], removed: [in_process]
+# DONE: pre-migration: account_payment_state: paid -> reconciled, in_process -> paid (prod 2215 paid, 1 in_process, 10 canceled)
+account      / account.payment          / transaction_uuid (char)       : NEW isfunction: function, stored
+# NOTHING TO DO: new stored compute, computed by the ORM at install
+account      / account.payment          / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account      / account.reconcile.model  / matching_order (selection)    : NEW required, selection_keys: ['new_first', 'old_first'], hasdefault: default
+# DONE: pre-migration: account_reconcile_model: the old orphan columns (18.0, no ir.model.fields row in 19) are mapped to the 20.0 values (prod 4 models: writeoff_button -> reco_model, invoice_matching -> matching_rule if auto trigger else reco_model)
+account      / account.reconcile.model  / payment_tolerance (float)     : NEW required, hasdefault: default
+# DONE: pre-migration: account_reconcile_model: the old orphan columns (18.0, no ir.model.fields row in 19) are mapped to the 20.0 values (prod 4 models: writeoff_button -> reco_model, invoice_matching -> matching_rule if auto trigger else reco_model)
+account      / account.reconcile.model  / payment_tolerance_type (selection): NEW required, selection_keys: ['amount', 'percentage'], hasdefault: default
+# DONE: pre-migration: account_reconcile_model: the old orphan columns (18.0, no ir.model.fields row in 19) are mapped to the 20.0 values (prod 4 models: writeoff_button -> reco_model, invoice_matching -> matching_rule if auto trigger else reco_model)
+account      / account.reconcile.model  / rule_type (selection)         : NEW selection_keys: ['matching_rule', 'reco_model'], hasdefault: default
+# DONE: pre-migration: account_reconcile_model: the old orphan columns (18.0, no ir.model.fields row in 19) are mapped to the 20.0 values (prod 4 models: writeoff_button -> reco_model, invoice_matching -> matching_rule if auto trigger else reco_model)
+account      / account.reconcile.model  / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account      / account.report           / active (boolean)              : not stored anymore
+# DONE: pre-migration: account_report: the archived state is kept in active_fallback (prod: 24 reports, all active)
+account      / account.report           / active (boolean)              : now a function
+# DONE: pre-migration: account_report: active_fallback filled from active
+account      / account.report           / active_fallback (boolean)     : NEW hasdefault: default
+# DONE: pre-migration: active_fallback filled from the old active; active_selection (company dependent) stays NULL = use fallback
+account      / account.report           / active_selection (selection)  : NEW selection_keys: ['False', 'True']
+# DONE: pre-migration: active_fallback filled from the old active; active_selection (company dependent) stays NULL = use fallback
+account      / account.report           / availability_condition (selection): selection_keys added: [consolidation] (most likely nothing to do)
+# NOTHING TO DO: new selection key, existing values still valid
+account      / account.report           / enable_snapshots (boolean)    : NEW hasdefault: compute
+# NOTHING TO DO: new report option, computed by the ORM (shipped reports are reloaded from account_reports data)
+account      / account.report           / filter_analytic (boolean)     : DEL
+# NOTHING TO DO: option removed in 20 (4 prod rows are shipped reports: deferred, GL, trial balance), replaced by filter_analytic_groupby set by the data files; data dropped
+account      / account.report           / filter_line_comparison (boolean): NEW hasdefault: compute
+# NOTHING TO DO: new report option, computed by the ORM (shipped reports are reloaded from account_reports data)
+account      / account.report           / groupby (char)                : NEW
+# NOTHING TO DO: new report option, computed by the ORM (shipped reports are reloaded from account_reports data)
+account      / account.report           / prefix_groups_threshold (integer): DEL
+# NOTHING TO DO: option removed in 20 (parent accounts replace prefix groups); prod value is the default 4000 on 24 shipped reports, data dropped
+account      / account.report           / use_fiscal_periods (boolean)  : NEW hasdefault: compute
+# NOTHING TO DO: new report option, computed by the ORM (shipped reports are reloaded from account_reports data)
+account      / account.report           / user_groupby (char)           : NEW hasdefault: compute
+# NOTHING TO DO: new report option, computed by the ORM (shipped reports are reloaded from account_reports data)
+account      / account.report.column    / figure_type (selection)       : selection_keys added: [many2one] (most likely nothing to do)
+# NOTHING TO DO: new selection key, existing values still valid
+account      / account.report.column    / report_id (many2one)          : now required
+# DONE: pre-migration: account_report: orphan columns without report deleted (prod: 119 columns, 0 orphans)
+account      / account.report.expression / engine (selection)            : selection_keys added: [reference, text] (most likely nothing to do)
+# NOTHING TO DO: new selection keys, existing values still valid
+account      / account.report.expression / figure_type (selection)       : selection_keys added: [many2one] (most likely nothing to do)
+# NOTHING TO DO: new selection key, existing values still valid
+account      / account.report.expression / formula (char)                : type is now 'text' ('char')
+# NOTHING TO DO: varchar -> text conversion done by the ORM (prod 200/152 rows)
+account      / account.report.expression / subformula (char)             : type is now 'text' ('char')
+# NOTHING TO DO: varchar -> text conversion done by the ORM (prod 200/152 rows)
+account      / account.report.line      / foldability (selection)       : NEW selection_keys: ['always_unfolded', 'foldable', 'never_unfolded'], hasdefault: compute
+# DONE: post-migration: account_report_line_foldability (foldable True -> 'foldable', other lines keep the ORM computed value)
+account      / account.report.line      / foldable (boolean)            : DEL
+# DONE: pre-migration: legacy column copied, post-migration sets foldability (prod 22 lines, all shipped reports)
+account      / account.tax              / account_move_line_ids (many2many): NEW relation: account.move.line
+# NOTHING TO DO: new m2m view of the existing tax_ids relation tables (inverse side)
+account      / account.tax              / account_reconcile_model_line_ids (many2many): NEW relation: account.reconcile.model.line
+# NOTHING TO DO: new m2m view of the existing tax_ids relation tables (inverse side)
+account      / account.tax              / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account      / account.tax.group        / advance_tax_payment_account_id (many2one): DEL relation: account.account
+# NOTHING TO DO: fields removed in 20, no data in prod (0 rows)
+account      / account.tax.group        / tax_payable_account_id (many2one): DEL relation: account.account
+# NOTHING TO DO: fields removed in 20, no data in prod (0 rows)
+account      / account.tax.group        / tax_receivable_account_id (many2one): DEL relation: account.account
+# NOTHING TO DO: fields removed in 20, no data in prod (0 rows)
+account      / account.tax.repartition.line / tag_ids_domain (binary)       : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / ir.module.module         / account_templates (binary)    : type is now 'json' ('binary')
+# NOTHING TO DO: non stored computed field (no column in prod), only the type changed
+account      / product.category         / account_stock_variation_id (many2one): previously in module stock_account
+# NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
+account      / product.category         / property_cost_method (selection): previously in module stock_account
+# DONE: pre-migration: stock_cost_method_fifo: fifo mapped to average (prod: no fifo, 6 categories average)
+account      / product.category         / property_price_difference_account_id (many2one): previously in module stock_account
+# NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
+account      / product.category         / property_stock_journal (many2one): previously in module stock_account
+# NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
+account      / product.category         / property_stock_valuation_account_id (many2one): previously in module stock_account
+# NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
+account      / product.category         / property_valuation (selection): previously in module stock_account
+# NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
+account      / product.product          / catalog_is_in_selected_section (boolean): NEW stored: False
+# NOTHING TO DO: new non stored field
+account      / product.product          / cost_method (selection)       : previously in module stock_account
+# NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
+account      / product.product          / valuation (selection)         : previously in module stock_account
+# NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
+account      / product.template         / cost_method (selection)       : previously in module stock_account
+# NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
+account      / product.template         / valuation (selection)         : previously in module stock_account
+# NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
+account      / res.company              / account_stock_journal_id (many2one): previously in module stock_account
+# NOTHING TO DO: moved to account, stored as ir.default of the product.category property (company_default_for); the 19 company inverse already maintained them (prod verified)
+account      / res.company              / account_stock_valuation_id (many2one): previously in module stock_account
+# NOTHING TO DO: moved to account, stored as ir.default of the product.category property (company_default_for); the 19 company inverse already maintained them (prod verified)
+account      / res.company              / cost_method (selection)       : previously in module stock_account
+# NOTHING TO DO: moved to account, stored as ir.default of the product.category property (company_default_for); the 19 company inverse already maintained them (prod verified)
+account      / res.company              / document_sequence_editable (boolean): NEW
+# NOTHING TO DO: new boolean, default NULL/False
+account      / res.company              / expense_account_id (many2one) : not stored anymore
+# NOTHING TO DO: now computed from ir.default of product.category property_account_(expense|income)_categ_id; the 19 inverse already wrote them (prod: ir_default 43/40 equal the company columns)
+account      / res.company              / expense_account_id (many2one) : now a function
+# NOTHING TO DO: now computed from ir.default of product.category property_account_(expense|income)_categ_id; the 19 inverse already wrote them (prod: ir_default 43/40 equal the company columns)
+account      / res.company              / income_account_id (many2one)  : not stored anymore
+# NOTHING TO DO: now computed from ir.default of product.category property_account_(expense|income)_categ_id; the 19 inverse already wrote them (prod: ir_default 43/40 equal the company columns)
+account      / res.company              / income_account_id (many2one)  : now a function
+# NOTHING TO DO: now computed from ir.default of product.category property_account_(expense|income)_categ_id; the 19 inverse already wrote them (prod: ir_default 43/40 equal the company columns)
+account      / res.company              / inventory_period (selection)  : previously in module stock_account
+# NOTHING TO DO: field moved stock_account -> account (same column res_company.inventory_period)
+account      / res.company              / inventory_valuation (selection): previously in module stock_account
+# NOTHING TO DO: moved to account, stored as ir.default of the product.category property (company_default_for); the 19 company inverse already maintained them (prod verified)
+account      / res.company              / quick_edit_mode_enabled (boolean): NEW
+# NOTHING TO DO: new boolean, default NULL/False
+account      / res.company              / set_to_review_documents (boolean): NEW
+# NOTHING TO DO: new boolean, default NULL/False
+account      / res.company              / vat_check_vies (boolean)      : previously in module base_vat
+# NOTHING TO DO: field (and column) moved base_vat (renamed l10n_eu_account_vies) -> account, handled natively
+account      / res.company              / vat_disabled (boolean)        : NEW isfunction: function, stored
+# NOTHING TO DO: new stored compute, computed by the ORM at install
+account      / res.company              / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account      / res.partner              / display_invoice_template_pdf_report_id (boolean): now a function
+# NOTHING TO DO: non stored (no column)
+account      / res.partner              / duplicate_bank_partner_ids (many2many): not related anymore
+# NOTHING TO DO: non stored (no column)
+account      / res.partner              / duplicate_bank_partner_ids (many2many): now a function
+# NOTHING TO DO: non stored (no column)
+account      / res.partner              / qr_code_method (selection)    : NEW selection_keys: function
+# NOTHING TO DO: new company dependent field, NULL
+account      / res.partner.bank         / account_type (False)          : NEW selection_keys: ['bank', 'clabe', 'iban'], mode: modify
+# NOTHING TO DO: selection_add of iban/clabe on the base account_type (base group handles res.partner.bank; iban comes from base_iban merged into account)
+account      / res.partner.bank         / has_iban_warning (boolean)    : DEL
+# NOTHING TO DO: removed in 20, replaced by computed has_phishing_warnings; prod 0 rows
+account      / res.partner.bank         / has_money_transfer_warning (boolean): DEL
+# NOTHING TO DO: removed in 20, replaced by computed has_phishing_warnings; prod 0 rows
+account      / res.partner.bank         / has_phishing_warnings (boolean): NEW isfunction: function, stored
+# NOTHING TO DO: new stored compute, computed by the ORM at install
+account      / res.partner.bank         / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website_message_ids o2m (no column); mail.message link dropped in 20
+account_add_gln / res.partner              / global_location_number (char) : not stored anymore
+# DONE: post-migration: res_partner_global_location_number: copied to additional_identifiers['EAN_GLN'] (prod: 0 rows)
+account_add_gln / res.partner              / global_location_number (char) : now a function
+# DONE: post-migration: res_partner_global_location_number: copied to additional_identifiers['EAN_GLN'] (prod: 0 rows)
+stock_account / product.category         / property_cost_method (selection): selection_keys removed: [fifo]
+# DONE: pre-migration: stock_cost_method_fifo: fifo key removed, mapped to average in product_category jsonb, res_company and ir_default (prod: none in fifo)
+stock_account / product.template         / cost_method (selection)       : selection_keys removed: [fifo]
+# DONE: pre-migration: stock_cost_method_fifo: fifo key removed, mapped to average in product_category jsonb, res_company and ir_default (prod: none in fifo)
+stock_account / res.company              / account_stock_journal_id (many2one): not stored anymore
+# NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
+stock_account / res.company              / account_stock_journal_id (many2one): now a function
+# NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
+stock_account / res.company              / account_stock_valuation_id (many2one): not stored anymore
+# NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
+stock_account / res.company              / account_stock_valuation_id (many2one): now a function
+# NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
+stock_account / res.company              / cost_method (selection)       : not stored anymore
+# NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
+stock_account / res.company              / cost_method (selection)       : now a function
+# NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
+stock_account / res.company              / cost_method (selection)       : selection_keys removed: [fifo]
+# DONE: pre-migration: stock_cost_method_fifo (res_company.cost_method and ir_default fifo -> average; prod: average)
+stock_account / res.company              / inventory_valuation (selection): not stored anymore
+# NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
+stock_account / res.company              / inventory_valuation (selection): now a function
+# NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
+---XML records in module 'account'---
+account.account.tag: account.account_tag_financing (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.account.tag: account.account_tag_investing (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.account.tag: account.account_tag_operating (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.method: account.account_payment_method_manual_in (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.method: account.account_payment_method_manual_out (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.term: account.account_payment_term_15days (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.term: account.account_payment_term_21days (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.term: account.account_payment_term_30_days_end_month_the_10 (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.term: account.account_payment_term_30days (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.term: account.account_payment_term_30days_early_discount (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.term: account.account_payment_term_45days (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.term: account.account_payment_term_90days_on_the_10th (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.term: account.account_payment_term_advance_60days (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.term: account.account_payment_term_end_following_month (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+account.payment.term: account.account_payment_term_immediate (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+decimal.precision: account.decimal_payment (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+digest.digest: digest.digest_digest_default (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+DEL digest.tip: account.digest_tip_account_0
+# NOTHING TO DO: normal (updatable) data, removed by the ORM
+NEW ir.access: account.access_account_account_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_account_tax
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_account_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_accrued_orders_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_analytic_account
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_analytic_accountant
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_analytic_applicability_accountant
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_analytic_distribution_invoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_analytic_distribution_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_analytic_plan_accountant
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_automatic_entry_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_autopost_bills_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_bank_statement
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_bank_statement_group_invoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_bank_statement_group_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_cash_rounding_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_cash_rounding_uinvoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_code_mapping
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_code_mapping_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_financial_year_op
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_fiscal_position
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_fiscal_position_account
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_fiscal_position_account_product_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_fiscal_position_product_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_full_reconcile_group_invoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_full_reconcile_group_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_incoterms_all
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_incoterms_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_journal_group_invoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_journal_group_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_journal_group_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_journal_invoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_journal_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_journal_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_lock_exception
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_lock_exception_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_merge_wizard_line_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_merge_wizard_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_move_reversal
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_partial_reconcile_group_invoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_partial_reconcile_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_method
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_method_line
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_method_line_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_method_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_register
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_term_line_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_term_line_partner_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_term_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_term_partner_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_payment_term_portal
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_reconcile_model
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_reconcile_model_billing
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_reconcile_model_line
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_reconcile_model_line_billing
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_reconcile_model_line_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_reconcile_model_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_report_ac_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_report_column_ac_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_report_column_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_report_expression_ac_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_report_expression_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_report_external_value_ac_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_report_external_value_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_report_line_ac_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_report_line_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_report_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_resequence
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_root
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_secure_entries_wizard
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_setup_bank_manual_config
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_tag_internal_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_tax_group_internal_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_tax_group_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_tax_internal_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_tax_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_tax_repartition_line_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_account_tax_repartition_line_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_base_document_layout_account_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_ir_model_account_reports
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_product_product_account_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_res_currency_account_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_res_currency_rate_account_manager
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.access_validate_account_move
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_analytic_line_rule_billing_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_analytic_line_rule_readonly_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_bank_statement_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_bank_statement_line_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_bank_statement_line_rule_basic_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_bank_statement_line_rule_invoice_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_bank_statement_line_rule_readonly_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_cash_rounding_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_fiscal_position_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_invoice_line_rule_portal
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_invoice_report_rule_invoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_invoice_report_rule_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_invoice_rule_portal
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_move_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_move_line_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_move_line_rule_group_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_move_line_see_all
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_move_rule_group_readonly
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_move_see_all
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_move_send_batch_rule_group_invoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_move_send_single_rule_group_invoice
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_payment_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_payment_term_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_reconcile_model_line_template_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.account_reconcile_model_template_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.invoice_analysis_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.ir_rule_res_partner_bank_billing_officers
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.journal_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.report_external_value_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.res_partner_rule_user
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.tax_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.tax_group_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+NEW ir.access: account.tax_rep_comp_rule
+# NOTHING TO DO: replaces ir.model.access/ir.rule, loaded from ir.access.csv; legacy custom rights are converted by the base script
+ir.actions.act_window: account.account_send_payment_receipt_by_email_action (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+ir.actions.act_window: account.account_send_payment_receipt_by_email_action_multi (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+ir.actions.act_window: account.action_account_audit_trail_report (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+NEW ir.actions.act_window: account.action_account_cashflow_analysis
+# NOTHING TO DO: new action loaded from data
+NEW ir.actions.act_window: account.action_account_matching_rules
+# NOTHING TO DO: new action loaded from data
+ir.actions.act_window: account.action_account_moves_all (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_account_moves_all_a (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_account_moves_all_grouped_matching (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_account_moves_all_tree (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_account_moves_email_preview (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_account_moves_journal_bank_cash (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_account_moves_journal_misc (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_account_moves_journal_purchase (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_account_moves_journal_sales (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_account_moves_ledger_partner (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_account_resequence (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+ir.actions.act_window: account.action_amounts_to_settle (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_bank_statement_tree (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_credit_statement_tree (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_move_in_invoice (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_move_in_invoice_type (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_move_in_refund_type (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_move_out_invoice (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_move_out_invoice_type (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_move_out_refund_type (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_move_out_refund_type_non_legacy (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.action_open_settings (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+ir.actions.act_window: account.action_view_bank_statement_tree (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+ir.actions.act_window: account.res_partner_action_supplier_bills (deleted domain)
+# NOTHING TO DO: domain removed from the shipped action, reloaded from data (not noupdate)
+NEW ir.actions.client: account.action_report_stock_valuation [renamed from stock_account module]
+# DONE: pre-migration: xmlid renamed stock_account.action_report_stock_valuation -> account.action_report_stock_valuation
+NEW ir.actions.server: account.accountant_reset_to_draft_entries_action
+# NOTHING TO DO: new server action loaded from data
+NEW ir.actions.server: account.action_mark_payment_as_reconciled
+# NOTHING TO DO: new server action loaded from data
+NEW ir.actions.server: account.action_server_payment_receipt
+# NOTHING TO DO: new server action loaded from data
+ir.actions.server: account.model_account_move_action_share (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+DEL ir.actions.server: account.accountant_confirm_entries_action
+# NOTHING TO DO: normal data, removed by the ORM
+NEW ir.config_parameter: account.disable_dashboard_kpis
+# NOTHING TO DO: new parameter loaded from data
+ir.config_parameter: account.product_name_similarity_threshold (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+NEW ir.cron: account.ir_cron_post_stock_valuation [renamed from stock_account module] (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+DEL ir.model.access: account.access_account_account
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_account_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_account_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_account_partner_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_account_tax
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_account_tax_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_account_tax_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_account_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_accrued_orders_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_analytic_account
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_analytic_accountant
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_analytic_applicability_accountant
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_analytic_distribution_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_analytic_distribution_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_analytic_line_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_analytic_line_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_analytic_line_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_analytic_plan_accountant
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_automatic_entry_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_autopost_bills_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_bank_statement
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_bank_statement_group_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_bank_statement_group_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_bank_statement_line
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_bank_statement_line_group_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_bank_statement_line_group_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_cash_rounding_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_cash_rounding_uinvoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_code_mapping
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_code_mapping_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_financial_year_op
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_fiscal_position
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_fiscal_position_account
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_fiscal_position_account_product_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_fiscal_position_product_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_full_reconcile
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_full_reconcile_group_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_full_reconcile_group_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_group
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_group_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_group_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_incoterms_all
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_incoterms_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_invoice_line_portal
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_invoice_portal
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_invoice_report
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_invoice_report_billing
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_invoice_report_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_journal_group_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_journal_group_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_journal_group_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_journal_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_journal_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_journal_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_lock_exception
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_lock_exception_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_merge_wizard_line_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_merge_wizard_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_move_line_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_move_line_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_move_line_uinvoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_move_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_move_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_move_reversal
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_move_send_batch_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_move_send_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_move_uinvoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_partial_reconcile
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_partial_reconcile_group_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_partial_reconcile_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_method
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_method_line
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_method_line_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_method_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_register
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_term_line_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_term_line_partner_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_term_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_term_partner_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_payment_term_portal
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_reconcile_model
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_reconcile_model_billing
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_reconcile_model_line
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_reconcile_model_line_billing
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_reconcile_model_line_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_reconcile_model_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_ac_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_column_ac_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_column_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_column_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_expression_ac_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_expression_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_expression_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_external_value_ac_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_external_value_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_line_ac_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_line_basic
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_line_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_report_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_resequence
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_root
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_root_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_secure_entries_wizard
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_setup_bank_manual_config
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tag_internal_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_group
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_group_internal_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_group_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_group_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_internal_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_repartition_line_invoice
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_repartition_line_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_repartition_line_readonly
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_account_tax_repartition_line_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_product_product_account_user
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_res_currency_account_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_res_currency_rate_account_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_res_partner_group_account_manager
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+DEL ir.model.access: account.access_validate_account_move
+# NOTHING TO DO: replaced by ir.access (merged model), conversion of rows is in base
+ir.model.constraint: account.constraint_account_account_tag_name_uniq (changed definition: is now 'False' ('unique(name, applicability, country_id)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_bank_statement_first_line_index_idx (changed definition: is now 'False' ('INDEX (journal_id, first_line_index)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_bank_statement_journal_id_date_desc_id_desc_idx (changed definition: is now 'False' ('INDEX (journal_id, date DESC, id DESC)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_bank_statement_line_main_idx (changed definition: is now 'False' ('INDEX (journal_id, company_id, internal_index)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_bank_statement_line_orphan_idx (changed definition: is now 'False' ('INDEX (journal_id, company_id, internal_index) WHERE statement_id IS NULL'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_bank_statement_line_unreconciled_idx (changed definition: is now 'False' ('INDEX (journal_id, company_id, internal_index) WHERE is_reconciled IS NOT TRUE'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_fiscal_position_account_account_src_dest_uniq (changed definition: is now 'False' ('unique (position_id,account_src_id,account_dest_id)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_journal_code_company_uniq (changed definition: is now 'False' ('unique (company_id, code)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_journal_group_uniq_name (changed definition: is now 'False' ('unique(company_id, name)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_lock_exception_company_id_end_datetime_idx (changed definition: is now 'False' ('INDEX (company_id, user_id, end_datetime) WHERE active IS TRUE'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+NEW ir.model.constraint: account.constraint_account_move_account_move_sanitize_payment_ref_idx
+# NOTHING TO DO: new index, created by the ORM
+NEW ir.model.constraint: account.constraint_account_move_check_document_tax_mode_set
+# DONE: pre-migration: account_move_document_tax_mode pre-fills document_tax_mode so the constraint holds
+ir.model.constraint: account.constraint_account_move_checked_idx (changed definition: is now 'False' ('INDEX (journal_id) WHERE (checked IS NOT TRUE)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_duplicate_bills_idx (changed definition: is now 'False' ('INDEX (ref) WHERE (move_type IN ('in_invoice', 'in_refund'))'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_journal_id_company_id_idx (changed definition: is now 'False' ('INDEX (journal_id, company_id, date)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+NEW ir.model.constraint: account.constraint_account_move_journal_id_date_idx
+# NOTHING TO DO: new index, created by the ORM
+ir.model.constraint: account.constraint_account_move_line_account_id_date_idx (changed definition: is now 'False' ('INDEX (account_id, date)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_line_check_accountable_required_fields (changed definition: is now 'False' ('CHECK(display_type IN ('line_section', 'line_subsection', 'line_note') OR account_id IS NOT NULL)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_line_check_amount_currency_balance_sign (changed definition: is now 'False' ('CHECK(    display_type IN ('line_section', 'line_subsection', 'line_note')    OR (    (balance <= 0 AND amount_currency <= 0)    OR    (balance >= 0 AND amount_currency >= 0)    )   )'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_line_check_credit_debit (changed definition: is now 'False' ('CHECK(display_type IN ('line_section', 'line_subsection', 'line_note') OR credit * debit=0)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_line_check_non_accountable_fields_null (changed definition: is now 'False' ('CHECK(display_type NOT IN ('line_section', 'line_subsection', 'line_note') OR (amount_currency = 0 AND debit = 0 AND credit = 0 AND account_id IS NULL))'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_line_date_name_id_idx (changed definition: is now 'False' ('INDEX (date desc, move_name desc, id)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_line_journal_id_neg_amnt_residual_idx (changed definition: is now 'False' ('INDEX (journal_id) WHERE amount_residual < 0'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_line_partner_id_ref_idx (changed definition: is now 'False' ('INDEX (partner_id, ref)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_line_unreconciled_index (changed definition: is now 'False' ('INDEX (account_id, partner_id) WHERE reconciled IS NOT TRUE'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_made_gaps (changed definition: is now 'False' ('INDEX (journal_id, state, payment_state, move_type, date) WHERE (made_sequence_gap IS TRUE)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_payment_idx (changed definition: is now 'False' ('INDEX (journal_id, state, payment_state, move_type, date)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_move_unique_name (changed definition: is now 'False' ('UNIQUE INDEX (name, journal_id) WHERE (state = 'posted'AND name != '/')'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_payment_check_amount_not_negative (changed definition: is now 'False' ('CHECK(amount >= 0.0)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_payment_journal_id_company_id_idx (changed definition: is now 'False' ('INDEX (journal_id, company_id)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_payment_method_name_code_unique (changed definition: is now 'False' ('unique (code, payment_type)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_payment_unmatched_idx (changed definition: is now 'False' ('INDEX (journal_id, company_id) WHERE is_matched IS NOT TRUE'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+NEW ir.model.constraint: account.constraint_account_report_column_expression_label_uniq
+# NOTHING TO DO: checked prod: no duplicate (report_id, expression_label) in account_report_column
+ir.model.constraint: account.constraint_account_report_expression_domain_engine_subformula_required (changed definition: is now 'False' ('CHECK(engine != 'domain' OR subformula IS NOT NULL)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_report_expression_line_label_uniq (changed definition: is now 'False' ('UNIQUE(report_line_id,label)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+ir.model.constraint: account.constraint_account_report_line_code_uniq (changed definition: is now 'False' ('unique (report_id, code)'))
+# NOTHING TO DO: constraint/index re-declared by 20 models.Constraint/Index (definition text only), ORM recreates
+DEL ir.model.constraint: account.constraint_account_group_check_length_prefix
+# NOTHING TO DO: account.group is gone
+DEL ir.rule: account.account_analytic_line_rule_billing_user (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_analytic_line_rule_readonly_user (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_bank_statement_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_bank_statement_line_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_fiscal_position_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_group_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_invoice_line_rule_portal (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_invoice_rule_portal (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_move_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_move_line_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_move_line_rule_group_invoice (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_move_line_rule_group_readonly (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_move_line_see_all (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_move_rule_group_invoice (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_move_rule_group_readonly (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_move_see_all (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_move_send_batch_rule_group_invoice (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_move_send_single_rule_group_invoice (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_payment_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_payment_term_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_reconcile_model_line_template_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.account_reconcile_model_template_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.invoice_analysis_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.ir_rule_res_partner_bank_billing_officers (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.journal_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.journal_group_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.report_external_value_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.tax_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.tax_group_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+DEL ir.rule: account.tax_rep_comp_rule (noupdate)
+# NOTHING TO DO: noupdate rule replaced by ir.access (merged model ir.rule -> ir.access), conversion is in base
+ir.sequence: account.seq_account_payment (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+NEW ir.ui.menu: account.menu_action_account_cashflow_analysis
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.menu: account.account_logs_menu
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.menu: account.root_payment_menu
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.account_bank_statement_line_view_graph_cashflow
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.account_bank_statement_line_view_pivot_cashflow
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.account_bank_statement_line_view_search_cashflow
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.address_form_additional_identifiers
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+ir.ui.view: account.email_template_mail_gateway_failed (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+NEW ir.ui.view: account.tax_repartition_line_form
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.tax_repartition_line_kanban
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.uom_uom_view_form
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.view_account_list_from_entry
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.view_account_move_graph_invoice
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.view_account_move_pivot_invoice
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.view_bank_statement_kanban
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.view_move_line_tree_open_on
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+NEW ir.ui.view: account.view_partner_bank_kanban_account
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: account.portal_my_home_invoice
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: account.product_uom_form_view_inherit
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: account.product_view_search_catalog
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: account.view_account_group_form
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: account.view_account_group_search
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: account.view_account_group_tree
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+DEL ir.ui.view: account_add_gln.view_partner_form_inherit
+# NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)
+mail.message.subtype: account.mt_invoice_created (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+mail.message.subtype: account.mt_invoice_paid (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+mail.message.subtype: account.mt_invoice_validated (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+mail.template: account.email_template_edi_credit_note (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+mail.template: account.email_template_edi_invoice (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+mail.template: account.email_template_edi_self_billing_credit_note (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+mail.template: account.email_template_edi_self_billing_invoice (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+mail.template: account.mail_template_data_payment_receipt (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+mail.template: account.mail_template_einvoice_notification (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+mail.template: account.mail_template_invoice_subscriber (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+onboarding.onboarding: account.onboarding_onboarding_account_dashboard (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+NEW onboarding.onboarding: account.onboarding_onboarding_account_return_dashboard
+# NOTHING TO DO: new data loaded from XML
+onboarding.onboarding.step: account.onboarding_onboarding_step_base_document_layout (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+onboarding.onboarding.step: account.onboarding_onboarding_step_chart_of_accounts (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+onboarding.onboarding.step: account.onboarding_onboarding_step_company_data (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+onboarding.onboarding.step: account.onboarding_onboarding_step_fiscal_year (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+onboarding.onboarding.step: account.onboarding_onboarding_step_sales_tax (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+NEW portal.entry: account.portal_invoice_client
+# NOTHING TO DO: new data loaded from XML
+NEW portal.entry: account.portal_invoice_vendor
+# NOTHING TO DO: new data loaded from XML
+res.country.group: account.europe_vat (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
+res.country.group: account.intrastat (noupdate switched)
+# NOTHING TO DO: noupdate flag switch only; changed values (if any) are in noupdate_changes.xml, loaded in post-migration
