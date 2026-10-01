@@ -1,0 +1,18 @@
+---Models in module 'mail_enterprise'---
+new model res.group.functional  # NOTHING TO DO: new model (functional groups responsible), table created by the ORM, no legacy data
+---Fields in module 'mail_enterprise'---
+mail_enterprise / res.group.functional     / image_1024 (binary)           : NEW attachment: True, isrelated: related, stored  # NOTHING TO DO: new model (functional groups responsible), table created by the ORM, no legacy data
+mail_enterprise / res.group.functional     / image_128 (binary)            : NEW attachment: True, isrelated: related, stored  # NOTHING TO DO: new model (functional groups responsible), table created by the ORM, no legacy data
+mail_enterprise / res.group.functional     / image_1920 (binary)           : NEW attachment: True  # NOTHING TO DO: new model (functional groups responsible), table created by the ORM, no legacy data
+mail_enterprise / res.group.functional     / image_256 (binary)            : NEW attachment: True, isrelated: related, stored  # NOTHING TO DO: new model (functional groups responsible), table created by the ORM, no legacy data
+mail_enterprise / res.group.functional     / image_512 (binary)            : NEW attachment: True, isrelated: related, stored  # NOTHING TO DO: new model (functional groups responsible), table created by the ORM, no legacy data
+mail_enterprise / res.group.functional     / name (char)                   : NEW required  # NOTHING TO DO: new model (functional groups responsible), table created by the ORM, no legacy data
+mail_enterprise / res.group.functional     / responsible_ids (many2many)   : NEW relation: res.users, required  # NOTHING TO DO: new model (functional groups responsible), table created by the ORM, no legacy data
+mail_enterprise / res.group.functional     / user_ids (many2many)          : NEW relation: res.users  # NOTHING TO DO: new model (functional groups responsible), table created by the ORM, no legacy data
+---XML records in module 'mail_enterprise'---
+NEW ir.access: mail_enterprise.access_res_group_functional_group_user  # NOTHING TO DO: loaded from ir.access.csv; the legacy xmlid of ir.model.access/ir.rule is forgotten in pre-migration (_drop_legacy_access_xmlids) so that the load does not fail on 'xmlid of different model'
+NEW ir.access: mail_enterprise.res_group_functional_update_responsible_only_rule  # NOTHING TO DO: loaded from ir.access.csv; the legacy xmlid of ir.model.access/ir.rule is forgotten in pre-migration (_drop_legacy_access_xmlids) so that the load does not fail on 'xmlid of different model'
+NEW ir.access: mail_enterprise.res_group_functional_update_system_rule  # NOTHING TO DO: loaded from ir.access.csv; the legacy xmlid of ir.model.access/ir.rule is forgotten in pre-migration (_drop_legacy_access_xmlids) so that the load does not fail on 'xmlid of different model'
+NEW ir.actions.act_window: mail_enterprise.res_group_functional_action  # NOTHING TO DO: new record loaded by the module data
+NEW ir.ui.view: mail_enterprise.res_group_functional_view_form  # NOTHING TO DO: new record loaded by the module data
+NEW ir.ui.view: mail_enterprise.res_group_functional_view_list  # NOTHING TO DO: new record loaded by the module data

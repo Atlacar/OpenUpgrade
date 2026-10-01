@@ -1,13 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-  <record id="channel_admin" model="discuss.channel">
-    <field name="description"/>
-    <field name="name"/>
-  </record>
-  <record id="channel_all_employees" model="discuss.channel">
-    <field name="description"/>
-    <field name="name"/>
-  </record>
   <record id="channel_member_general_channel_for_admin" model="discuss.channel.member">
     <field name="channel_role" eval="'owner'"/>
   </record>
@@ -31,10 +23,6 @@
   </record>
   <record id="mail_activity_data_warning" model="mail.activity.type">
     <field name="icon">warning</field>
-  </record>
-  <record id="module_install_notification" model="mail.message">
-    <field name="body"/>
-    <field name="subject"/>
   </record>
   <record id="mt_activities" model="mail.message.subtype">
     <field name="sequence" eval="100"/>

@@ -1,0 +1,13 @@
+---Models in module 'snailmail'---
+---Fields in module 'snailmail'---
+snailmail    / mail.message             / message_type (False)          : selection_keys added: [tracking] (most likely nothing to do)  # NOTHING TO DO: selection key added, no data affected
+snailmail    / mail.notification        / failure_type (False)          : selection_keys added: [sms_database_non_active, sn_undeliverable] (most likely nothing to do)  # NOTHING TO DO: selection key added, no data affected
+snailmail    / snailmail.letter         / error_code (selection)        : selection_keys added: [LETTER_UNDELIVERABLE] (most likely nothing to do)  # NOTHING TO DO: selection key added, no data affected
+snailmail    / snailmail.letter         / letter_uid (char)             : NEW  # NOTHING TO DO: new field, NULL for existing letters (0 snailmail.letter rows are relevant)
+snailmail    / snailmail.letter         / state (selection)             : selection_keys added: [process] (most likely nothing to do)  # NOTHING TO DO: selection key added, no data affected
+---XML records in module 'snailmail'---
+NEW ir.access: snailmail.access_snailmail_letter_system  # NOTHING TO DO: loaded from ir.access.csv; the legacy xmlid of ir.model.access/ir.rule is forgotten in pre-migration (_drop_legacy_access_xmlids) so that the load does not fail on 'xmlid of different model'
+NEW ir.access: snailmail.access_snailmail_letter_user  # NOTHING TO DO: loaded from ir.access.csv; the legacy xmlid of ir.model.access/ir.rule is forgotten in pre-migration (_drop_legacy_access_xmlids) so that the load does not fail on 'xmlid of different model'
+ir.actions.act_window: snailmail.action_mail_letters (deleted domain)  # NOTHING TO DO: window action domain removed in the module data, reloaded by the ORM
+DEL ir.model.access: snailmail.access_snailmail_letter_system  # NOTHING TO DO: legacy ir.model.access/ir.rule xmlid, forgotten in pre-migration (replaced by ir.access, converted by the base script)
+DEL ir.model.access: snailmail.access_snailmail_letter_user  # NOTHING TO DO: legacy ir.model.access/ir.rule xmlid, forgotten in pre-migration (replaced by ir.access, converted by the base script)

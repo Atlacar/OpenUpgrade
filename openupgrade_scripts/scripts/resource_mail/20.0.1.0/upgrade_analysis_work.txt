@@ -1,0 +1,4 @@
+---Models in module 'resource_mail'---
+---Fields in module 'resource_mail'---
+resource_mail / resource.resource        / color (integer)               : module is now 'resource' ('resource_mail')  # DONE: resource pre-migration: update_module_moved_fields(resource.resource, color, resource_mail -> resource) (resource is loaded before resource_mail, the xmlid must be moved before); column kept (4 resources)
+---XML records in module 'resource_mail'---

@@ -1,0 +1,4 @@
+---Models in module 'mail_mobile'---
+---Fields in module 'mail_mobile'---
+---XML records in module 'mail_mobile'---
+ir.config_parameter: mail_mobile.enable_ocn (noupdate switched)  # NOTHING TO DO: noupdate flag switch only

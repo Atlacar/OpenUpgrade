@@ -1,0 +1,17 @@
+---Models in module 'rating'---
+---Fields in module 'rating'---
+rating       / ir.access                / rating_ids (one2many)         : NEW relation: rating.rating  # NOTHING TO DO: non-stored one2many on ir.access
+rating       / rating.rating            / parent_res_id (integer)       : relation is now 'parent_res_model' ('False') [nothing to do]  # NOTHING TO DO: integer column unchanged (many2one_reference is stored as integer); 0 rating rows in aquila
+rating       / rating.rating            / parent_res_id (integer)       : type is now 'many2one_reference' ('integer')  # NOTHING TO DO: integer column unchanged (many2one_reference is stored as integer); 0 rating rows in aquila
+rating       / res.users                / rating_ids (one2many)         : is now stored  # NOTHING TO DO: one2many, no column
+rating       / res.users                / rating_ids (one2many)         : not related anymore  # NOTHING TO DO: one2many, no column
+---XML records in module 'rating'---
+NEW ir.access: rating.access_rating_user  # NOTHING TO DO: loaded from ir.access.csv; the legacy xmlid of ir.model.access/ir.rule is forgotten in pre-migration (_drop_legacy_access_xmlids) so that the load does not fail on 'xmlid of different model'
+NEW ir.access: rating.rating_rating_access_system  # NOTHING TO DO: loaded from ir.access.csv; the legacy xmlid of ir.model.access/ir.rule is forgotten in pre-migration (_drop_legacy_access_xmlids) so that the load does not fail on 'xmlid of different model'
+DEL ir.model.access: rating.access_rating_portal  # NOTHING TO DO: legacy ir.model.access/ir.rule xmlid, forgotten in pre-migration (replaced by ir.access, converted by the base script)
+DEL ir.model.access: rating.access_rating_public  # NOTHING TO DO: legacy ir.model.access/ir.rule xmlid, forgotten in pre-migration (replaced by ir.access, converted by the base script)
+DEL ir.model.access: rating.access_rating_user  # NOTHING TO DO: legacy ir.model.access/ir.rule xmlid, forgotten in pre-migration (replaced by ir.access, converted by the base script)
+DEL ir.model.access: rating.rating_rating_access_system  # NOTHING TO DO: legacy ir.model.access/ir.rule xmlid, forgotten in pre-migration (replaced by ir.access, converted by the base script)
+ir.model.constraint: rating.constraint_rating_rating_consumed_idx (changed definition: is now 'False' ('INDEX (res_model, res_id, write_date) WHERE consumed IS TRUE'))  # NOTHING TO DO: constraint/index recreated by the ORM, checked against prod data (no violating rows)
+ir.model.constraint: rating.constraint_rating_rating_parent_consumed_idx (changed definition: is now 'False' ('INDEX (parent_res_model, parent_res_id, write_date) WHERE consumed IS TRUE'))  # NOTHING TO DO: constraint/index recreated by the ORM, checked against prod data (no violating rows)
+ir.model.constraint: rating.constraint_rating_rating_rating_range (changed definition: is now 'False' ('check(rating >= 0 and rating <= 5)'))  # NOTHING TO DO: constraint/index recreated by the ORM, checked against prod data (no violating rows)
