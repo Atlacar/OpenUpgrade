@@ -1,0 +1,263 @@
+---Models in module 'purchase'---
+---Fields in module 'purchase'---
+purchase     / account.tax              / purchase_order_line_ids (many2many): NEW relation: purchase.order.line
+# NOTHING TO DO: new field, computed/optional (ORM computes the stored computed ones)
+purchase     / product.category         / property_account_billed_not_received_id (many2one): NEW relation: account.account
+# NOTHING TO DO: new field, computed/optional (ORM computes the stored computed ones)
+purchase     / product.category         / property_account_bills_to_receive_id (many2one): NEW relation: account.account
+# NOTHING TO DO: new field, computed/optional (ORM computes the stored computed ones)
+purchase     / product.product          / sold_by_vendor_id (many2one)  : NEW relation: res.partner, stored: False
+# NOTHING TO DO: new field, computed/optional (ORM computes the stored computed ones)
+purchase     / purchase.order           / document_tax_mode (selection) : NEW required, selection_keys: ['tax_excluded', 'tax_included'], hasdefault: compute
+# DONE: pre-migration: filled in SQL (tax_included if a line uses an included tax, else company default; all 66 orders tax_excluded)
+purchase     / purchase.order           / incoterm_location (char)      : previously in module purchase_stock
+# DONE: pre-migration: imd moved purchase_stock -> purchase (stored columns kept)
+purchase     / purchase.order           / receipt_status (selection)    : previously in module purchase_stock
+# DONE: pre-migration: imd moved purchase_stock -> purchase (stored columns kept)
+purchase     / purchase.order           / tax_totals (binary)           : type is now 'json' ('binary')
+# NOTHING TO DO: non stored, type change only
+purchase     / purchase.order           / website_message_ids (one2many): DEL relation: mail.message
+# NOTHING TO DO: website messages one2many not stored
+purchase     / purchase.order.line      / accrual_move_ids (many2many)  : NEW relation: account.move
+# NOTHING TO DO: new field, computed/optional (ORM computes the stored computed ones)
+purchase     / purchase.order.line      / bill_to_receive (boolean)     : previously in module purchase_accountant
+# DONE: pre-migration: imd moved purchase_accountant -> purchase (non stored in 19, no data)
+purchase     / purchase.order.line      / non_deductible_tax (float)    : NEW isfunction: function, stored
+# NOTHING TO DO: new field, computed/optional (ORM computes the stored computed ones)
+purchase     / purchase.order.line      / prepaid_expense (boolean)     : previously in module purchase_accountant
+# DONE: pre-migration: imd moved purchase_accountant -> purchase (non stored in 19, no data)
+purchase     / purchase.order.line      / price_unit_product_uom (float): is now stored
+# NOTHING TO DO: new stored computed field, computed by the ORM (5929 lines)
+purchase     / purchase.order.line      / product_uom_id (many2one)     : DEL relation: uom.uom
+# DONE: pre-migration: rename_fields product_uom_id -> uom_id (5929 rows)
+purchase     / purchase.order.line      / qty_to_invoice_raw (float)    : NEW isfunction: function, stored
+# NOTHING TO DO: new field, computed/optional (ORM computes the stored computed ones)
+purchase     / purchase.order.line      / uom_id (many2one)             : NEW relation: uom.uom
+# DONE: pre-migration: filled by the rename of product_uom_id
+purchase     / res.partner              / purchase_incoterm_id (many2one): NEW relation: account.incoterms
+# NOTHING TO DO: new field, computed/optional (ORM computes the stored computed ones)
+purchase     / res.partner              / purchase_incoterm_location (char): NEW
+# NOTHING TO DO: new field, computed/optional (ORM computes the stored computed ones)
+---XML records in module 'purchase'---
+NEW ir.access: purchase.access_account_account_purchase_manager
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_account_fiscal_position_purchase_user
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_account_journal
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_account_tag_purchase_user
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_account_tax_purchase_user
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_bill_to_po_wizard
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_product_pricelist_item_purchase_manager
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_product_product_purchase_user
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_product_supplierinfo_purchase_manager
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_product_template_purchase_user
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_purchase_bill_line_match
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_purchase_bill_line_match_invoicing_payments
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_purchase_bill_line_match_readonly
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_purchase_bill_union
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_report_purchase_order_user
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.access_res_partner_purchase_manager
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.account_partial_reconcile
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.base_user_account_move_line_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.base_user_account_move_line_rule_1
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.portal_purchase_order_user_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_bill_union_comp_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_order_comp_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_order_invoicing_readonly_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_order_invoicing_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_order_line_comp_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_order_line_invoicing_readonly_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_order_line_invoicing_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_order_line_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_order_line_user_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_order_report_comp_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_order_user_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_user_account_analytic_line_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.purchase_user_account_move_rule
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.res_partner_rule_edit_all
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.access: purchase.res_partner_rule_user
+# NOTHING TO DO: new record loaded by the ORM
+ir.actions.act_window: purchase.act_res_partner_2_supplier_invoices (deleted domain)
+# NOTHING TO DO: action domain changed, record is noupdate=0 and reloaded
+NEW ir.actions.act_window: purchase.action_purchase_order_mass_mail
+# NOTHING TO DO: new record loaded by the ORM
+ir.actions.act_window: purchase.purchase_form_action (deleted domain)
+# NOTHING TO DO: action domain changed, record is noupdate=0 and reloaded
+DEL ir.actions.act_window: purchase.action_accrued_expense_entry
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.actions.act_window: purchase.product_product_action
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+NEW ir.actions.server: purchase.action_accrued_expense_entry_purchase_order_line
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.actions.server: purchase.action_unmatch_lines
+# NOTHING TO DO: new record loaded by the ORM
+ir.actions.server: purchase.model_purchase_order_action_share (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+ir.cron: purchase.purchase_send_reminder_mail (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+DEL ir.model.access: purchase.access_account_account_purchase_manager
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_account_analytic_line
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_account_fiscal_position_purchase_user
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_account_journal
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_account_journal_manager
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_account_move
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_account_move_line
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_account_move_line_manager
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_account_tag_purchase_user
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_account_tax_purchase_user
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_account_tax_purchase_user_manager
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_bill_to_po_wizard
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_product_pricelist_item_purchase_manager
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_product_product_purchase_user
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_product_supplierinfo_purchase_manager
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_product_template_purchase_user
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_bill_line_match
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_bill_line_match_invoicing_payments
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_bill_line_match_readonly
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_bill_union
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_order
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_order_invoicing_payments
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_order_invoicing_payments_readonly
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_order_line
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_order_line_invoicing_payments
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_order_line_invoicing_payments_readonly
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_order_line_manager
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_order_line_portal
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_order_manager
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_purchase_order_portal
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_report_purchase_order
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_report_purchase_order_user
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_res_partner_purchase_manager
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.access_res_partner_purchase_user
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.model.access: purchase.account_partial_reconcile
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+ir.model.constraint: purchase.constraint_purchase_order_line_accountable_required_fields (changed definition: is now 'False' ('CHECK(display_type IS NOT NULL OR is_downpayment OR (product_id IS NOT NULL AND product_uom_id IS NOT NULL AND date_planned IS NOT NULL))'))
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+ir.model.constraint: purchase.constraint_purchase_order_line_non_accountable_null_fields (changed definition: is now 'False' ('CHECK(display_type IS NULL OR (product_id IS NULL AND price_unit = 0 AND product_uom_qty = 0 AND product_uom_id IS NULL AND date_planned is NULL))'))
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+DEL ir.rule: purchase.portal_purchase_order_line_rule (noupdate)
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.rule: purchase.portal_purchase_order_user_rule (noupdate)
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.rule: purchase.purchase_bill_union_comp_rule (noupdate)
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.rule: purchase.purchase_order_comp_rule (noupdate)
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.rule: purchase.purchase_order_line_comp_rule (noupdate)
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.rule: purchase.purchase_order_report_comp_rule (noupdate)
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.rule: purchase.purchase_user_account_move_line_rule (noupdate)
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.rule: purchase.purchase_user_account_move_rule (noupdate)
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+ir.sequence: purchase.seq_purchase_order (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+DEL ir.ui.menu: purchase.product_product_menu
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+NEW ir.ui.view: purchase.product_product_purchase_tree_view
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.ui.view: purchase.product_template_purchase_tree_view
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.ui.view: purchase.product_view_search_catalog_inherit
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.ui.view: purchase.purchase_bill_line_match_search
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.ui.view: purchase.purchase_order_line_list_invoice
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.ui.view: purchase.purchase_order_line_view_form_invoice
+# NOTHING TO DO: new record loaded by the ORM
+ir.ui.view: purchase.track_po_line_qty_received_template (noupdate switched)
+# NOTHING TO DO: views are reloaded / removed by the ORM
+ir.ui.view: purchase.track_po_line_template (noupdate switched)
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: purchase.view_category_property_form
+# NOTHING TO DO: new record loaded by the ORM
+NEW ir.ui.view: purchase.view_purchase_bill_union_list_invoice
+# NOTHING TO DO: new record loaded by the ORM
+DEL ir.ui.view: purchase.portal_my_home_purchase
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+mail.message.subtype: purchase.mt_rfq_approved (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+mail.message.subtype: purchase.mt_rfq_confirmed (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+mail.message.subtype: purchase.mt_rfq_sent (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+mail.template: purchase.email_template_edi_purchase (noupdate switched)
+# DONE: post-migration: load_data noupdate_changes.xml (email layout)
+mail.template: purchase.email_template_edi_purchase_done (noupdate switched)
+# DONE: post-migration: load_data noupdate_changes.xml (email layout)
+mail.template: purchase.email_template_edi_purchase_reminder (noupdate switched)
+# DONE: post-migration: load_data noupdate_changes.xml (email layout)
+NEW portal.entry: purchase.portal_purchase_orders
+# NOTHING TO DO: new record loaded by the ORM
+NEW portal.entry: purchase.portal_rfq
+# NOTHING TO DO: new record loaded by the ORM
+res.groups: base.group_user (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed

@@ -1,0 +1,13 @@
+---Models in module 'purchase_accountant'---
+---Fields in module 'purchase_accountant'---
+purchase_accountant / purchase.order.line      / bill_to_receive (boolean)     : module is now 'purchase' ('purchase_accountant')
+# DONE: purchase pre-migration: imd moved purchase_accountant -> purchase (non stored, no data)
+purchase_accountant / purchase.order.line      / prepaid_expense (boolean)     : module is now 'purchase' ('purchase_accountant')
+# DONE: purchase pre-migration: imd moved purchase_accountant -> purchase (non stored, no data)
+---XML records in module 'purchase_accountant'---
+ir.actions.act_window: purchase_accountant.purchase_order_line_accrual_bill_to_receive_action (deleted domain)
+# NOTHING TO DO: action domain changed, reloaded by the ORM
+ir.actions.act_window: purchase_accountant.purchase_order_line_accrual_prepaid_expenses_action (deleted domain)
+# NOTHING TO DO: action domain changed, reloaded by the ORM
+NEW ir.ui.view: purchase_accountant.res_config_settings_view_form
+# NOTHING TO DO: views are reloaded / removed by the ORM

@@ -1,0 +1,159 @@
+---Models in module 'stock_account'---
+obsolete model stock_account.stock.valuation.report (renamed to account.stock.valuation.report in module account) [abstract]
+# NOTHING TO DO: abstract SQL report model, no table; renamed to account.stock.valuation.report in 'account'
+---Fields in module 'stock_account'---
+stock_account / account.account          / account_stock_expense_id (many2one): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / account.account          / account_stock_variation_id (many2one): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / account.move             / closing_datetime (datetime)   : NEW
+# NOTHING TO DO: new optional link, no equivalent data in 19 (no closing, links created by the new flows)
+stock_account / account.move             / product_value_id (one2many)   : NEW relation: product.value
+# NOTHING TO DO: new optional link, no equivalent data in 19 (no closing, links created by the new flows)
+stock_account / account.move.line        / cogs_origin_id (many2one)     : module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / account.move.line        / stock_move_id (many2one)      : NEW relation: stock.move
+# NOTHING TO DO: new optional link, no equivalent data in 19 (no closing, links created by the new flows)
+stock_account / product.category         / account_stock_variation_id (many2one): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / product.category         / property_cost_method (False)  : NEW selection_keys: ['average', 'fifo', 'standard'], mode: modify
+# DONE: pre-migration: 'fifo' mapped to 'average' defensively (no category uses it, 6 categories are 'average')
+stock_account / product.category         / property_cost_method (selection): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / product.category         / property_price_difference_account_id (many2one): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / product.category         / property_stock_journal (many2one): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / product.category         / property_stock_valuation_account_id (many2one): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / product.category         / property_valuation (selection): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / product.product          / cost_method (selection)       : module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / product.product          / valuation (selection)         : module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / product.template         / cost_method (False)           : NEW selection_keys: ['average', 'fifo', 'standard'], mode: modify
+# DONE: pre-migration: 'fifo' mapped to 'average' defensively (no category uses it, 6 categories are 'average')
+stock_account / product.template         / cost_method (selection)       : module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / product.template         / property_price_difference_account_id (many2one): DEL relation: account.account
+# NOTHING TO DO: deleted on the template (0 rows); the category property is kept (moved to account)
+stock_account / product.template         / valuation (selection)         : module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / product.value            / account_move_id (many2one)    : NEW relation: account.move
+# NOTHING TO DO: new optional link
+stock_account / product.value            / new_cost (float)              : NEW
+# DONE: post-migration: new_cost = value, old_cost = previous value of the same product (15 rows)
+stock_account / product.value            / new_value (float)             : NEW hasdefault: default
+# DONE: post-migration/NOTHING TO DO: quantity at the time unknown, defaults 0 (valuation uses product.value.value and stock.move.value, unchanged)
+stock_account / product.value            / old_cost (float)              : NEW
+# DONE: post-migration: new_cost = value, old_cost = previous value of the same product (15 rows)
+stock_account / product.value            / old_value (float)             : NEW hasdefault: default
+# DONE: post-migration/NOTHING TO DO: quantity at the time unknown, defaults 0 (valuation uses product.value.value and stock.move.value, unchanged)
+stock_account / product.value            / quantity (float)              : NEW
+# DONE: post-migration/NOTHING TO DO: quantity at the time unknown, defaults 0 (valuation uses product.value.value and stock.move.value, unchanged)
+stock_account / res.company              / account_stock_journal_id (many2one): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / res.company              / account_stock_valuation_id (many2one): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / res.company              / cost_method (False)           : NEW selection_keys: ['average', 'fifo', 'standard'], mode: modify
+# DONE: pre-migration: 'fifo' mapped to 'average' defensively (no category uses it, 6 categories are 'average')
+stock_account / res.company              / cost_method (selection)       : module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / res.company              / inventory_period (selection)  : module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / res.company              / inventory_valuation (selection): module is now 'account' ('stock_account')
+# DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
+stock_account / stock.move               / invoice_line_ids (one2many)   : NEW relation: account.move.line
+# NOTHING TO DO: new optional link, no equivalent data in 19 (no closing, links created by the new flows)
+stock_account / stock.move               / product_value_ids (one2many)  : NEW relation: product.value
+# NOTHING TO DO: new optional link, no equivalent data in 19 (no closing, links created by the new flows)
+---XML records in module 'stock_account'---
+NEW ir.access: stock_account.access_account_account_stock_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.access_account_journal_stock_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.access_product_value_account_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.access_product_value_stock_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.access_stock_avco_report_account_readonly
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.access_stock_avco_report_stock_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.access_stock_move_invoicing_payments
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.access_stock_move_invoicing_payments_readonly
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.access_stock_picking_invoicing_payments
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.access_stock_picking_invoicing_payments_readonly
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.product_value_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_account.stock_avco_report_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.actions.act_window: stock_account.product_value_list_action
+# NOTHING TO DO: new record / noupdate flag only
+ir.actions.act_window: stock_account.stock_avco_report_action (deleted domain)
+# NOTHING TO DO: action domain changed, record is noupdate=0 and reloaded
+ir.actions.act_window: stock_account.stock_move_valuation_action (deleted domain)
+# NOTHING TO DO: action domain changed, record is noupdate=0 and reloaded
+DEL ir.actions.client: stock_account.action_report_stock_valuation [renamed to account module]
+# NOTHING TO DO: moved to account (renamed there)
+DEL ir.cron: stock_account.ir_cron_post_stock_valuation [renamed to account module] (noupdate)
+# DONE: pre-migration: xmlid renamed to account.ir_cron_post_stock_valuation when free; post-migration: stale old record deleted otherwise
+NEW ir.filters: stock_account.filter_stock_move_aging_report
+# NOTHING TO DO: new record / noupdate flag only
+NEW ir.filters: stock_account.filter_stock_move_intercompany_deliveries
+# NOTHING TO DO: new record / noupdate flag only
+DEL ir.model.access: stock_account.access_account_account_stock_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: stock_account.access_account_journal_stock_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: stock_account.access_stock_avco_report_account_readonly
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: stock_account.access_stock_avco_report_stock_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: stock_account.access_stock_move_invoicing_payments
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: stock_account.access_stock_move_invoicing_payments_readonly
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: stock_account.access_stock_picking_invoicing_payments
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: stock_account.access_stock_picking_invoicing_payments_readonly
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: stock_account.access_stock_product_value
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.rule: stock_account.product_value_rule (noupdate)
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.rule: stock_account.stock_avco_report_rule (noupdate)
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.ui.menu: stock_account.valuation_adjustments_menu
+# NOTHING TO DO: new record / noupdate flag only
+NEW ir.ui.view: stock_account.product_template_form_view_stock_account
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: stock_account.product_value_list_view
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: stock_account.product_value_search_view
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: stock_account.stock_move_view_pivot
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: stock_account.view_move_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_account.product_product_view_list_at_date
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_account.view_account_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_account.view_category_property_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_account.view_category_property_form_stock
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_account.view_picking_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_account.view_stock_return_picking_form_inherit_stock_account
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_account.view_template_property_form_stock_account
+# NOTHING TO DO: views are reloaded / removed by the ORM
+res.groups: stock_account.group_lot_on_invoice (noupdate switched)
+# NOTHING TO DO: new record / noupdate flag only

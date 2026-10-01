@@ -1,0 +1,17 @@
+---Models in module 'stock_sms'---
+---Fields in module 'stock_sms'---
+---XML records in module 'stock_sms'---
+NEW ir.access: stock_sms.access_confirm_stock_sms
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_sms.access_sms_template_stock_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_sms.ir_rule_sms_template_stock_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: stock_sms.access_confirm_stock_sms
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: stock_sms.access_sms_template_stock_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.rule: stock_sms.ir_rule_sms_template_stock_manager (noupdate)
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+sms.template: stock_sms.sms_template_data_stock_delivery (noupdate switched)
+# DONE: post-migration: load_data noupdate_changes.xml (sms body)

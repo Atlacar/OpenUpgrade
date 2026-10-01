@@ -1,0 +1,483 @@
+---Models in module 'product'---
+obsolete model product.template.attribute.exclusion (merged to product.template.attribute.value)
+# DONE: post-migration: rows converted to product.template.attribute.value.excluded_value_ids (0 rows in aquila)
+obsolete model report.product.report_producttemplatelabel2x7 [abstract]
+# NOTHING TO DO: abstract report model, no table
+obsolete model report.product.report_producttemplatelabel4x12 [abstract]
+# NOTHING TO DO: abstract report model, no table
+obsolete model report.product.report_producttemplatelabel4x12noprice [abstract]
+# NOTHING TO DO: abstract report model, no table
+obsolete model report.product.report_producttemplatelabel4x7 [abstract]
+# NOTHING TO DO: abstract report model, no table
+obsolete model report.product.report_producttemplatelabel_dymo [abstract]
+# NOTHING TO DO: abstract report model, no table
+new model product.base.unit (renamed from website.base.unit in module website_sale)
+# DONE: pre-migration: rename_models website.base.unit -> product.base.unit + rename_tables, model xmlid moved website_sale -> product (0 rows in aquila)
+new model product.catalog.line.mixin [abstract]
+# NOTHING TO DO: new model
+new model report.product.label.base [abstract]
+# NOTHING TO DO: new model
+new model report.product.report_product_label_dymo [abstract]
+# NOTHING TO DO: new model
+new model report.product.report_product_label_pdf [abstract]
+# NOTHING TO DO: new model
+new model report.product.report_product_label_zpl [abstract]
+# NOTHING TO DO: new model
+---Fields in module 'product'---
+product      / product.attribute        / display_type (selection)      : selection_keys added: [range] (most likely nothing to do)
+# NOTHING TO DO: new selection key
+product      / product.category         / _order                        : _order is now 'parent_id desc, name asc' ('complete_name')
+# NOTHING TO DO: only the default order changed
+product      / product.category         / company_id (many2one)         : NEW relation: res.company
+# NOTHING TO DO: new optional field
+product      / product.category         / complete_name (char)          : not stored anymore
+# NOTHING TO DO: computed non stored from now on (110 rows, data dropped, recomputed on read)
+product      / product.category         / name (char)                   : now translatable
+# NOTHING TO DO: translatable char, ORM converts the column to jsonb keeping the value as en_US
+product      / product.combo            / name (char)                   : now translatable
+# NOTHING TO DO: translatable char, ORM converts the column to jsonb keeping the value as en_US
+product      / product.pricelist.item   / applied_on (selection)        : now a function
+# NOTHING TO DO: still stored (computed from categ_id/product_id/product_tmpl_id), existing values are consistent (checked in prod: 375 product, 391 variant, 29 category, 2 global)
+product      / product.pricelist.item   / compute_price (selection)     : selection_keys added: [discount, markup], removed: [formula, percentage]
+# DONE: pre-migration: percentage -> discount (price_discount = percent_price, other price parameters reset), formula -> discount, or markup when based on the cost (price_discount = -price_markup); 797 rows
+product      / product.pricelist.item   / display_applied_on (selection): DEL required, selection_keys: ['1_product', '2_product_category']
+# NOTHING TO DO: deleted, applied_on kept (797 rows, value redundant with applied_on)
+product      / product.pricelist.item   / percent_price (float)         : DEL
+# DONE: pre-migration: copied into price_discount for compute_price = percentage (201 rows), then dropped
+product      / product.pricelist.item   / price_markup (float)          : not stored anymore
+# DONE: pre-migration: for formula rules based on the cost, price_discount = -price_markup; non stored afterwards (inverse of price_discount)
+product      / product.pricelist.item   / uom_id (many2one)             : NEW relation: uom.uom
+# NOTHING TO DO: new optional field (packaging)
+product      / product.product          / base_unit_count (float)       : previously in module website_sale
+# DONE: pre-migration: imd of the field moved website_sale -> product (0 rows with a base unit in aquila)
+product      / product.product          / base_unit_id (many2one)       : previously in module website_sale
+# DONE: pre-migration: imd of the field moved website_sale -> product (0 rows with a base unit in aquila)
+product      / product.product          / base_unit_name (char)         : previously in module website_sale
+# DONE: pre-migration: imd of the field moved website_sale -> product (0 rows with a base unit in aquila)
+product      / product.product          / base_unit_price (float)       : previously in module website_sale
+# DONE: pre-migration: imd of the field moved website_sale -> product (0 rows with a base unit in aquila)
+product      / product.product          / catalog_is_in_order (boolean) : NEW stored: False
+# NOTHING TO DO: new non stored field
+product      / product.product          / extra_uom_ids (many2many)     : NEW relation: uom.uom
+# NOTHING TO DO: new optional many2many
+product      / product.product          / free_qty (float)              : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.product          / incoming_qty (float)          : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.product          / is_in_selected_section_of_order (boolean): DEL
+# NOTHING TO DO: non stored field deleted (0 rows)
+product      / product.product          / is_storable (boolean)         : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.product          / lst_price (float)             : is now stored
+# NOTHING TO DO: new stored computed field, computed by the ORM (column already exists in aquila)
+product      / product.product          / outgoing_qty (float)          : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.product          / qty_available (float)         : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.product          / show_qty_update_button (boolean): previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.product          / virtual_available (float)     : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.supplierinfo     / product_uom_id (many2one)     : DEL relation: uom.uom, required
+# DONE: pre-migration: rename_fields product_uom_id -> uom_id (1326 rows, all 1 uom)
+product      / product.supplierinfo     / uom_id (many2one)             : NEW relation: uom.uom, required, hasdefault: compute
+# DONE: pre-migration: filled by the rename of product_uom_id
+product      / product.template         / barcode (char)                : is now stored
+# NOTHING TO DO: new stored computed field, computed by the ORM from the variants (barcode of the single variant)
+product      / product.template         / base_unit_count (float)       : previously in module website_sale
+# DONE: pre-migration: imd of the field moved website_sale -> product (0 rows with a base unit in aquila)
+product      / product.template         / base_unit_id (many2one)       : previously in module website_sale
+# DONE: pre-migration: imd of the field moved website_sale -> product (0 rows with a base unit in aquila)
+product      / product.template         / base_unit_name (char)         : previously in module website_sale
+# DONE: pre-migration: imd of the field moved website_sale -> product (0 rows with a base unit in aquila)
+product      / product.template         / base_unit_price (float)       : previously in module website_sale
+# DONE: pre-migration: imd of the field moved website_sale -> product (0 rows with a base unit in aquila)
+product      / product.template         / fixed_pricelist_rule_ids (one2many): NEW relation: product.pricelist.item
+# NOTHING TO DO: new one2many
+product      / product.template         / incoming_qty (float)          : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.template         / is_storable (boolean)         : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.template         / outgoing_qty (float)          : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.template         / qty_available (float)         : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.template         / show_qty_update_button (boolean): previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.template         / virtual_available (float)     : previously in module stock
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+product      / product.template.attribute.exclusion / product_template_attribute_value_id (many2one): DEL relation: product.template.attribute.value
+# DONE: post-migration: converted to excluded_value_ids (0 rows in aquila)
+product      / product.template.attribute.exclusion / product_tmpl_id (many2one)    : DEL relation: product.template, required
+# DONE: post-migration: converted to excluded_value_ids (0 rows in aquila)
+product      / product.template.attribute.exclusion / value_ids (many2many)         : DEL relation: product.template.attribute.value
+# DONE: post-migration: converted to excluded_value_ids (0 rows in aquila)
+product      / product.template.attribute.value / _order                        : _order is now 'sequence, attribute_line_id, product_attribute_value_id, id' ('attribute_line_id, product_attribute_value_id, id')
+# NOTHING TO DO: only the default order changed
+product      / product.template.attribute.value / exclude_for (one2many)        : DEL relation: product.template.attribute.exclusion
+# DONE: post-migration: converted to excluded_value_ids (0 rows in aquila)
+product      / product.template.attribute.value / excluded_value_ids (many2many): NEW relation: product.template.attribute.value
+# DONE: post-migration: filled from product.template.attribute.exclusion
+product      / product.template.attribute.value / sequence (integer)            : NEW
+# NOTHING TO DO: new field, default (0 / False) keeps the existing order and display (3048 rows)
+product      / product.template.attribute.value / show_price_extra (boolean)    : NEW
+# NOTHING TO DO: new field, default (0 / False) keeps the existing order and display (3048 rows)
+product      / website.base.unit        / _order                        : previously in module website_sale
+# NOTHING TO DO: only the default order changed
+product      / website.base.unit        / display_name (char)           : previously in module website_sale
+# DONE: pre-migration: model renamed to product.base.unit, field imd moved to product (0 rows)
+product      / website.base.unit        / name (char)                   : previously in module website_sale
+# DONE: pre-migration: model renamed to product.base.unit, field imd moved to product (0 rows)
+stock        / product.product          / qty_available (float)         : is now stored
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+stock        / product.product          / qty_available (float)         : not a function anymore
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+stock        / product.product          / show_qty_update_button (boolean): not a function anymore
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+stock        / product.product          / show_qty_update_button (boolean): now related
+# DONE: pre-migration: imd of the field moved stock -> product (is_storable is a stored column of product_template: data kept; the quantities are computed non stored by stock)
+website_sale / product.product          / base_unit_id (many2one)       : relation is now 'product.base.unit' ('website.base.unit') [nothing to do]
+# DONE: pre-migration: model renamed to product.base.unit, field imd moved to product (0 rows)
+website_sale / product.template         / base_unit_id (many2one)       : relation is now 'product.base.unit' ('website.base.unit') [nothing to do]
+# DONE: pre-migration: model renamed to product.base.unit, field imd moved to product (0 rows)
+---XML records in module 'product'---
+decimal.precision: product.decimal_discount (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+decimal.precision: product.decimal_price (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+decimal.precision: product.decimal_stock_weight (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+decimal.precision: product.decimal_volume (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+NEW ir.access: product.access_product_attribute
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_attribute_custom_value_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_attribute_custom_value_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_attribute_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_attribute_value
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_attribute_value_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_base_unit_product_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_base_unit_public_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_category_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_category_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_combo_item_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_combo_item_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_combo_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_combo_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_document_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_document_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_label_layout_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_pricelist_item_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_pricelist_item_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_pricelist_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_pricelist_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_product_attribute
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_product_attribute_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_product_employee
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_product_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_supplierinfo_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_supplierinfo_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_tag_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_tag_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_template_attribute_line
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_template_attribute_line_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_template_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_template_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_uom_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_product_uom_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_uom_uom_product_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.access_update_product_attribute_value_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.product_category_comp_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.product_combo_comp_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.product_comp_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.product_document_comp_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.product_pricelist_comp_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.product_pricelist_item_comp_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: product.product_supplierinfo_comp_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.actions.act_window: product.base_unit_action [renamed from website_sale module]
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+NEW ir.actions.act_window: product.product_uom_action_view_list
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+NEW ir.actions.act_window: product.product_variant_edit_qty_action
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+DEL ir.actions.act_window: product.product_combo_action
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.actions.act_window: product.product_normal_action
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.actions.act_window: product.product_normal_action_sell
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+NEW ir.actions.report: product.action_report_product_label_dymo
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+NEW ir.actions.report: product.action_report_product_label_pdf
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+NEW ir.actions.report: product.report_product_template_label_zpl
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+DEL ir.actions.report: product.report_product_packaging
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.actions.report: product.report_product_template_label_2x7
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.actions.report: product.report_product_template_label_4x12
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.actions.report: product.report_product_template_label_4x12_noprice
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.actions.report: product.report_product_template_label_4x7
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+DEL ir.actions.report: product.report_product_template_label_dymo
+# NOTHING TO DO: record removed by the ORM (noupdate=0)
+NEW ir.actions.server: product.action_product_uom_print_labels
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+DEL ir.model.access: product.access_product_attribute
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_attribute_custom_value_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_attribute_custom_value_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_attribute_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_attribute_value
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_attribute_value_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_category_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_category_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_combo_item_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_combo_item_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_combo_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_combo_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_document_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_document_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_label_layout_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_pricelist_item_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_pricelist_item_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_pricelist_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_pricelist_partner_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_pricelist_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_product_attribute
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_product_attribute_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_product_employee
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_product_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_supplierinfo_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_supplierinfo_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_tag_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_tag_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_template_attribute_exclusion
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_template_attribute_exclusion_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_template_attribute_line
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_template_attribute_line_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_template_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_template_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_uom_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_product_uom_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_uom_uom_product_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: product.access_update_product_attribute_value_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+ir.model.constraint: product.constraint_product_attribute_check_multi_checkbox_no_variant (changed definition: is now 'False' ('CHECK(display_type != 'multi' OR create_variant = 'no_variant')'))
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+ir.model.constraint: product.constraint_product_product_combination_unique (changed definition: is now 'False' ('UNIQUE INDEX (product_tmpl_id, combination_indices) WHERE active IS TRUE'))
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+ir.model.constraint: product.constraint_product_product_is_favorite_index (changed definition: is now 'False' ('INDEX (is_favorite) WHERE is_favorite IS TRUE'))
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+ir.model.constraint: product.constraint_product_tag_name_uniq (changed definition: is now 'False' ('unique (name)'))
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+ir.model.constraint: product.constraint_product_template_attribute_value_attribute_value_unique (changed definition: is now 'False' ('unique(attribute_line_id, product_attribute_value_id)'))
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+ir.model.constraint: product.constraint_product_template_is_favorite_index (changed definition: is now 'False' ('INDEX (is_favorite) WHERE is_favorite IS TRUE'))
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+ir.model.constraint: product.constraint_product_uom_barcode_uniq (changed definition: is now 'False' ('unique(barcode)'))
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+DEL ir.rule: product.product_combo_comp_rule (noupdate)
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.rule: product.product_comp_rule (noupdate)
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.rule: product.product_document_comp_rule (noupdate)
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.rule: product.product_pricelist_comp_rule (noupdate)
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.rule: product.product_pricelist_item_comp_rule (noupdate)
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.rule: product.product_supplierinfo_comp_rule (noupdate)
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.ui.view: product.barcode_2x7_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.barcode_4x12_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.barcode_4x7_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.barcode_alternative_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.barcode_dymo_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.barcode_jewelry_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.barcode_normal_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.barcode_small_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.product_attribute_value_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.product_pricelist_item_calendar
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.product_pricelist_item_form_multi_create
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.product_uom_view_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.product_view_list_qty
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.qr_2x7_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.qr_4x12_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.qr_4x7_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.qr_alternative_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.qr_dymo_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.qr_jewelry_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.qr_normal_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.qr_small_label
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.report_label_barcode
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.report_label_contour_marks
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.report_label_value_block
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.report_product_label_dymo
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.report_product_label_pdf
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.report_product_label_zpl
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.report_productlabel_pdf
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.report_productlabel_zpl
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: product.uom_uom_view_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.product_product_view_tree_tag
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.product_variant_easy_edit_view
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_packagingbarcode
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_productlabel
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_producttemplatelabel2x7
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_producttemplatelabel4x12
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_producttemplatelabel4x12noprice
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_producttemplatelabel4x7
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_producttemplatelabel_dymo
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_simple_label2x7
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_simple_label4x12
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_simple_label4x12_no_price
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_simple_label4x7
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.report_simple_label_dymo
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: product.uom_uom_form_view_inherit
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW product.attribute: product.pa_brand
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+NEW product.attribute: product.pa_color
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+NEW product.attribute: product.pa_material
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+NEW product.attribute: product.pa_pattern
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+NEW product.attribute: product.pa_size
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+product.category: product.product_category_expenses (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+product.category: product.product_category_goods (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+product.category: product.product_category_services (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+NEW res.groups: product.group_show_uom_price [renamed from website_sale module] (noupdate switched)
+# NOTHING TO DO: new record loaded by the ORM (product.group_show_uom_price / base_unit_action xmlids renamed in pre-migration from website_sale)
+res.users: base.user_admin (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed

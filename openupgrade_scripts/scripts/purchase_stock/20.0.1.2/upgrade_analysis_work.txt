@@ -1,0 +1,73 @@
+---Models in module 'purchase_stock'---
+---Fields in module 'purchase_stock'---
+purchase_stock / purchase.order           / date_promised (datetime)      : NEW hasdefault: compute
+# DONE: pre-migration: line date_promised = date_planned for confirmed orders; order date computed by the ORM
+purchase_stock / purchase.order           / incoterm_location (char)      : module is now 'purchase' ('purchase_stock')
+# DONE: purchase pre-migration: imd moved purchase_stock -> purchase
+purchase_stock / purchase.order           / receipt_status (selection)    : module is now 'purchase' ('purchase_stock')
+# DONE: purchase pre-migration: imd moved purchase_stock -> purchase
+purchase_stock / purchase.order.line      / date_promised (datetime)      : NEW
+# DONE: pre-migration: line date_promised = date_planned for confirmed orders; order date computed by the ORM
+purchase_stock / purchase.order.line      / forecasted_location_id (many2one): NEW relation: stock.location
+# DONE: pre-migration: filled by the rename of location_final_id
+purchase_stock / purchase.order.line      / location_final_id (many2one)  : DEL relation: stock.location
+# DONE: pre-migration: rename_fields location_final_id -> forecasted_location_id (1 row)
+purchase_stock / res.company              / days_to_purchase (float)      : type is now 'integer' ('float')
+# NOTHING TO DO: float -> integer, ORM converts the column (0 rows)
+---XML records in module 'purchase_stock'---
+NEW ir.access: purchase_stock.access_report_purchase_order_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: purchase_stock.access_stock_location_purchase_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: purchase_stock.access_stock_move_purchase_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: purchase_stock.access_stock_move_purchase_user_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: purchase_stock.access_stock_picking_purchase_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: purchase_stock.access_stock_warehouse_orderpoint_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: purchase_stock.access_stock_warehouse_purchase_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: purchase_stock.purchase_order_line_stock_user_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: purchase_stock.purchase_order_stock_user_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_purchase_order_line_stock_worker
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_purchase_order_stock_worker
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_report_purchase_order
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_report_purchase_order_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_stock_location_purchase_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_stock_location_purchase_user_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_stock_move_purchase_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_stock_move_purchase_user_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_stock_picking_purchase_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_stock_picking_purchase_user_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_stock_warehouse_orderpoint_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_stock_warehouse_orderpoint_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_stock_warehouse_purchase_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.model.access: purchase_stock.access_stock_warehouse_purchase_user_manager
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.ui.view: purchase_stock.exception_on_picking
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: purchase_stock.product_product_tree_view_stock
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: purchase_stock.product_template_form_view_stock
+# NOTHING TO DO: views are reloaded / removed by the ORM
+stock.route: purchase_stock.route_warehouse0_buy (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+stock.warehouse: stock.warehouse0 (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed

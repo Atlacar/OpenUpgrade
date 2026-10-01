@@ -1,0 +1,21 @@
+---Models in module 'stock_enterprise'---
+---Fields in module 'stock_enterprise'---
+---XML records in module 'stock_enterprise'---
+NEW ir.access: stock_enterprise.access_stock_report
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_enterprise.stock_report_comp_rule
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+ir.actions.act_window: stock.action_picking_tree_all (deleted domain)
+# NOTHING TO DO: action domain changed, reloaded by the ORM
+ir.actions.act_window: stock.action_picking_tree_late (deleted domain)
+# NOTHING TO DO: action domain changed, reloaded by the ORM
+ir.actions.act_window: stock.action_picking_tree_ready (deleted domain)
+# NOTHING TO DO: action domain changed, reloaded by the ORM
+ir.actions.act_window: stock.action_picking_tree_waiting (deleted domain)
+# NOTHING TO DO: action domain changed, reloaded by the ORM
+ir.actions.act_window: stock_enterprise.stock_report_action_performance (deleted domain)
+# NOTHING TO DO: action domain changed, reloaded by the ORM
+DEL ir.model.access: stock_enterprise.access_stock_report
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+DEL ir.rule: stock_enterprise.stock_report_comp_rule (noupdate)
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script

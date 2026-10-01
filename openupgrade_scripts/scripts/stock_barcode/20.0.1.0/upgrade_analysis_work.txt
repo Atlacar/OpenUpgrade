@@ -1,0 +1,123 @@
+---Models in module 'stock_barcode'---
+---Fields in module 'stock_barcode'---
+stock_barcode / stock.move.line          / dummy_id (char)               : not a function anymore
+# NOTHING TO DO: technical non stored char
+stock_barcode / stock.move.line          / product_category_name (char)  : previously in module stock
+# DONE: stock pre-migration: imd moved stock -> stock_barcode (non stored related)
+stock_barcode / stock.picking.type       / barcode_default_snln_generation (selection): NEW selection_keys: ['all', 'only_one'], hasdefault: default
+# NOTHING TO DO: new field with default
+stock_barcode / stock.quant              / dummy_id (char)               : not a function anymore
+# NOTHING TO DO: technical non stored char
+stock_barcode / stock.quant              / has_count_requested (boolean) : NEW hasdefault: default
+# NOTHING TO DO: new field with default
+stock_barcode / stock.scrap              / _barcode_scanned (char)       : DEL stored: False
+# NOTHING TO DO: non stored field of the deleted stock.scrap model
+---XML records in module 'stock_barcode'---
+DEL barcode.rule: stock_barcode.scale_up_alias_1 (noupdate)
+# DONE: post-migration: delete_records_safely_by_xml_id (4 'scale up' alias rules, removed in 20)
+DEL barcode.rule: stock_barcode.scale_up_alias_2 (noupdate)
+# DONE: post-migration: delete_records_safely_by_xml_id (4 'scale up' alias rules, removed in 20)
+DEL barcode.rule: stock_barcode.scale_up_alias_3 (noupdate)
+# DONE: post-migration: delete_records_safely_by_xml_id (4 'scale up' alias rules, removed in 20)
+DEL barcode.rule: stock_barcode.scale_up_alias_4 (noupdate)
+# DONE: post-migration: delete_records_safely_by_xml_id (4 'scale up' alias rules, removed in 20)
+NEW ir.access: stock_barcode.access_lot_label_layout_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_picking_label_type_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_backorder_confirmation_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_backorder_confirmation_line_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_barcode_cancel_operation
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_inventory_adjustment_name_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_location_label_layout_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_lot_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_move_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_package_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_package_destination_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_package_history_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_package_label_layout_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_package_type_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_picking_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_picking_batch_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_picking_type_label_layout_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_put_in_pack_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_quant_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_scrap_reason_tag_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_warehouse_orderpoint_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.access: stock_barcode.access_stock_warn_insufficient_qty_scrap_barcode_user
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.actions.act_window: stock_barcode.stock_barcode_batch_picking_action_kanban [renamed from stock_barcode_picking_batch module]
+# NOTHING TO DO: follows the merge of stock_barcode_picking_batch (apriori merged_modules)
+ir.actions.act_window: stock_barcode.stock_picking_type_action_kanban (deleted domain)
+# NOTHING TO DO: action domain changed, record is noupdate=0 and reloaded
+NEW ir.actions.act_window: stock_barcode.stock_quant_action_locate
+# NOTHING TO DO: follows the merge of stock_barcode_picking_batch (apriori merged_modules)
+DEL ir.actions.act_window: stock_barcode_picking_batch.stock_barcode_batch_picking_action_kanban [renamed to stock_barcode module]
+# NOTHING TO DO: follows the merge of stock_barcode_picking_batch (apriori merged_modules)
+NEW ir.actions.client: stock_barcode.stock_barcode_picking_batch_client_action [renamed from stock_barcode_picking_batch module]
+# NOTHING TO DO: follows the merge of stock_barcode_picking_batch (apriori merged_modules)
+DEL ir.actions.client: stock_barcode_picking_batch.stock_barcode_picking_batch_client_action [renamed to stock_barcode module]
+# NOTHING TO DO: follows the merge of stock_barcode_picking_batch (apriori merged_modules)
+DEL ir.model.access: stock_barcode.access_stock_barcode_cancel_operation
+# NOTHING TO DO: access rights / record rules are reloaded from security/ir.access.csv; conversion of the legacy ir_model_access / ir_rule rows (and their xmlids) is done by the base script
+NEW ir.model.constraint: stock_barcode.constraint_res_config_settings_check_barcode_max_time_between_keys_in_ms
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+NEW ir.model.constraint: stock_barcode.constraint_res_config_settings_check_barcode_rfid_batch_time
+# NOTHING TO DO: SQL constraint definition is reflected and re-created by the ORM
+ir.sequence: stock_barcode.epc_serial (noupdate switched)
+# NOTHING TO DO: only the noupdate flag changed
+NEW ir.ui.view: stock_barcode.stock_barcode_batch_picking_view_info
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: stock_barcode.stock_barcode_batch_picking_view_kanban
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: stock_barcode.stock_lot_view_kanban
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: stock_barcode.stock_move_line_view_form_barcode_from_batch
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: stock_barcode.stock_package_type_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW ir.ui.view: stock_barcode.stock_picking_batch_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_barcode.stock_scrap_inherit_mrp_barcode
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_barcode.stock_scrap_wizard_inherit_mrp_barcode
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_barcode_picking_batch.stock_barcode_batch_picking_view_info
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_barcode_picking_batch.stock_barcode_batch_picking_view_kanban
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_barcode_picking_batch.stock_barcode_picking_batch_cancel_operation_view
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_barcode_picking_batch.stock_move_line_product_selector_inherit
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_barcode_picking_batch.stock_package_type_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_barcode_picking_batch.stock_picking_batch_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_barcode_picking_batch.stock_picking_view_kanban
+# NOTHING TO DO: views are reloaded / removed by the ORM
+DEL ir.ui.view: stock_barcode_picking_batch.view_picking_type_form
+# NOTHING TO DO: views are reloaded / removed by the ORM
+NEW res.groups: stock_barcode.group_barcode_user
+# NOTHING TO DO: new barcode group, implied by stock.group_stock_user (stock_barcode security xml), no user migration needed
+NEW res.groups.privilege: stock_barcode.res_groups_privilege_barcode
+# NOTHING TO DO: new barcode group, implied by stock.group_stock_user (stock_barcode security xml), no user migration needed
