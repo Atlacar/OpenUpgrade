@@ -1,0 +1,63 @@
+---Models in module 'stock_barcode'---
+---Fields in module 'stock_barcode'---
+stock_barcode / stock.move.line          / dummy_id (char)               : not a function anymore
+stock_barcode / stock.move.line          / product_category_name (char)  : previously in module stock
+stock_barcode / stock.picking.type       / barcode_default_snln_generation (selection): NEW selection_keys: ['all', 'only_one'], hasdefault: default
+stock_barcode / stock.quant              / dummy_id (char)               : not a function anymore
+stock_barcode / stock.quant              / has_count_requested (boolean) : NEW hasdefault: default
+stock_barcode / stock.scrap              / _barcode_scanned (char)       : DEL stored: False
+---XML records in module 'stock_barcode'---
+DEL barcode.rule: stock_barcode.scale_up_alias_1 (noupdate)
+DEL barcode.rule: stock_barcode.scale_up_alias_2 (noupdate)
+DEL barcode.rule: stock_barcode.scale_up_alias_3 (noupdate)
+DEL barcode.rule: stock_barcode.scale_up_alias_4 (noupdate)
+NEW ir.access: stock_barcode.access_lot_label_layout_barcode_user
+NEW ir.access: stock_barcode.access_picking_label_type_barcode_user
+NEW ir.access: stock_barcode.access_stock_backorder_confirmation_barcode_user
+NEW ir.access: stock_barcode.access_stock_backorder_confirmation_line_barcode_user
+NEW ir.access: stock_barcode.access_stock_barcode_cancel_operation
+NEW ir.access: stock_barcode.access_stock_inventory_adjustment_name_barcode_user
+NEW ir.access: stock_barcode.access_stock_location_label_layout_barcode_user
+NEW ir.access: stock_barcode.access_stock_lot_barcode_user
+NEW ir.access: stock_barcode.access_stock_move_barcode_user
+NEW ir.access: stock_barcode.access_stock_package_barcode_user
+NEW ir.access: stock_barcode.access_stock_package_destination_barcode_user
+NEW ir.access: stock_barcode.access_stock_package_history_barcode_user
+NEW ir.access: stock_barcode.access_stock_package_label_layout_barcode_user
+NEW ir.access: stock_barcode.access_stock_package_type_barcode_user
+NEW ir.access: stock_barcode.access_stock_picking_barcode_user
+NEW ir.access: stock_barcode.access_stock_picking_batch_barcode_user
+NEW ir.access: stock_barcode.access_stock_picking_type_label_layout_barcode_user
+NEW ir.access: stock_barcode.access_stock_put_in_pack_barcode_user
+NEW ir.access: stock_barcode.access_stock_quant_barcode_user
+NEW ir.access: stock_barcode.access_stock_scrap_reason_tag_barcode_user
+NEW ir.access: stock_barcode.access_stock_warehouse_orderpoint_barcode_user
+NEW ir.access: stock_barcode.access_stock_warn_insufficient_qty_scrap_barcode_user
+NEW ir.actions.act_window: stock_barcode.stock_barcode_batch_picking_action_kanban [renamed from stock_barcode_picking_batch module]
+ir.actions.act_window: stock_barcode.stock_picking_type_action_kanban (deleted domain)
+NEW ir.actions.act_window: stock_barcode.stock_quant_action_locate
+DEL ir.actions.act_window: stock_barcode_picking_batch.stock_barcode_batch_picking_action_kanban [renamed to stock_barcode module]
+NEW ir.actions.client: stock_barcode.stock_barcode_picking_batch_client_action [renamed from stock_barcode_picking_batch module]
+DEL ir.actions.client: stock_barcode_picking_batch.stock_barcode_picking_batch_client_action [renamed to stock_barcode module]
+DEL ir.model.access: stock_barcode.access_stock_barcode_cancel_operation
+NEW ir.model.constraint: stock_barcode.constraint_res_config_settings_check_barcode_max_time_between_keys_in_ms
+NEW ir.model.constraint: stock_barcode.constraint_res_config_settings_check_barcode_rfid_batch_time
+ir.sequence: stock_barcode.epc_serial (noupdate switched)
+NEW ir.ui.view: stock_barcode.stock_barcode_batch_picking_view_info
+NEW ir.ui.view: stock_barcode.stock_barcode_batch_picking_view_kanban
+NEW ir.ui.view: stock_barcode.stock_lot_view_kanban
+NEW ir.ui.view: stock_barcode.stock_move_line_view_form_barcode_from_batch
+NEW ir.ui.view: stock_barcode.stock_package_type_form
+NEW ir.ui.view: stock_barcode.stock_picking_batch_form
+DEL ir.ui.view: stock_barcode.stock_scrap_inherit_mrp_barcode
+DEL ir.ui.view: stock_barcode.stock_scrap_wizard_inherit_mrp_barcode
+DEL ir.ui.view: stock_barcode_picking_batch.stock_barcode_batch_picking_view_info
+DEL ir.ui.view: stock_barcode_picking_batch.stock_barcode_batch_picking_view_kanban
+DEL ir.ui.view: stock_barcode_picking_batch.stock_barcode_picking_batch_cancel_operation_view
+DEL ir.ui.view: stock_barcode_picking_batch.stock_move_line_product_selector_inherit
+DEL ir.ui.view: stock_barcode_picking_batch.stock_package_type_form
+DEL ir.ui.view: stock_barcode_picking_batch.stock_picking_batch_form
+DEL ir.ui.view: stock_barcode_picking_batch.stock_picking_view_kanban
+DEL ir.ui.view: stock_barcode_picking_batch.view_picking_type_form
+NEW res.groups: stock_barcode.group_barcode_user
+NEW res.groups.privilege: stock_barcode.res_groups_privilege_barcode

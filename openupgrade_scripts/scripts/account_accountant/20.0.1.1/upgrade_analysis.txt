@@ -1,0 +1,52 @@
+---Models in module 'account_accountant'---
+new model account.select.account.line [transient]
+new model account.split.journal.item.wizard [transient]
+new model bank.rec.auto.reconcile.wizard [transient]
+---Fields in module 'account_accountant'---
+account_accountant / account.account          / deferred_account_id (many2one): NEW relation: account.account
+account_accountant / account.account          / is_deferred (boolean)         : NEW
+account_accountant / account.bank.statement   / website_message_ids (one2many): DEL relation: mail.message
+account_accountant / account.bank.statement.line / activity_ids (False)          : NEW mode: modify
+account_accountant / account.bank.statement.line / reconcile_model_id (many2one) : NEW relation: account.reconcile.model
+account_accountant / account.bank.statement.line / transaction_uuid (char)       : NEW
+account_accountant / account.bank.statement.line / website_message_ids (False)   : DEL mode: modify
+account_accountant / account.reconcile.model  / is_asking_for_autopost (boolean): NEW hasdefault: default
+account_accountant / account.reconcile.model  / use_count (integer)           : NEW
+account_accountant / mail.message             / message_type (False)          : NEW selection_keys: ['auto_comment', 'comment', 'email', 'email_outgoing', 'notification', 'out_of_office', 'sms', 'snailmail', 'tracking', 'transaction_details', 'user_notification'], mode: modify
+account_accountant / res.company              / deferred_expense_periodicity (selection): NEW required, selection_keys: ['month', 'year'], hasdefault: default
+account_accountant / res.company              / deferred_revenue_periodicity (selection): NEW required, selection_keys: ['month', 'year'], hasdefault: default
+account_accountant / res.company              / predict_bill_product (boolean): DEL
+---XML records in module 'account_accountant'---
+digest.digest: digest.digest_digest_default (noupdate switched)
+NEW ir.access: account_accountant.access_account_auto_reconcile_wizard
+NEW ir.access: account_accountant.access_account_change_lock_date
+NEW ir.access: account_accountant.access_account_fiscal_year_manager
+NEW ir.access: account_accountant.access_account_fiscal_year_readonly
+NEW ir.access: account_accountant.access_account_reconcile_wizard
+NEW ir.access: account_accountant.access_account_secure_entries_wizard
+NEW ir.access: account_accountant.access_account_select_account_line
+NEW ir.access: account_accountant.access_account_split_journal_item_wizard
+NEW ir.access: account_accountant.access_bank_rec_auto_reconcile_wizard
+ir.actions.act_window: account_accountant.action_bank_statement_line_transactions (deleted domain)
+ir.actions.act_window: account_accountant.action_bank_statement_line_transactions_kanban (deleted domain)
+ir.actions.act_window: account_accountant.action_move_line_posted_unreconciled (deleted domain)
+DEL ir.actions.act_window: account_accountant.action_account_group_tree
+NEW ir.actions.server: account_accountant.action_download_attachments
+NEW ir.actions.server: account_accountant.action_schedule_activity_bank_statement_line
+NEW ir.config_parameter: account_accountant.config_bank_rec_foreign_currency_tolerance
+ir.config_parameter: account_accountant.config_bank_rec_payment_tolerance (noupdate switched)
+DEL ir.model.access: account_accountant.access_account_auto_reconcile_wizard
+DEL ir.model.access: account_accountant.access_account_change_lock_date
+DEL ir.model.access: account_accountant.access_account_fiscal_year_basic
+DEL ir.model.access: account_accountant.access_account_fiscal_year_manager
+DEL ir.model.access: account_accountant.access_account_fiscal_year_readonly
+DEL ir.model.access: account_accountant.access_account_reconcile_wizard
+DEL ir.model.access: account_accountant.access_account_secure_entries_wizard
+DEL ir.ui.menu: account_accountant.menu_account_group
+NEW ir.ui.view: account_accountant.account_split_journal_item_view
+NEW ir.ui.view: account_accountant.bank_rec_auto_reconcile_wizard_view_form
+NEW ir.ui.view: account_accountant.view_account_journal_tree_inherit
+NEW ir.ui.view: account_accountant.view_account_move_line_kanban_bank_rec_widget
+NEW ir.ui.view: account_accountant.view_account_reconcile_model_form
+NEW ir.ui.view: account_accountant.view_account_select_account_line_tree
+NEW ir.ui.view: account_accountant.view_select_account_search_bank_rec_widget

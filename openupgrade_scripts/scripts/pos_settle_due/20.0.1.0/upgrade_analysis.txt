@@ -1,0 +1,20 @@
+---Models in module 'pos_settle_due'---
+---Fields in module 'pos_settle_due'---
+pos_settle_due / account.move             / pos_amount_unsettled (float)  : DEL
+pos_settle_due / account.move             / pos_order_line_ids (one2many) : DEL relation: pos.order.line
+pos_settle_due / pos.config               / deposit_product_id (many2one) : DEL relation: product.product
+pos_settle_due / pos.config               / settle_due_product_id (many2one): DEL relation: product.product
+pos_settle_due / pos.config               / settle_invoice_product_id (many2one): DEL relation: product.product
+pos_settle_due / pos.order                / commercial_partner_id (many2one): DEL relation: res.partner
+pos_settle_due / pos.order                / customer_due_total (float)    : DEL
+pos_settle_due / pos.order                / init_customer_due_total (float): DEL
+pos_settle_due / pos.order                / settled_order_line_ids (one2many): DEL relation: pos.order.line
+pos_settle_due / pos.order                / settled_orders_count (integer): DEL
+pos_settle_due / pos.order.line           / settled_invoice_id (many2one) : DEL relation: account.move
+pos_settle_due / pos.order.line           / settled_order_id (many2one)   : DEL relation: pos.order
+---XML records in module 'pos_settle_due'---
+DEL ir.ui.view: pos_settle_due.customer_due_pos_order_list_view
+DEL ir.ui.view: pos_settle_due.pos_order_form_inherit_pos_settle_due
+DEL product.product: pos_settle_due.product_product_deposit (noupdate)
+DEL product.product: pos_settle_due.product_product_settle (noupdate)
+DEL product.product: pos_settle_due.product_product_settle_invoice (noupdate)

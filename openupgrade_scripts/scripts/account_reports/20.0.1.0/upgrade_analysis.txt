@@ -1,0 +1,345 @@
+---Models in module 'account_reports'---
+obsolete model account.ec.sales.report.handler [abstract]
+new model account.ec.sales.report.handler.common [abstract]
+new model account.ec.sales.with.tags.report.handler [abstract]
+new model account.ec.sales.with.taxes.report.handler [abstract]
+new model account.executive.summary.report.handler [abstract]
+new model account.interco.comparison.report.handler [abstract]
+new model account.report.snapshot
+new model account.return.audit.cycle
+---Fields in module 'account_reports'---
+account_reports / account.report           / force_pdf_engine (selection)  : NEW selection_keys: function
+account_reports / account.report           / snapshot_ids (one2many)       : NEW relation: account.report.snapshot
+account_reports / account.report.snapshot  / company_id (many2one)         : NEW relation: res.company, required
+account_reports / account.report.snapshot  / date (date)                   : NEW required
+account_reports / account.report.snapshot  / date_scope (char)             : NEW required
+account_reports / account.report.snapshot  / engine_func (char)            : NEW required
+account_reports / account.report.snapshot  / engine_version (integer)      : NEW required
+account_reports / account.report.snapshot  / groupby (char)                : NEW
+account_reports / account.report.snapshot  / report_id (many2one)          : NEW relation: account.report, required
+account_reports / account.report.snapshot  / result (json)                 : NEW required
+account_reports / account.report.snapshot  / serialized_formulas_dict (json): NEW required
+account_reports / account.report.snapshot  / serialized_options (json)     : NEW required
+account_reports / account.return           / cycle_ids (many2many)         : NEW relation: account.return.audit.cycle
+account_reports / account.return           / generic_state_only_pay (selection): selection_keys removed: [new]
+account_reports / account.return           / generic_state_review (selection): selection_keys removed: [new]
+account_reports / account.return           / generic_state_review_submit (selection): selection_keys removed: [new]
+account_reports / account.return           / generic_state_tax_report (selection): selection_keys removed: [new]
+account_reports / account.return           / skipped_check_cycles (char)   : DEL
+account_reports / account.return           / website_message_ids (one2many): DEL relation: mail.message
+account_reports / account.return.audit.cycle / code (char)                   : NEW required
+account_reports / account.return.audit.cycle / name (char)                   : NEW required, translate
+account_reports / account.return.check     / message (text)                : type is now 'html' ('text')
+account_reports / account.return.check     / notes (text)                  : NEW
+account_reports / account.return.check.template / cycle (selection)             : DEL required, selection_keys: ['equity', 'fixed_assets', 'inventory', 'operating_expenses', 'other', 'payroll', 'purchases', 'regulatory_compliance', 'sales', 'state', 'treasury_financing']
+account_reports / account.return.check.template / cycle_id (many2one)           : NEW relation: account.return.audit.cycle, required, hasdefault: default
+account_reports / account.return.check.template / model (selection)             : selection_keys added: [account.account] (most likely nothing to do)
+account_reports / account.return.type      / active_fallback (boolean)     : NEW hasdefault: default
+account_reports / account.return.type      / active_selection (selection)  : NEW selection_keys: ['False', 'True']
+account_reports / account.return.type      / company_advance_tax_payment_account_id (many2one): NEW relation: account.account
+account_reports / account.return.type      / company_tax_payable_account_id (many2one): NEW relation: account.account
+account_reports / account.return.type      / company_tax_receivable_account_id (many2one): NEW relation: account.account
+account_reports / account.return.type      / payment_partner_bank_id (many2one): now a function
+account_reports / account.return.type      / payment_partner_id (many2one) : is now stored
+account_reports / account.return.type      / payment_partner_id (many2one) : not related anymore
+account_reports / account.return.type      / states_workflow (selection)   : now required
+account_reports / account.return.type      / tax_closing_rounding_loss_account_id (many2one): NEW relation: account.account
+account_reports / account.return.type      / tax_closing_rounding_profit_account_id (many2one): NEW relation: account.account
+account_reports / account.return.type      / website_message_ids (one2many): DEL relation: mail.message
+account_reports / res.company              / account_reports_negative_format (selection): NEW selection_keys: ['minus_before', 'parentheses'], hasdefault: default
+---XML records in module 'account_reports'---
+NEW account.report: account_reports.interco_comparison_report
+NEW account.report.column: account_reports.followup_report_amount_currency
+NEW account.report.column: account_reports.followup_report_amount_residual
+NEW account.report.column: account_reports.followup_report_amount_residual_currency
+NEW account.report.column: account_reports.followup_report_follow_up
+NEW account.report.column: account_reports.interco_comparison_counterpart
+NEW account.report.column: account_reports.interco_comparison_difference
+NEW account.report.column: account_reports.interco_comparison_main_company
+DEL account.report.column: account_reports.bank_reconciliation_report_currency
+DEL account.report.column: account_reports.customer_statement_report_balance
+DEL account.report.column: account_reports.followup_report_report_amount_currency
+DEL account.report.column: account_reports.followup_report_report_balance
+DEL account.report.column: account_reports.journal_report_code
+NEW account.report.expression: account_reports.account_financial_report_current_liabilities_credit_card_balance
+NEW account.report.expression: account_reports.account_report_expression_cta
+NEW account.report.expression: account_reports.customer_statement_report_expression_amount
+NEW account.report.expression: account_reports.customer_statement_report_expression_amount_currency
+NEW account.report.expression: account_reports.customer_statement_report_expression_currency_amount_currency
+NEW account.report.expression: account_reports.customer_statement_report_expression_date
+NEW account.report.expression: account_reports.customer_statement_report_expression_invoice_date
+NEW account.report.expression: account_reports.ec_sales_report_generic_line_balance
+NEW account.report.expression: account_reports.ec_sales_report_generic_line_country_code
+NEW account.report.expression: account_reports.ec_sales_report_generic_line_vat_number
+NEW account.report.expression: account_reports.ending_balance_amount
+NEW account.report.expression: account_reports.ending_balance_forced_currency_amount
+NEW account.report.expression: account_reports.followup_report_expression_amount
+NEW account.report.expression: account_reports.followup_report_expression_amount_currency
+NEW account.report.expression: account_reports.followup_report_expression_amount_residual
+NEW account.report.expression: account_reports.followup_report_expression_amount_residual_currency
+NEW account.report.expression: account_reports.followup_report_expression_date
+NEW account.report.expression: account_reports.followup_report_expression_invoice_date
+NEW account.report.expression: account_reports.followup_report_expression_no_followup
+NEW account.report.expression: account_reports.folluwup_report_expression_currency_amount_currency
+NEW account.report.expression: account_reports.folluwup_report_expression_currency_amount_residual_currency
+NEW account.report.expression: account_reports.general_ledger_line_init_amount_currency
+NEW account.report.expression: account_reports.general_ledger_line_init_balance
+NEW account.report.expression: account_reports.general_ledger_line_init_credit
+NEW account.report.expression: account_reports.general_ledger_line_init_debit
+NEW account.report.expression: account_reports.general_ledger_line_period_amount_currency
+NEW account.report.expression: account_reports.general_ledger_line_period_balance
+NEW account.report.expression: account_reports.general_ledger_line_period_credit
+NEW account.report.expression: account_reports.general_ledger_line_period_debit
+NEW account.report.expression: account_reports.gl_balance_amount
+NEW account.report.expression: account_reports.gl_balance_forced_currency_amount
+NEW account.report.expression: account_reports.interco_comparison_line_counterpart
+NEW account.report.expression: account_reports.interco_comparison_line_difference
+NEW account.report.expression: account_reports.interco_comparison_line_main_company
+NEW account.report.expression: account_reports.misc_operations_amount_currency
+NEW account.report.expression: account_reports.misc_operations_date
+NEW account.report.expression: account_reports.misc_operations_forced_currency_amount
+NEW account.report.expression: account_reports.misc_operations_forced_currency_amount_currency
+NEW account.report.expression: account_reports.misc_operations_label
+NEW account.report.expression: account_reports.partner_ledger_report_expression_account_code
+NEW account.report.expression: account_reports.partner_ledger_report_expression_amount_currency
+NEW account.report.expression: account_reports.partner_ledger_report_expression_balance
+NEW account.report.expression: account_reports.partner_ledger_report_expression_credit
+NEW account.report.expression: account_reports.partner_ledger_report_expression_currency_amount_currency
+NEW account.report.expression: account_reports.partner_ledger_report_expression_currency_residual_currency_at_date
+NEW account.report.expression: account_reports.partner_ledger_report_expression_date_maturity
+NEW account.report.expression: account_reports.partner_ledger_report_expression_debit
+NEW account.report.expression: account_reports.partner_ledger_report_expression_init_balance
+NEW account.report.expression: account_reports.partner_ledger_report_expression_invoice_date
+NEW account.report.expression: account_reports.partner_ledger_report_expression_journal_code
+NEW account.report.expression: account_reports.partner_ledger_report_expression_matching_number
+NEW account.report.expression: account_reports.partner_ledger_report_expression_period_balance
+NEW account.report.expression: account_reports.reconciled_payments_amount
+NEW account.report.expression: account_reports.reconciled_payments_amount_currency
+NEW account.report.expression: account_reports.reconciled_payments_date
+NEW account.report.expression: account_reports.reconciled_payments_forced_currency_amount
+NEW account.report.expression: account_reports.reconciled_payments_forced_currency_amount_currency
+NEW account.report.expression: account_reports.reconciled_payments_label
+NEW account.report.expression: account_reports.reconciled_receipts_amount
+NEW account.report.expression: account_reports.reconciled_receipts_amount_currency
+NEW account.report.expression: account_reports.reconciled_receipts_date
+NEW account.report.expression: account_reports.reconciled_receipts_forced_currency_amount
+NEW account.report.expression: account_reports.reconciled_receipts_forced_currency_amount_currency
+NEW account.report.expression: account_reports.reconciled_receipts_label
+NEW account.report.expression: account_reports.reconciled_transactions_amount
+NEW account.report.expression: account_reports.reconciled_transactions_forced_currency_amount
+NEW account.report.expression: account_reports.starting_balance_amount
+NEW account.report.expression: account_reports.starting_balance_forced_currency_amount
+NEW account.report.expression: account_reports.unreconciled_payments_amount
+NEW account.report.expression: account_reports.unreconciled_payments_amount_currency
+NEW account.report.expression: account_reports.unreconciled_payments_date
+NEW account.report.expression: account_reports.unreconciled_payments_forced_currency_amount
+NEW account.report.expression: account_reports.unreconciled_payments_forced_currency_amount_currency
+NEW account.report.expression: account_reports.unreconciled_payments_label
+NEW account.report.expression: account_reports.unreconciled_receipts_amount
+NEW account.report.expression: account_reports.unreconciled_receipts_amount_currency
+NEW account.report.expression: account_reports.unreconciled_receipts_date
+NEW account.report.expression: account_reports.unreconciled_receipts_forced_currency_amount
+NEW account.report.expression: account_reports.unreconciled_receipts_forced_currency_amount_currency
+NEW account.report.expression: account_reports.unreconciled_receipts_label
+NEW account.report.expression: account_reports.unreconciled_transactions_amount
+NEW account.report.expression: account_reports.unreconciled_transactions_forced_currency_amount
+DEL account.report.expression: account_reports.account_financial_report_net_profit_after_allocations0_balance
+DEL account.report.expression: account_reports.balance_bank_expr
+DEL account.report.expression: account_reports.balance_bank_expr_forced_currency_amount
+DEL account.report.expression: account_reports.last_statement_balance_amount
+DEL account.report.expression: account_reports.last_statement_balance_forced_currency_amount
+DEL account.report.expression: account_reports.misc_operations_amount_forced_currency_amount
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_amount
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_amount_currency
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_currency
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_date
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_forced_currency_amount
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_forced_currency_amount_currency
+DEL account.report.expression: account_reports.no_statement_unreconciled_payments_label
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_amount
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_amount_currency
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_currency
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_date
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_forced_currency_amount
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_forced_currency_amount_currency
+DEL account.report.expression: account_reports.no_statement_unreconciled_receipt_label
+DEL account.report.expression: account_reports.outstanding_payments_currency
+DEL account.report.expression: account_reports.outstanding_receipts_currency
+DEL account.report.expression: account_reports.transaction_without_statement_expr
+DEL account.report.expression: account_reports.transaction_without_statement_expr_forced_currency_amount
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_amount
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_amount_currency
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_currency
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_date
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_forced_currency_amount
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_forced_currency_amount_currency
+DEL account.report.expression: account_reports.unreconciled_last_statement_payments_label
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_amount
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_amount_currency
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_currency
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_date
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_forced_currency_amount
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_forced_currency_amount_currency
+DEL account.report.expression: account_reports.unreconciled_last_statement_receipts_label
+NEW account.report.horizontal.group: account_reports.horizontal_group_ledger
+NEW account.report.horizontal.group.rule: account_reports.horizontal_group_ledger_rule
+NEW account.report.line: account_reports.account_financial_report_cumulative_translation_adjustments
+NEW account.report.line: account_reports.account_financial_report_current_liabilities_credit_card
+NEW account.report.line: account_reports.account_financial_report_other_comprehensive_income
+NEW account.report.line: account_reports.bank_name
+NEW account.report.line: account_reports.customer_statement_report_line
+NEW account.report.line: account_reports.ec_sales_report_generic_line
+NEW account.report.line: account_reports.ending_balance
+NEW account.report.line: account_reports.followup_report_line
+NEW account.report.line: account_reports.gl_balance
+NEW account.report.line: account_reports.interco_comparison_line
+NEW account.report.line: account_reports.partner_ledger_report_line
+NEW account.report.line: account_reports.reconciled_payments
+NEW account.report.line: account_reports.reconciled_receipts
+NEW account.report.line: account_reports.reconciled_transactions
+NEW account.report.line: account_reports.starting_balance
+NEW account.report.line: account_reports.unreconciled_payments
+NEW account.report.line: account_reports.unreconciled_receipts
+NEW account.report.line: account_reports.unreconciled_transactions
+DEL account.report.line: account_reports.account_financial_report_net_profit_after_allocations0
+DEL account.report.line: account_reports.balance_bank
+DEL account.report.line: account_reports.last_statement_balance
+DEL account.report.line: account_reports.no_statement_unreconciled_payments
+DEL account.report.line: account_reports.no_statement_unreconciled_receipt
+DEL account.report.line: account_reports.transaction_without_statement
+DEL account.report.line: account_reports.unreconciled_last_statement_payments
+DEL account.report.line: account_reports.unreconciled_last_statement_receipts
+NEW account.return.audit.cycle: account_reports.audit_cycle_equity
+NEW account.return.audit.cycle: account_reports.audit_cycle_fixed_assets
+NEW account.return.audit.cycle: account_reports.audit_cycle_inventory
+NEW account.return.audit.cycle: account_reports.audit_cycle_operating_expenses
+NEW account.return.audit.cycle: account_reports.audit_cycle_other
+NEW account.return.audit.cycle: account_reports.audit_cycle_payroll
+NEW account.return.audit.cycle: account_reports.audit_cycle_purchases
+NEW account.return.audit.cycle: account_reports.audit_cycle_regulatory_compliance
+NEW account.return.audit.cycle: account_reports.audit_cycle_sales
+NEW account.return.audit.cycle: account_reports.audit_cycle_state
+NEW account.return.audit.cycle: account_reports.audit_cycle_treasury_financing
+NEW account.return.check.template: account_reports.account_return_check_template_bank_transaction_missing_document
+NEW ir.access: account_reports.access_account_audit_account_status_acc_user
+NEW ir.access: account_reports.access_account_multicurrency_revaluation_wizard
+NEW ir.access: account_reports.access_account_report_annotation
+NEW ir.access: account_reports.access_account_report_annotation_invoice
+NEW ir.access: account_reports.access_account_report_annotation_readonly
+NEW ir.access: account_reports.access_account_report_budget_ac_user
+NEW ir.access: account_reports.access_account_report_budget_item_ac_user
+NEW ir.access: account_reports.access_account_report_budget_item_readonly
+NEW ir.access: account_reports.access_account_report_budget_readonly
+NEW ir.access: account_reports.access_account_report_file_download_error_wizard
+NEW ir.access: account_reports.access_account_report_horizontal_group_ac_user
+NEW ir.access: account_reports.access_account_report_horizontal_group_readonly
+NEW ir.access: account_reports.access_account_report_horizontal_group_rule_ac_user
+NEW ir.access: account_reports.access_account_report_horizontal_group_rule_readonly
+NEW ir.access: account_reports.access_account_report_send
+NEW ir.access: account_reports.access_account_report_snapshot_readonly
+NEW ir.access: account_reports.access_account_reports_export_wizard
+NEW ir.access: account_reports.access_account_reports_export_wizard_format
+NEW ir.access: account_reports.access_account_return_acc_user
+NEW ir.access: account_reports.access_account_return_audit_cycle
+NEW ir.access: account_reports.access_account_return_audit_cycle_manager
+NEW ir.access: account_reports.access_account_return_basic
+NEW ir.access: account_reports.access_account_return_check_acc_user
+NEW ir.access: account_reports.access_account_return_check_readonly
+NEW ir.access: account_reports.access_account_return_check_template_acc_user
+NEW ir.access: account_reports.access_account_return_creation_wizard_acc_user
+NEW ir.access: account_reports.access_account_return_payment_wizard_acc_user
+NEW ir.access: account_reports.access_account_return_readonly
+NEW ir.access: account_reports.access_account_return_submission_wizard_acc_user
+NEW ir.access: account_reports.access_account_return_type_acc_manager
+NEW ir.access: account_reports.access_account_return_type_basic
+NEW ir.access: account_reports.access_account_return_type_readonly
+NEW ir.access: account_reports.access_account_tax_unit_manager
+NEW ir.access: account_reports.access_account_tax_unit_readonly
+NEW ir.access: account_reports.access_qr_code_payment_wizard_user
+NEW ir.access: account_reports.account_report_budget_company_rule
+NEW ir.access: account_reports.account_report_snapshot_rule
+NEW ir.access: account_reports.account_return_check_company_rule
+NEW ir.access: account_reports.account_return_check_read_company_rule
+NEW ir.access: account_reports.account_return_company_rule
+NEW ir.access: account_reports.account_return_read_company_rule
+ir.actions.act_window: account_reports.account_return_check_template_non_recoverable_vat_gross_accounting_action (deleted domain)
+ir.actions.act_window: account_reports.action_view_account_audit (deleted domain)
+ir.actions.act_window: account_reports.action_view_account_audit_checks (deleted domain)
+ir.actions.act_window: account_reports.action_view_account_return (deleted domain)
+NEW ir.actions.act_window: account_reports.interco_comparison_report_audit_action
+NEW ir.actions.client: account_reports.action_account_report_interco_comparison
+NEW ir.actions.server: account_reports.action_audit_custom_target
+NEW ir.actions.server: account_reports.action_audit_report
+NEW ir.cron: account_reports.ir_cron_create_snapshots
+NEW ir.cron: account_reports.ir_cron_garbage_collect_snapshots
+DEL ir.model.access: account_reports.access_account_audit_account_status_acc_user
+DEL ir.model.access: account_reports.access_account_multicurrency_revaluation_wizard
+DEL ir.model.access: account_reports.access_account_report_annotation
+DEL ir.model.access: account_reports.access_account_report_annotation_invoice
+DEL ir.model.access: account_reports.access_account_report_annotation_readonly
+DEL ir.model.access: account_reports.access_account_report_budget_ac_user
+DEL ir.model.access: account_reports.access_account_report_budget_basic
+DEL ir.model.access: account_reports.access_account_report_budget_item_ac_user
+DEL ir.model.access: account_reports.access_account_report_budget_item_readonly
+DEL ir.model.access: account_reports.access_account_report_budget_readonly
+DEL ir.model.access: account_reports.access_account_report_file_download_error_wizard
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_ac_user
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_basic
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_readonly
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_rule_ac_user
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_rule_basic
+DEL ir.model.access: account_reports.access_account_report_horizontal_group_rule_readonly
+DEL ir.model.access: account_reports.access_account_report_send
+DEL ir.model.access: account_reports.access_account_reports_export_wizard
+DEL ir.model.access: account_reports.access_account_reports_export_wizard_format
+DEL ir.model.access: account_reports.access_account_return_acc_user
+DEL ir.model.access: account_reports.access_account_return_basic
+DEL ir.model.access: account_reports.access_account_return_check_acc_user
+DEL ir.model.access: account_reports.access_account_return_check_basic
+DEL ir.model.access: account_reports.access_account_return_check_readonly
+DEL ir.model.access: account_reports.access_account_return_check_template_acc_user
+DEL ir.model.access: account_reports.access_account_return_creation_wizard_acc_user
+DEL ir.model.access: account_reports.access_account_return_payment_wizard_acc_user
+DEL ir.model.access: account_reports.access_account_return_readonly
+DEL ir.model.access: account_reports.access_account_return_submission_wizard_acc_user
+DEL ir.model.access: account_reports.access_account_return_type_acc_manager
+DEL ir.model.access: account_reports.access_account_return_type_basic
+DEL ir.model.access: account_reports.access_account_return_type_readonly
+DEL ir.model.access: account_reports.access_account_tax_unit_basic
+DEL ir.model.access: account_reports.access_account_tax_unit_manager
+DEL ir.model.access: account_reports.access_account_tax_unit_readonly
+DEL ir.model.access: account_reports.access_qr_code_payment_wizard_user
+ir.model.constraint: account_reports.constraint_account_report_horizontal_group_name_uniq (changed definition: is now 'False' ('unique (name)'))
+NEW ir.model.constraint: account_reports.constraint_account_report_snapshot_unique
+NEW ir.model.constraint: account_reports.constraint_account_return_audit_cycle_code_uniq
+NEW ir.model.constraint: account_reports.constraint_account_return_check_unique_code_per_return
+DEL ir.rule: account_reports.account_return_check_company_rule
+DEL ir.rule: account_reports.account_return_company_rule
+DEL ir.rule: account_reports.account_return_read_company_rule
+NEW ir.ui.menu: account_reports.menu_action_account_report_annual_statements
+NEW ir.ui.menu: account_reports.menu_action_account_report_customer_statement
+NEW ir.ui.menu: account_reports.menu_action_stock_account_report_stock_valuation [renamed from stock_accountant module]
+DEL ir.ui.menu: account_reports.account_reports_audit_menu [renamed to accountant module]
+DEL ir.ui.menu: account_reports.menu_action_account_report_balance_sheet [renamed to accountant module]
+DEL ir.ui.menu: account_reports.menu_action_account_report_cash_flow [renamed to accountant module]
+DEL ir.ui.menu: account_reports.menu_action_account_report_coa [renamed to accountant module]
+DEL ir.ui.menu: account_reports.menu_action_account_report_exec_summary [renamed to accountant module]
+DEL ir.ui.menu: account_reports.menu_action_account_report_general_ledger [renamed to accountant module]
+DEL ir.ui.menu: account_reports.menu_action_account_report_gt [renamed to accountant module]
+DEL ir.ui.menu: account_reports.menu_action_account_report_profit_and_loss [renamed to accountant module]
+NEW ir.ui.view: account_reports.account_audit_form_view
+NEW ir.ui.view: account_reports.audit_pdf_export_main
+NEW ir.ui.view: account_reports.audit_pdf_export_main_table_body
+NEW ir.ui.view: account_reports.audit_pdf_export_main_table_header
+NEW ir.ui.view: account_reports.duplicate_vat_partner_tree_view
+NEW ir.ui.view: account_reports.interco_comparison_report_audit_view
+NEW ir.ui.view: account_reports.snpashots_list_view
+NEW ir.ui.view: account_reports.view_audit_check_invoices_list
+NEW ir.ui.view: account_reports.view_audit_move_line_filter
+NEW ir.ui.view: account_reports.view_audit_move_line_list
+NEW ir.ui.view: account_reports.view_cumulative_translation_adjustment_audit_tree
+NEW ir.ui.view: account_reports.view_move_line_account
+NEW ir.ui.view: account_reports.view_multi_currency_report_audit
+DEL ir.ui.view: account_reports.duplicated_vat_partner_tree_view
+DEL ir.ui.view: account_reports.view_draft_entries_tree
+NEW mail.template: account_reports.email_template_tax_return_deadline

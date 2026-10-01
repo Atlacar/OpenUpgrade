@@ -1,0 +1,13 @@
+---Models in module 'pos_event'---
+---Fields in module 'pos_event'---
+pos_event    / event.registration       / uuid (char)                   : NEW
+pos_event    / event.registration.answer / uuid (char)                   : NEW
+---XML records in module 'pos_event'---
+NEW ir.access: pos_event.access_event_event
+NEW ir.access: pos_event.access_event_event_ticket
+NEW ir.access: pos_event.access_event_registration
+DEL ir.model.access: pos_event.access_event_event
+DEL ir.model.access: pos_event.access_event_event_ticket
+DEL ir.model.access: pos_event.access_event_registration
+pos.category: pos_event.pos_category_event (noupdate switched)
+product.product: event_product.product_product_event (noupdate switched)

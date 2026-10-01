@@ -1,0 +1,6 @@
+---Models in module 'website_generator_sale'---
+---Fields in module 'website_generator_sale'---
+website_generator_sale / website_generator.request / ecommerce_platform (char)     : NEW hasdefault: default
+website_generator_sale / website_generator.request / import_products (boolean)     : NEW hasdefault: default
+---XML records in module 'website_generator_sale'---
+NEW ir.ui.view: website_generator_sale.import_products_shop

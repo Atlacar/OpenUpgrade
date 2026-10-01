@@ -1,0 +1,36 @@
+---Models in module 'account_online_synchronization'---
+---Fields in module 'account_online_synchronization'---
+account_online_synchronization / account.bank.statement.line / online_link_id (many2one)     : DEL relation: account.online.link
+account_online_synchronization / account.bank.statement.line / online_partner_information (char): DEL
+account_online_synchronization / account.online.link      / website_message_ids (one2many): DEL relation: mail.message
+account_online_synchronization / res.partner              / online_partner_information (char): DEL
+---XML records in module 'account_online_synchronization'---
+NEW ir.access: account_online_synchronization.access_account_bank_selection
+NEW ir.access: account_online_synchronization.access_account_bank_statement_line_transient
+NEW ir.access: account_online_synchronization.access_account_duplicate_transaction_wizard
+NEW ir.access: account_online_synchronization.access_account_missing_transaction_wizard
+NEW ir.access: account_online_synchronization.access_account_online_account_id
+NEW ir.access: account_online_synchronization.access_account_online_account_id_readonly
+NEW ir.access: account_online_synchronization.access_account_online_link_id
+NEW ir.access: account_online_synchronization.access_account_online_link_id_readonly
+NEW ir.access: account_online_synchronization.account_online_sync_account_rule
+NEW ir.access: account_online_synchronization.account_online_sync_link_rule
+ir.config_parameter: account_online_synchronization.config_online_sync_proxy_mode (noupdate switched)
+ir.config_parameter: account_online_synchronization.config_online_sync_request_timeout (noupdate switched)
+ir.cron: account_online_synchronization.online_sync_cron (noupdate switched)
+ir.cron: account_online_synchronization.online_sync_cron_waiting_synchronization (noupdate switched)
+ir.cron: account_online_synchronization.online_sync_mail_cron (noupdate switched)
+ir.cron: account_online_synchronization.online_sync_unused_connection_cron (noupdate switched)
+DEL ir.model.access: account_online_synchronization.access_account_bank_selection
+DEL ir.model.access: account_online_synchronization.access_account_bank_selection_manager
+DEL ir.model.access: account_online_synchronization.access_account_bank_statement_line_transient
+DEL ir.model.access: account_online_synchronization.access_account_duplicate_transaction_wizard
+DEL ir.model.access: account_online_synchronization.access_account_missing_transaction_wizard
+DEL ir.model.access: account_online_synchronization.access_account_online_account_id
+DEL ir.model.access: account_online_synchronization.access_account_online_account_id_manager
+DEL ir.model.access: account_online_synchronization.access_account_online_account_id_readonly
+DEL ir.model.access: account_online_synchronization.access_account_online_link_id
+DEL ir.model.access: account_online_synchronization.access_account_online_link_id_manager
+DEL ir.model.access: account_online_synchronization.access_account_online_link_id_readonly
+DEL ir.rule: account_online_synchronization.account_online_sync_account_rule (noupdate)
+DEL ir.rule: account_online_synchronization.account_online_sync_link_rule (noupdate)

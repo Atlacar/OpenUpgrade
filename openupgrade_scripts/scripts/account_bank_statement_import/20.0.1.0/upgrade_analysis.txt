@@ -1,0 +1,4 @@
+---Models in module 'account_bank_statement_import'---
+---Fields in module 'account_bank_statement_import'---
+---XML records in module 'account_bank_statement_import'---
+ir.model.constraint: account_bank_statement_import.constraint_account_bank_statement_line_unique_import_id (changed definition: is now 'False' ('unique (unique_import_id)'))

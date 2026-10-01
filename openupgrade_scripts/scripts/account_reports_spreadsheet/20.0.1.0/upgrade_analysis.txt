@@ -1,0 +1,15 @@
+---Models in module 'account_reports_spreadsheet'---
+new model account.working.file.sheet
+---Fields in module 'account_reports_spreadsheet'---
+account_reports_spreadsheet / account.return           / working_file_sheet_id (many2one): NEW relation: account.working.file.sheet
+account_reports_spreadsheet / account.working.file.sheet / return_id (one2many)          : NEW relation: account.return
+account_reports_spreadsheet / account.working.file.sheet / spreadsheet_binary_data (binary): NEW attachment: True, hasdefault: default
+account_reports_spreadsheet / account.working.file.sheet / spreadsheet_image_ids (many2many): NEW relation: ir.attachment
+account_reports_spreadsheet / account.working.file.sheet / spreadsheet_revision_ids (one2many): NEW relation: spreadsheet.revision
+account_reports_spreadsheet / account.working.file.sheet / spreadsheet_snapshot (binary) : NEW attachment: True
+account_reports_spreadsheet / account.working.file.sheet / thumbnail (binary)            : NEW attachment: True
+---XML records in module 'account_reports_spreadsheet'---
+NEW ir.access: account_reports_spreadsheet.access_account_working_file_sheet_accountant
+NEW ir.access: account_reports_spreadsheet.access_account_working_file_sheet_readonly
+NEW ir.embedded.actions: account_reports_spreadsheet.account_audit_spreadsheet_embedded_action
+NEW ir.model.constraint: account_reports_spreadsheet.constraint_account_return_working_file_sheet_unique

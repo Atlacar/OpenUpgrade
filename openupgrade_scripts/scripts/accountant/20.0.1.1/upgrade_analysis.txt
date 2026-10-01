@@ -1,0 +1,13 @@
+---Models in module 'accountant'---
+---Fields in module 'accountant'---
+---XML records in module 'accountant'---
+NEW ir.ui.menu: accountant.account_reports_audit_menu [renamed from account_reports module]
+NEW ir.ui.menu: accountant.menu_action_account_report_balance_sheet [renamed from account_reports module]
+NEW ir.ui.menu: accountant.menu_action_account_report_cash_flow [renamed from account_reports module]
+NEW ir.ui.menu: accountant.menu_action_account_report_coa [renamed from account_reports module]
+NEW ir.ui.menu: accountant.menu_action_account_report_exec_summary [renamed from account_reports module]
+NEW ir.ui.menu: accountant.menu_action_account_report_general_ledger [renamed from account_reports module]
+NEW ir.ui.menu: accountant.menu_action_account_report_gt [renamed from account_reports module]
+NEW ir.ui.menu: accountant.menu_action_account_report_profit_and_loss [renamed from account_reports module]
+res.users: base.user_admin (noupdate switched)
+res.users: base.user_root (noupdate switched)

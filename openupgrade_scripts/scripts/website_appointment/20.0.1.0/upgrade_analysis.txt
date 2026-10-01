@@ -1,0 +1,36 @@
+---Models in module 'website_appointment'---
+---Fields in module 'website_appointment'---
+website_appointment / appointment.invite       / publish_on (datetime)         : NEW
+website_appointment / appointment.invite       / published_date (datetime)     : NEW
+website_appointment / appointment.type         / publish_on (datetime)         : NEW
+website_appointment / appointment.type         / published_date (datetime)     : NEW
+website_appointment / website.track            / appointment_type_id (many2one): NEW relation: appointment.type
+---XML records in module 'website_appointment'---
+NEW ir.access: website_appointment.appointment_type_rule_public
+NEW ir.actions.act_window: website_appointment.website_appointment_visitor_appointment_type_action
+DEL ir.model.access: website_appointment.access_appointment_type_portal
+DEL ir.model.access: website_appointment.access_appointment_type_public
+DEL ir.rule: website_appointment.appointment_type_rule_public (noupdate)
+NEW ir.ui.view: website_appointment.appointment_card
+NEW ir.ui.view: website_appointment.appointment_entity_card_selection
+NEW ir.ui.view: website_appointment.appointment_list_item
+NEW ir.ui.view: website_appointment.appointment_picture_item
+NEW ir.ui.view: website_appointment.appointments_pictures
+NEW ir.ui.view: website_appointment.appointments_selection_layout
+NEW ir.ui.view: website_appointment.opt_appointments_index_cards
+NEW ir.ui.view: website_appointment.opt_appointments_index_pictures
+NEW ir.ui.view: website_appointment.s_appointments_carousel
+NEW ir.ui.view: website_appointment.s_appointments_carousel_preview_card
+NEW ir.ui.view: website_appointment.s_appointments_carousel_preview_data
+NEW ir.ui.view: website_appointment.website_appointment_visitor_page_view_search
+NEW ir.ui.view: website_appointment.website_appointment_visitor_page_view_tree
+NEW ir.ui.view: website_appointment.website_appointment_visitor_track_view_tree
+NEW ir.ui.view: website_appointment.website_appointment_visitor_view_form
+NEW ir.ui.view: website_appointment.website_appointment_visitor_view_tree
+DEL ir.ui.view: website_appointment.appointment_booking_resource_description
+DEL ir.ui.view: website_appointment.appointment_progress_bar
+DEL ir.ui.view: website_appointment.appointment_select_operator
+DEL ir.ui.view: website_appointment.appointments_cards_layout
+DEL ir.ui.view: website_appointment.appointments_list_layout
+DEL ir.ui.view: website_appointment.opt_appointments_list_cards
+website.menu: website_appointment.menu_appointment (noupdate switched)

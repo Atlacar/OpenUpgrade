@@ -1,0 +1,8 @@
+---Models in module 'web_map'---
+---Fields in module 'web_map'---
+web_map      / ir.actions.act_window.view / view_mode (False)             : selection_keys added: [activity] (most likely nothing to do)
+web_map      / ir.ui.view               / type (False)                  : selection_keys added: [activity, card] (most likely nothing to do)
+web_map      / res.partner              / contact_address_complete (char): module is now 'web_enterprise' ('web_map')
+web_map      / res.users                / contact_address_complete (char): module is now 'web_enterprise' ('web_map')
+---XML records in module 'web_map'---
+DEL ir.ui.view: web_map.res_config_settings_view_form

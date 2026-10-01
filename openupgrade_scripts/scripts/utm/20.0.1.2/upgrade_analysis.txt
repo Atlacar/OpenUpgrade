@@ -1,0 +1,55 @@
+---Models in module 'utm'---
+obsolete model utm.source.mixin [abstract]
+---Fields in module 'utm'---
+---XML records in module 'utm'---
+NEW ir.access: utm.access_utm_campaign_system
+NEW ir.access: utm.access_utm_campaign_user
+NEW ir.access: utm.access_utm_medium_system
+NEW ir.access: utm.access_utm_medium_user
+NEW ir.access: utm.access_utm_source_system
+NEW ir.access: utm.access_utm_source_user
+NEW ir.access: utm.access_utm_stage_system
+NEW ir.access: utm.access_utm_stage_user
+NEW ir.access: utm.access_utm_tag_system
+NEW ir.access: utm.access_utm_tag_user
+DEL ir.model.access: utm.access_utm_campaign_system
+DEL ir.model.access: utm.access_utm_campaign_user
+DEL ir.model.access: utm.access_utm_medium_system
+DEL ir.model.access: utm.access_utm_medium_user
+DEL ir.model.access: utm.access_utm_source_system
+DEL ir.model.access: utm.access_utm_source_user
+DEL ir.model.access: utm.access_utm_stage_system
+DEL ir.model.access: utm.access_utm_stage_user
+DEL ir.model.access: utm.access_utm_tag_system
+DEL ir.model.access: utm.access_utm_tag_user
+ir.model.constraint: utm.constraint_utm_campaign_unique_name (changed definition: is now 'False' ('UNIQUE(name)'))
+ir.model.constraint: utm.constraint_utm_medium_unique_name (changed definition: is now 'False' ('UNIQUE(name)'))
+ir.model.constraint: utm.constraint_utm_source_unique_name (changed definition: is now 'False' ('UNIQUE(name)'))
+ir.model.constraint: utm.constraint_utm_tag_name_uniq (changed definition: is now 'False' ('unique (name)'))
+utm.medium: utm.utm_medium_direct (noupdate switched)
+utm.medium: utm.utm_medium_email (noupdate switched)
+NEW utm.medium: utm.utm_medium_messaging
+utm.medium: utm.utm_medium_phone (noupdate switched)
+NEW utm.medium: utm.utm_medium_social_media
+utm.medium: utm.utm_medium_website (noupdate switched)
+DEL utm.medium: utm.utm_medium_banner (noupdate)
+DEL utm.medium: utm.utm_medium_facebook (noupdate)
+DEL utm.medium: utm.utm_medium_google_adwords (noupdate)
+DEL utm.medium: utm.utm_medium_linkedin (noupdate)
+DEL utm.medium: utm.utm_medium_television (noupdate)
+DEL utm.medium: utm.utm_medium_twitter (noupdate)
+utm.source: utm.utm_source_craigslist (noupdate switched)
+utm.source: utm.utm_source_facebook (noupdate switched)
+utm.source: utm.utm_source_glassdoor (noupdate switched)
+NEW utm.source: utm.utm_source_google
+NEW utm.source: utm.utm_source_instagram
+utm.source: utm.utm_source_linkedin (noupdate switched)
+NEW utm.source: utm.utm_source_livechat
+utm.source: utm.utm_source_mailing (noupdate switched)
+utm.source: utm.utm_source_monster (noupdate switched)
+utm.source: utm.utm_source_newsletter (noupdate switched)
+utm.source: utm.utm_source_referral (noupdate switched)
+NEW utm.source: utm.utm_source_survey
+utm.source: utm.utm_source_twitter (noupdate switched)
+NEW utm.source: utm.utm_source_youtube
+DEL utm.source: utm.utm_source_search_engine (noupdate)

@@ -1,0 +1,1424 @@
+---Models in module 'base'---
+obsolete model ir.model.access (merged to ir.access)
+obsolete model ir.rule (merged to ir.access)
+obsolete model res.bank
+new model clearing.label
+new model ir.access
+new model ir.profile.query
+new model res.session [sql_view]
+model website (moved from website)
+---Fields in module 'base'---
+base         / clearing.label           / country_id (many2one)         : NEW relation: res.country
+base         / clearing.label           / name (char)                   : NEW required
+base         / ir.access                / active (boolean)              : NEW hasdefault: default
+base         / ir.access                / domain (char)                 : NEW
+base         / ir.access                / group_id (many2one)           : NEW relation: res.groups
+base         / ir.access                / model_id (many2one)           : NEW relation: ir.model, required
+base         / ir.access                / name (char)                   : NEW required
+base         / ir.access                / note (html)                   : NEW
+base         / ir.access                / operation (selection)         : NEW required, selection_keys: ['c', 'cd', 'cr', 'crd', 'cru', 'crud', 'cu', 'cud', 'd', 'r', 'rd', 'ru', 'rud', 'u', 'ud']
+base         / ir.actions.act_url       / explanation (text)            : NEW
+base         / ir.actions.act_window    / explanation (text)            : NEW
+base         / ir.actions.act_window    / views (binary)                : type is now 'json' ('binary')
+base         / ir.actions.act_window_close / explanation (text)            : NEW
+base         / ir.actions.actions       / explanation (text)            : NEW
+base         / ir.actions.client        / explanation (text)            : NEW
+base         / ir.actions.client        / params (binary)               : type is now 'json' ('binary')
+base         / ir.actions.client        / params_store (binary)         : type is now 'text' ('binary')
+base         / ir.actions.report        / explanation (text)            : NEW
+base         / ir.actions.report        / report_file (char)            : DEL
+base         / ir.actions.report        / save_as_attachment (boolean)  : NEW
+base         / ir.actions.server        / explanation (text)            : NEW
+base         / ir.actions.server        / property_selection (char)     : NEW
+base         / ir.actions.server        / update_property (char)        : NEW hasdefault: compute
+base         / ir.actions.server        / value_field_to_show (selection): selection_keys added: [property_selection, x2many] (most likely nothing to do)
+base         / ir.exports               / export_language_ids (many2many): NEW relation: res.lang
+base         / ir.exports.line          / _order                        : _order is now 'sequence, id' ('id')
+base         / ir.exports.line          / sequence (integer)            : NEW hasdefault: default
+base         / ir.mail_server           / max_email_size (float)        : DEL
+base         / ir.model                 / access_ids (one2many)         : relation is now 'ir.access' ('ir.model.access') [nothing to do]
+base         / ir.model                 / explanation (text)            : NEW
+base         / ir.model                 / rule_ids (one2many)           : DEL relation: ir.rule
+base         / ir.model.access          / active (boolean)              : DEL
+base         / ir.model.access          / group_id (many2one)           : DEL relation: res.groups
+base         / ir.model.access          / model_id (many2one)           : DEL relation: ir.model, required
+base         / ir.model.access          / name (char)                   : DEL required
+base         / ir.model.access          / perm_create (boolean)         : DEL
+base         / ir.model.access          / perm_read (boolean)           : DEL
+base         / ir.model.access          / perm_unlink (boolean)         : DEL
+base         / ir.model.access          / perm_write (boolean)          : DEL
+base         / ir.model.fields          / index (boolean)               : selection_keys is now '['btree', 'btree_not_null', 'trigram']' ('False')
+base         / ir.model.fields          / index (boolean)               : type is now 'selection' ('boolean')
+base         / ir.model.fields          / relation_model_field (char)   : NEW
+base         / ir.module.module         / iap_paid_service (boolean)    : NEW
+base         / ir.module.module         / test_data (boolean)           : NEW
+base         / ir.profile               / profile_query_ids (one2many)  : NEW relation: ir.profile.query
+base         / ir.profile               / traces_sync (text)            : DEL
+base         / ir.profile.query         / full_query (text)             : NEW required
+base         / ir.profile.query         / plan (text)                   : NEW
+base         / ir.profile.query         / profile_id (many2one)         : NEW relation: ir.profile, required
+base         / ir.profile.query         / query (text)                  : NEW
+base         / ir.profile.query         / time (float)                  : NEW
+base         / ir.rule                  / active (boolean)              : DEL
+base         / ir.rule                  / domain_force (text)           : DEL
+base         / ir.rule                  / global (boolean)              : DEL
+base         / ir.rule                  / groups (many2many)            : DEL relation: res.groups
+base         / ir.rule                  / model_id (many2one)           : DEL relation: ir.model, required
+base         / ir.rule                  / name (char)                   : DEL
+base         / ir.rule                  / perm_create (boolean)         : DEL
+base         / ir.rule                  / perm_read (boolean)           : DEL
+base         / ir.rule                  / perm_unlink (boolean)         : DEL
+base         / ir.rule                  / perm_write (boolean)          : DEL
+base         / ir.ui.view               / notes (html)                  : NEW
+base         / ir.ui.view               / technical_usage (selection)   : NEW selection_keys: []
+base         / ir.ui.view               / type (selection)              : selection_keys added: [card] (most likely nothing to do)
+base         / res.bank                 / active (boolean)              : DEL
+base         / res.bank                 / bic (char)                    : DEL
+base         / res.bank                 / city (char)                   : DEL
+base         / res.bank                 / country (many2one)            : DEL relation: res.country
+base         / res.bank                 / email (char)                  : DEL
+base         / res.bank                 / name (char)                   : DEL required
+base         / res.bank                 / phone (char)                  : DEL
+base         / res.bank                 / state (many2one)              : DEL relation: res.country.state
+base         / res.bank                 / street (char)                 : DEL
+base         / res.bank                 / street2 (char)                : DEL
+base         / res.bank                 / zip (char)                    : DEL
+base         / res.company              / font (selection)              : selection_keys added: [Noto_Sans_Mono], removed: [Fira_Mono]
+base         / res.company              / layout_background (selection) : DEL required, selection_keys: ['Blank', 'Custom', 'Demo logo']
+base         / res.company              / layout_background_image (binary): DEL attachment: True
+base         / res.company              / report_tables_id (selection)  : NEW selection_keys: ['bold', 'boxed', 'bubble', 'column', 'compact', 'light', 'striped'], hasdefault: default
+base         / res.country              / zip_applicability (selection) : NEW required, selection_keys: ['not_applicable', 'optional', 'required'], hasdefault: default
+base         / res.country              / zip_required (boolean)        : DEL
+base         / res.device.log           / browser (char)                : DEL
+base         / res.device.log           / device_type (selection)       : DEL selection_keys: ['computer', 'mobile']
+base         / res.device.log           / first_activity (datetime)     : now required
+base         / res.device.log           / ip_address (char)             : now required
+base         / res.device.log           / last_activity (datetime)      : now required
+base         / res.device.log           / platform (char)               : DEL
+base         / res.device.log           / user_agent (char)             : NEW required
+base         / res.device.log           / user_id (many2one)            : now required
+base         / res.device.log           / user_id (many2one)            : relation is now 'False' ('res.users') [nothing to do]
+base         / res.device.log           / user_id (many2one)            : type is now 'integer' ('many2one')
+base         / res.groups               / access_ids (one2many)         : NEW relation: ir.access
+base         / res.groups               / model_access (one2many)       : DEL relation: ir.model.access
+base         / res.groups               / rule_groups (many2many)       : DEL relation: ir.rule
+base         / res.groups.privilege     / description (text)            : now translatable
+base         / res.groups.privilege     / placeholder (char)            : now translatable
+base         / res.partner              / additional_identifiers (json) : NEW
+base         / res.partner              / commercial_company_name (char): not a function anymore
+base         / res.partner              / commercial_company_name (char): now related
+base         / res.partner              / company_name (char)           : DEL
+base         / res.partner              / company_registry (char)       : DEL
+base         / res.partner              / contact_address_inline (char) : previously in module mail
+base         / res.partner              / is_company (boolean)          : now a function
+base         / res.partner.bank         / acc_holder_name (char)        : DEL
+base         / res.partner.bank         / acc_number (char)             : DEL required
+base         / res.partner.bank         / account_number (char)         : NEW required
+base         / res.partner.bank         / bank_bic (char)               : is now stored
+base         / res.partner.bank         / bank_bic (char)               : not related anymore
+base         / res.partner.bank         / bank_id (many2one)            : DEL relation: res.bank
+base         / res.partner.bank         / bank_name (char)              : is now stored
+base         / res.partner.bank         / bank_name (char)              : not related anymore
+base         / res.partner.bank         / city (char)                   : NEW
+base         / res.partner.bank         / clearing_label_id (many2one)  : NEW relation: clearing.label, required, hasdefault: compute
+base         / res.partner.bank         / company_id (many2one)         : not related anymore
+base         / res.partner.bank         / country_id (many2one)         : NEW relation: res.country, hasdefault: compute
+base         / res.partner.bank         / currency_id (many2one)        : DEL relation: res.currency
+base         / res.partner.bank         / holder_name (char)            : NEW hasdefault: compute
+base         / res.partner.bank         / sanitized_acc_number (char)   : DEL
+base         / res.partner.bank         / sanitized_account_number (char): NEW isfunction: function, stored
+base         / res.partner.bank         / state_id (many2one)           : NEW relation: res.country.state
+base         / res.partner.bank         / street (char)                 : NEW
+base         / res.partner.bank         / street2 (char)                : NEW
+base         / res.partner.bank         / zip (char)                    : NEW
+base         / res.users                / contact_address_inline (char) : previously in module mail
+base         / res.users                / role (selection)              : selection_keys added: [light_user, regular_user], removed: [group_user]
+base         / res.users                / session_ids (one2many)        : NEW relation: res.session
+base         / website                  / _order                        : previously in module website
+base         / website                  / company_id (many2one)         : previously in module website
+base         / website                  / display_name (char)           : previously in module website
+base         / website                  / domain (char)                 : previously in module website
+base         / website                  / domain_punycode (char)        : previously in module website
+base         / website                  / name (char)                   : previously in module website
+base         / website                  / sequence (integer)            : previously in module website
+base         / website                  / user_id (many2one)            : previously in module website
+website      / website                  / domain_punycode (char)        : is now stored
+---XML records in module 'base'---
+NEW clearing.label: base.clearing_label_ae
+NEW clearing.label: base.clearing_label_all
+NEW clearing.label: base.clearing_label_au
+NEW clearing.label: base.clearing_label_ca
+NEW clearing.label: base.clearing_label_cl
+NEW clearing.label: base.clearing_label_hk
+NEW clearing.label: base.clearing_label_jp
+NEW clearing.label: base.clearing_label_mx
+NEW clearing.label: base.clearing_label_om
+NEW clearing.label: base.clearing_label_pe
+NEW clearing.label: base.clearing_label_sa
+NEW clearing.label: base.clearing_label_uk
+NEW clearing.label: base.clearing_label_us
+NEW ir.access: base.access_base_enable_profiling_wizard
+NEW ir.access: base.access_base_language_export
+NEW ir.access: base.access_base_language_import
+NEW ir.access: base.access_base_language_install
+NEW ir.access: base.access_base_module_uninstall
+NEW ir.access: base.access_base_module_update
+NEW ir.access: base.access_base_module_upgrade
+NEW ir.access: base.access_base_partner_merge_automatic_wizard
+NEW ir.access: base.access_base_partner_merge_line
+NEW ir.access: base.access_change_password_own
+NEW ir.access: base.access_change_password_user
+NEW ir.access: base.access_change_password_wizard
+NEW ir.access: base.access_clearing_label_group_everyone
+NEW ir.access: base.access_decimal_precision_config
+NEW ir.access: base.access_ir_access_group_erp_manager
+NEW ir.access: base.access_ir_actions_act_url_group_system
+NEW ir.access: base.access_ir_actions_act_window_close_group_system
+NEW ir.access: base.access_ir_actions_act_window_system
+NEW ir.access: base.access_ir_actions_act_window_view_group_system
+NEW ir.access: base.access_ir_actions_client
+NEW ir.access: base.access_ir_actions_group_system
+NEW ir.access: base.access_ir_actions_report_group_system
+NEW ir.access: base.access_ir_actions_server_group_system
+NEW ir.access: base.access_ir_actions_server_history_group_system
+NEW ir.access: base.access_ir_actions_todo_group_system
+NEW ir.access: base.access_ir_asset_group_system
+NEW ir.access: base.access_ir_config_parameter_system
+NEW ir.access: base.access_ir_cron_group_cron
+NEW ir.access: base.access_ir_cron_progress_group_cron
+NEW ir.access: base.access_ir_cron_trigger_group_cron
+NEW ir.access: base.access_ir_default_group_user
+NEW ir.access: base.access_ir_demo
+NEW ir.access: base.access_ir_demo_failure
+NEW ir.access: base.access_ir_demo_failure_wizard
+NEW ir.access: base.access_ir_embedded_actions_group_user
+NEW ir.access: base.access_ir_exports_group_system
+NEW ir.access: base.access_ir_exports_line_group_system
+NEW ir.access: base.access_ir_logging
+NEW ir.access: base.access_ir_mail_server
+NEW ir.access: base.access_ir_model_constraint_group_erp_manager
+NEW ir.access: base.access_ir_model_data_group_erp_manager
+NEW ir.access: base.access_ir_model_fields_group_erp_manager
+NEW ir.access: base.access_ir_model_fields_selection_group_erp_manager
+NEW ir.access: base.access_ir_model_group_erp_manager
+NEW ir.access: base.access_ir_model_relation_group_erp_manager
+NEW ir.access: base.access_ir_module_category_group_user
+NEW ir.access: base.access_ir_module_module_dependency_group_system
+NEW ir.access: base.access_ir_module_module_exclusion_group_system
+NEW ir.access: base.access_ir_module_module_group_user
+NEW ir.access: base.access_ir_profile
+NEW ir.access: base.access_ir_profile_query
+NEW ir.access: base.access_ir_sequence_date_range_group_system
+NEW ir.access: base.access_ir_sequence_date_range_group_user
+NEW ir.access: base.access_ir_sequence_group_system
+NEW ir.access: base.access_ir_sequence_group_user
+NEW ir.access: base.access_ir_ui_menu_group_system
+NEW ir.access: base.access_ir_ui_menu_group_user
+NEW ir.access: base.access_ir_ui_view_custom_group_user
+NEW ir.access: base.access_report_layout
+NEW ir.access: base.access_res_config
+NEW ir.access: base.access_res_config_settings
+NEW ir.access: base.access_res_country_group_all
+NEW ir.access: base.access_res_country_group_group_user
+NEW ir.access: base.access_res_country_group_system
+NEW ir.access: base.access_res_country_public
+NEW ir.access: base.access_res_country_state_group_user
+NEW ir.access: base.access_res_country_state_public
+NEW ir.access: base.access_res_currency_group_system
+NEW ir.access: base.access_res_currency_public
+NEW ir.access: base.access_res_currency_rate_group_system
+NEW ir.access: base.access_res_currency_rate_public
+NEW ir.access: base.access_res_groups_group_erp_manager
+NEW ir.access: base.access_res_groups_group_user
+NEW ir.access: base.access_res_groups_privilege_group_erp_manager
+NEW ir.access: base.access_res_groups_privilege_group_user
+NEW ir.access: base.access_res_lang_group_system
+NEW ir.access: base.access_res_lang_public
+NEW ir.access: base.access_res_partner_category_group_partner_manager
+NEW ir.access: base.access_res_partner_category_group_user
+NEW ir.access: base.access_res_partner_group_partner_manager
+NEW ir.access: base.access_res_partner_industry_group_system
+NEW ir.access: base.access_res_partner_industry_group_user
+NEW ir.access: base.access_res_users_apikeys_description_employee
+NEW ir.access: base.access_res_users_apikeys_description_portal
+NEW ir.access: base.access_res_users_apikeys_show_employee
+NEW ir.access: base.access_res_users_deletion_group_erp_manager
+NEW ir.access: base.access_res_users_identitycheck_employee
+NEW ir.access: base.access_res_users_identitycheck_portal
+NEW ir.access: base.access_res_users_log_system
+NEW ir.access: base.access_res_users_public
+NEW ir.access: base.access_reset_view_arch_wizard
+NEW ir.access: base.access_server_action_history_wizard
+NEW ir.access: base.access_website_public_public
+NEW ir.access: base.access_website_system
+NEW ir.access: base.access_wizard_ir_model_menu_create
+NEW ir.access: base.api_key_admin
+NEW ir.access: base.api_key_user
+NEW ir.access: base.api_key_user_1
+NEW ir.access: base.change_password_own_rule
+NEW ir.access: base.change_password_rule
+NEW ir.access: base.embedded_action_admin_delete_rule
+NEW ir.access: base.embedded_action_user_delete_rule
+NEW ir.access: base.ir_attachment_access_read_rule
+NEW ir.access: base.ir_attachment_public_rule
+NEW ir.access: base.ir_attachment_res_access_write
+NEW ir.access: base.ir_default_system_rule
+NEW ir.access: base.ir_default_user_rule
+NEW ir.access: base.ir_filters_admin_all_rights_rule
+NEW ir.access: base.ir_filters_employee_rule
+NEW ir.access: base.ir_filters_portal_public_rule
+NEW ir.access: base.ir_ui_view_custom_personal
+NEW ir.access: base.ir_ui_view_rule_system
+NEW ir.access: base.paperformat_access_employee
+NEW ir.access: base.paperformat_access_portal
+NEW ir.access: base.properties_base_definition_rule_admin
+NEW ir.access: base.res_company_rule_erp_manager
+NEW ir.access: base.res_company_rule_public
+NEW ir.access: base.res_currency_rate_rule
+NEW ir.access: base.res_partner_bank_rule
+NEW ir.access: base.res_partner_bank_rule_user
+NEW ir.access: base.res_partner_bank_rule_user_1
+NEW ir.access: base.res_partner_portal_public_rule
+NEW ir.access: base.res_partner_rule
+NEW ir.access: base.res_partner_rule_edit_all
+NEW ir.access: base.res_partner_rule_user
+NEW ir.access: base.res_partner_rule_write_self
+NEW ir.access: base.res_users_identity_check
+NEW ir.access: base.res_users_log_rule
+NEW ir.access: base.res_users_rule
+NEW ir.access: base.res_users_rule_edit_all
+NEW ir.access: base.res_users_rule_portal
+NEW ir.access: base.res_users_rule_read_all
+NEW ir.access: base.res_users_rule_write_self
+NEW ir.access: base.res_users_settings_rule_admin
+NEW ir.access: base.res_users_settings_rule_user
+NEW ir.access: base.user_device
+NEW ir.access: base.user_device_admin
+NEW ir.access: base.user_device_logs
+NEW ir.access: base.user_device_logs_admin
+NEW ir.access: base.user_session
+NEW ir.access: base.user_session_admin
+ir.actions.act_window: base.act_view_currency_rates (deleted domain)
+ir.actions.act_window: base.action_res_company_form (deleted domain)
+NEW ir.actions.act_window: base.action_user_session
+NEW ir.actions.act_window: base.ir_access_action
+ir.actions.act_window: base.ir_cron_act (deleted domain)
+ir.actions.act_window: base.open_module_tree (deleted domain)
+DEL ir.actions.act_window: base.action_res_bank_form
+DEL ir.actions.act_window: base.action_rule
+DEL ir.actions.act_window: base.ir_access_act
+NEW ir.actions.server: base.ir_actions_server_change_password_wizard
+NEW ir.actions.server: base.ir_profile_query_action_explain
+ir.config_parameter: base.default_max_email_size (noupdate switched)
+DEL ir.model.access: base.access_base_enable_profiling_wizard
+DEL ir.model.access: base.access_base_language_export
+DEL ir.model.access: base.access_base_language_import
+DEL ir.model.access: base.access_base_language_install
+DEL ir.model.access: base.access_base_module_uninstall
+DEL ir.model.access: base.access_base_module_update
+DEL ir.model.access: base.access_base_module_upgrade
+DEL ir.model.access: base.access_base_partner_merge_automatic_wizard
+DEL ir.model.access: base.access_base_partner_merge_line
+DEL ir.model.access: base.access_change_password_own
+DEL ir.model.access: base.access_change_password_user
+DEL ir.model.access: base.access_change_password_wizard
+DEL ir.model.access: base.access_decimal_precision_config
+DEL ir.model.access: base.access_ir_actions_act_url_group_system
+DEL ir.model.access: base.access_ir_actions_act_window_close_group_system
+DEL ir.model.access: base.access_ir_actions_act_window_system
+DEL ir.model.access: base.access_ir_actions_act_window_view_group_system
+DEL ir.model.access: base.access_ir_actions_client
+DEL ir.model.access: base.access_ir_actions_group_system
+DEL ir.model.access: base.access_ir_actions_report_group_system
+DEL ir.model.access: base.access_ir_actions_server_group_system
+DEL ir.model.access: base.access_ir_actions_server_history_group_system
+DEL ir.model.access: base.access_ir_actions_todo_group_system
+DEL ir.model.access: base.access_ir_asset_group_system
+DEL ir.model.access: base.access_ir_attachment_group_portal_public
+DEL ir.model.access: base.access_ir_attachment_group_user
+DEL ir.model.access: base.access_ir_config_parameter_system
+DEL ir.model.access: base.access_ir_cron_group_cron
+DEL ir.model.access: base.access_ir_cron_progress_group_cron
+DEL ir.model.access: base.access_ir_cron_trigger_group_cron
+DEL ir.model.access: base.access_ir_default_all
+DEL ir.model.access: base.access_ir_default_group_system
+DEL ir.model.access: base.access_ir_default_group_user
+DEL ir.model.access: base.access_ir_demo
+DEL ir.model.access: base.access_ir_demo_failure
+DEL ir.model.access: base.access_ir_demo_failure_wizard
+DEL ir.model.access: base.access_ir_embedded_actions_group_user
+DEL ir.model.access: base.access_ir_exports_group_system
+DEL ir.model.access: base.access_ir_exports_line_group_system
+DEL ir.model.access: base.access_ir_filter_erp_manager
+DEL ir.model.access: base.access_ir_filter_portal
+DEL ir.model.access: base.access_ir_filter_public
+DEL ir.model.access: base.access_ir_filter_user
+DEL ir.model.access: base.access_ir_logging
+DEL ir.model.access: base.access_ir_mail_server
+DEL ir.model.access: base.access_ir_model_access_group_erp_manager
+DEL ir.model.access: base.access_ir_model_constraint_group_erp_manager
+DEL ir.model.access: base.access_ir_model_data_group_erp_manager
+DEL ir.model.access: base.access_ir_model_data_user
+DEL ir.model.access: base.access_ir_model_fields_group_erp_manager
+DEL ir.model.access: base.access_ir_model_fields_selection_group_erp_manager
+DEL ir.model.access: base.access_ir_model_fields_selection_user
+DEL ir.model.access: base.access_ir_model_fields_user
+DEL ir.model.access: base.access_ir_model_group_erp_manager
+DEL ir.model.access: base.access_ir_model_inherit
+DEL ir.model.access: base.access_ir_model_relation_group_erp_manager
+DEL ir.model.access: base.access_ir_model_user
+DEL ir.model.access: base.access_ir_module_category_group_user
+DEL ir.model.access: base.access_ir_module_module_dependency_group_system
+DEL ir.model.access: base.access_ir_module_module_exclusion_group_system
+DEL ir.model.access: base.access_ir_module_module_group_user
+DEL ir.model.access: base.access_ir_profile
+DEL ir.model.access: base.access_ir_rule_group_erp_manager
+DEL ir.model.access: base.access_ir_sequence_date_range_group_system
+DEL ir.model.access: base.access_ir_sequence_date_range_group_user
+DEL ir.model.access: base.access_ir_sequence_group_system
+DEL ir.model.access: base.access_ir_sequence_group_user
+DEL ir.model.access: base.access_ir_ui_menu_group_system
+DEL ir.model.access: base.access_ir_ui_menu_group_user
+DEL ir.model.access: base.access_ir_ui_view_custom_group_user
+DEL ir.model.access: base.access_ir_ui_view_group_system
+DEL ir.model.access: base.access_ir_ui_view_group_user
+DEL ir.model.access: base.access_properties_base_definition_group_system
+DEL ir.model.access: base.access_report_layout
+DEL ir.model.access: base.access_res_bank_group_partner_manager
+DEL ir.model.access: base.access_res_bank_group_system
+DEL ir.model.access: base.access_res_bank_user
+DEL ir.model.access: base.access_res_company_employee
+DEL ir.model.access: base.access_res_company_group_erp_manager
+DEL ir.model.access: base.access_res_company_portal
+DEL ir.model.access: base.access_res_company_public
+DEL ir.model.access: base.access_res_config
+DEL ir.model.access: base.access_res_config_settings
+DEL ir.model.access: base.access_res_country_employee
+DEL ir.model.access: base.access_res_country_group_employee
+DEL ir.model.access: base.access_res_country_group_group_user
+DEL ir.model.access: base.access_res_country_group_portal
+DEL ir.model.access: base.access_res_country_group_public
+DEL ir.model.access: base.access_res_country_group_system
+DEL ir.model.access: base.access_res_country_group_user
+DEL ir.model.access: base.access_res_country_portal
+DEL ir.model.access: base.access_res_country_public
+DEL ir.model.access: base.access_res_country_state_employee
+DEL ir.model.access: base.access_res_country_state_group_user
+DEL ir.model.access: base.access_res_country_state_portal
+DEL ir.model.access: base.access_res_country_state_public
+DEL ir.model.access: base.access_res_currency_employee
+DEL ir.model.access: base.access_res_currency_group_system
+DEL ir.model.access: base.access_res_currency_portal
+DEL ir.model.access: base.access_res_currency_public
+DEL ir.model.access: base.access_res_currency_rate_employee
+DEL ir.model.access: base.access_res_currency_rate_group_system
+DEL ir.model.access: base.access_res_currency_rate_portal
+DEL ir.model.access: base.access_res_currency_rate_public
+DEL ir.model.access: base.access_res_device
+DEL ir.model.access: base.access_res_device_log
+DEL ir.model.access: base.access_res_groups_group_erp_manager
+DEL ir.model.access: base.access_res_groups_group_user
+DEL ir.model.access: base.access_res_groups_privilege_group_erp_manager
+DEL ir.model.access: base.access_res_groups_privilege_group_user
+DEL ir.model.access: base.access_res_lang_employee
+DEL ir.model.access: base.access_res_lang_group_system
+DEL ir.model.access: base.access_res_lang_portal
+DEL ir.model.access: base.access_res_lang_public
+DEL ir.model.access: base.access_res_partner_bank_group_partner_manager
+DEL ir.model.access: base.access_res_partner_bank_group_user
+DEL ir.model.access: base.access_res_partner_category_group_partner_manager
+DEL ir.model.access: base.access_res_partner_category_group_user
+DEL ir.model.access: base.access_res_partner_group_partner_manager
+DEL ir.model.access: base.access_res_partner_group_user
+DEL ir.model.access: base.access_res_partner_industry_group_system
+DEL ir.model.access: base.access_res_partner_industry_group_user
+DEL ir.model.access: base.access_res_partner_portal
+DEL ir.model.access: base.access_res_partner_public
+DEL ir.model.access: base.access_res_users_apikeys_access_employee
+DEL ir.model.access: base.access_res_users_apikeys_access_portal
+DEL ir.model.access: base.access_res_users_apikeys_description_employee
+DEL ir.model.access: base.access_res_users_apikeys_description_portal
+DEL ir.model.access: base.access_res_users_apikeys_show_employee
+DEL ir.model.access: base.access_res_users_deletion_all
+DEL ir.model.access: base.access_res_users_deletion_group_erp_manager
+DEL ir.model.access: base.access_res_users_employee
+DEL ir.model.access: base.access_res_users_group_erp_manager
+DEL ir.model.access: base.access_res_users_identitycheck_employee
+DEL ir.model.access: base.access_res_users_identitycheck_portal
+DEL ir.model.access: base.access_res_users_log_system
+DEL ir.model.access: base.access_res_users_portal
+DEL ir.model.access: base.access_res_users_public
+DEL ir.model.access: base.access_res_users_settings_all
+DEL ir.model.access: base.access_res_users_settings_user
+DEL ir.model.access: base.access_reset_view_arch_wizard
+DEL ir.model.access: base.access_reset_view_arch_wizard_group_system
+DEL ir.model.access: base.access_server_action_history_wizard
+DEL ir.model.access: base.access_wizard_ir_model_menu_create
+DEL ir.model.access: base.paperformat_access_employee
+DEL ir.model.access: base.paperformat_access_portal
+ir.model.constraint: base.constraint_decimal_precision_name_uniq (changed definition: is now 'False' ('unique (name)'))
+ir.model.constraint: base.constraint_ir_act_client_path_unique (changed definition: is now 'False' ('unique(path)'))
+ir.model.constraint: base.constraint_ir_act_report_xml_path_unique (changed definition: is now 'False' ('unique(path)'))
+ir.model.constraint: base.constraint_ir_act_server_path_unique (changed definition: is now 'False' ('unique(path)'))
+ir.model.constraint: base.constraint_ir_act_url_path_unique (changed definition: is now 'False' ('unique(path)'))
+ir.model.constraint: base.constraint_ir_act_window_path_unique (changed definition: is now 'False' ('unique(path)'))
+ir.model.constraint: base.constraint_ir_act_window_view_unique_mode_per_action (changed definition: is now 'False' ('UNIQUE INDEX (act_window_id, view_mode)'))
+ir.model.constraint: base.constraint_ir_actions_path_unique (changed definition: is now 'False' ('unique(path)'))
+ir.model.constraint: base.constraint_ir_attachment_res_idx (changed definition: is now 'False' ('INDEX (res_model, res_id)'))
+ir.model.constraint: base.constraint_ir_config_parameter_key_uniq (changed definition: is now 'False' ('unique (key)'))
+ir.model.constraint: base.constraint_ir_cron_check_strictly_positive_interval (changed definition: is now 'False' ('CHECK(interval_number > 0)'))
+ir.model.constraint: base.constraint_ir_embedded_actions_check_only_one_action_defined (changed definition: is now 'False' ('CHECK(   (action_id IS NOT NULL AND python_method IS NULL)   OR (action_id IS NULL AND python_method IS NOT NULL)  )'))
+ir.model.constraint: base.constraint_ir_embedded_actions_check_python_method_requires_name (changed definition: is now 'False' ('CHECK(NOT (python_method IS NOT NULL AND name IS NULL))'))
+ir.model.constraint: base.constraint_ir_filters_check_res_id_only_when_embedded_action (changed definition: is now 'False' ('CHECK(NOT (embedded_parent_res_id IS NOT NULL AND embedded_action_id IS NULL))'))
+ir.model.constraint: base.constraint_ir_filters_check_sort_json (changed definition: is now 'False' ('CHECK(sort IS NULL OR jsonb_typeof(sort::jsonb) = 'array')'))
+ir.model.constraint: base.constraint_ir_filters_get_filters_index (changed definition: is now 'False' ('INDEX (model_id, action_id, embedded_action_id, embedded_parent_res_id)'))
+ir.model.constraint: base.constraint_ir_mail_server_certificate_requires_tls (changed definition: is now 'False' ('CHECK(smtp_encryption != 'none' OR smtp_authentication != 'certificate')'))
+ir.model.constraint: base.constraint_ir_model_constraint_module_name_uniq (changed definition: is now 'False' ('UNIQUE (name, module)'))
+ir.model.constraint: base.constraint_ir_model_data_model_res_id_index (changed definition: is now 'False' ('INDEX (model, res_id)'))
+ir.model.constraint: base.constraint_ir_model_data_module_name_uniq_index (changed definition: is now 'False' ('UNIQUE INDEX (module, name)'))
+ir.model.constraint: base.constraint_ir_model_data_name_nospaces (changed definition: is now 'False' ('CHECK(name NOT LIKE '% %')'))
+ir.model.constraint: base.constraint_ir_model_fields_name_manual_field (changed definition: is now 'False' ('CHECK (state != 'manual' OR name LIKE 'x\_%')'))
+ir.model.constraint: base.constraint_ir_model_fields_name_unique (changed definition: is now 'False' ('UNIQUE(model, name)'))
+ir.model.constraint: base.constraint_ir_model_fields_selection_selection_field_uniq (changed definition: is now 'False' ('UNIQUE (field_id, value)'))
+ir.model.constraint: base.constraint_ir_model_fields_size_gt_zero (changed definition: is now 'False' ('CHECK (size>=0)'))
+ir.model.constraint: base.constraint_ir_model_inherit_uniq (changed definition: is now 'False' ('UNIQUE(model_id, parent_id)'))
+ir.model.constraint: base.constraint_ir_model_obj_name_uniq (changed definition: is now 'False' ('UNIQUE (model)'))
+ir.model.constraint: base.constraint_ir_module_module_name_uniq (changed definition: is now 'False' ('UNIQUE (name)'))
+ir.model.constraint: base.constraint_ir_sequence_date_range_unique_range_per_sequence (changed definition: is now 'False' ('UNIQUE(sequence_id, date_from, date_to)'))
+ir.model.constraint: base.constraint_ir_ui_view_custom_user_id_ref_id (changed definition: is now 'False' ('INDEX (user_id, ref_id)'))
+ir.model.constraint: base.constraint_ir_ui_view_inheritance_mode (changed definition: is now 'False' ('CHECK (mode != 'extension' OR inherit_id IS NOT NULL)'))
+ir.model.constraint: base.constraint_ir_ui_view_model_type_inherit_id (changed definition: is now 'False' ('INDEX (model, inherit_id)'))
+ir.model.constraint: base.constraint_ir_ui_view_qweb_required_key (changed definition: is now 'False' ('CHECK (type != 'qweb' OR key IS NOT NULL)'))
+ir.model.constraint: base.constraint_properties_base_definition_unique_properties_field_id (changed definition: is now 'False' ('UNIQUE(properties_field_id)'))
+ir.model.constraint: base.constraint_res_company_name_uniq (changed definition: is now 'False' ('unique (name)'))
+NEW ir.model.constraint: base.constraint_res_country_code_check
+ir.model.constraint: base.constraint_res_country_code_uniq (changed definition: is now 'False' ('unique (code)'))
+ir.model.constraint: base.constraint_res_country_group_check_code_uniq (changed definition: is now 'False' ('unique(code)'))
+ir.model.constraint: base.constraint_res_country_name_uniq (changed definition: is now 'False' ('unique (name)'))
+ir.model.constraint: base.constraint_res_country_state_name_code_uniq (changed definition: is now 'False' ('unique(country_id, code)'))
+ir.model.constraint: base.constraint_res_currency_rate_currency_rate_check (changed definition: is now 'False' ('CHECK (rate>0)'))
+NEW ir.model.constraint: base.constraint_res_currency_rate_reversed_unique_name_per_day
+ir.model.constraint: base.constraint_res_currency_rate_unique_name_per_day (changed definition: is now 'False' ('unique (name,currency_id,company_id)'))
+ir.model.constraint: base.constraint_res_currency_rounding_gt_zero (changed definition: is now 'False' ('CHECK (rounding>0)'))
+ir.model.constraint: base.constraint_res_currency_unique_name (changed definition: is now 'False' ('unique (name)'))
+ir.model.constraint: base.constraint_res_device_log_composite_idx (changed definition: is now 'False' ('INDEX (user_id, session_identifier, platform, browser, last_activity, id) WHERE revoked IS NOT TRUE'))
+ir.model.constraint: base.constraint_res_device_log_revoked_idx (changed definition: is now 'False' ('INDEX (revoked) WHERE revoked IS NOT TRUE'))
+ir.model.constraint: base.constraint_res_groups_check_api_key_duration (changed definition: is now 'False' ('CHECK(api_key_duration >= 0)'))
+ir.model.constraint: base.constraint_res_lang_code_uniq (changed definition: is now 'False' ('unique(code)'))
+ir.model.constraint: base.constraint_res_lang_name_uniq (changed definition: is now 'False' ('unique(name)'))
+ir.model.constraint: base.constraint_res_lang_url_code_uniq (changed definition: is now 'False' ('unique(url_code)'))
+ir.model.constraint: base.constraint_res_partner_bank_unique_number (changed definition: is now 'False' ('unique(sanitized_acc_number, partner_id)'))
+ir.model.constraint: base.constraint_res_partner_check_name (changed definition: is now 'False' ('CHECK( (type='contact' AND name IS NOT NULL) or (type!='contact') )'))
+ir.model.constraint: base.constraint_res_users_login_key (changed definition: is now 'False' ('UNIQUE (login)'))
+ir.model.constraint: base.constraint_res_users_settings_unique_user_id (changed definition: is now 'False' ('UNIQUE(user_id)'))
+NEW ir.model.constraint: base.constraint_website_domain_unique [renamed from website module] (changed definition: is now 'False' ('unique(domain)'))
+DEL ir.model.constraint: base.constraint_ir_rule_no_access_rights
+DEL ir.model.constraint: base.constraint_res_device_composite_idx
+DEL ir.model.constraint: base.constraint_res_device_revoked_idx
+DEL ir.model.constraint: base.constraint_res_groups_name_uniq
+ir.module.category: base.module_category_accounting (noupdate switched)
+ir.module.category: base.module_category_accounting_accounting (noupdate switched)
+ir.module.category: base.module_category_accounting_localizations (noupdate switched)
+ir.module.category: base.module_category_accounting_localizations_account_charts (noupdate switched)
+ir.module.category: base.module_category_administration (noupdate switched)
+ir.module.category: base.module_category_customizations (noupdate switched)
+ir.module.category: base.module_category_esg (noupdate switched)
+ir.module.category: base.module_category_hidden (noupdate switched)
+ir.module.category: base.module_category_human_resources (noupdate switched)
+ir.module.category: base.module_category_human_resources_appraisals (noupdate switched)
+ir.module.category: base.module_category_human_resources_referrals (noupdate switched)
+ir.module.category: base.module_category_marketing (noupdate switched)
+ir.module.category: base.module_category_productivity (noupdate switched)
+ir.module.category: base.module_category_sales (noupdate switched)
+ir.module.category: base.module_category_sales_sign (noupdate switched)
+ir.module.category: base.module_category_services (noupdate switched)
+ir.module.category: base.module_category_services_appointment (noupdate switched)
+ir.module.category: base.module_category_services_field_service (noupdate switched)
+ir.module.category: base.module_category_services_helpdesk (noupdate switched)
+ir.module.category: base.module_category_shipping_connectors (noupdate switched)
+ir.module.category: base.module_category_supply_chain (noupdate switched)
+ir.module.category: base.module_category_theme (noupdate switched)
+ir.module.category: base.module_category_website (noupdate switched)
+ir.module.module: base.module_accountant (noupdate switched)
+ir.module.module: base.module_appointment (noupdate switched)
+ir.module.module: base.module_helpdesk (noupdate switched)
+ir.module.module: base.module_hr_appraisal (noupdate switched)
+ir.module.module: base.module_knowledge (noupdate switched)
+ir.module.module: base.module_marketing_automation (noupdate switched)
+ir.module.module: base.module_mrp_plm (noupdate switched)
+ir.module.module: base.module_mrp_workorder (noupdate switched)
+ir.module.module: base.module_payment_sepa_direct_debit (noupdate switched)
+ir.module.module: base.module_planning (noupdate switched)
+ir.module.module: base.module_quality_control (noupdate switched)
+ir.module.module: base.module_sale_amazon (noupdate switched)
+ir.module.module: base.module_sale_subscription (noupdate switched)
+ir.module.module: base.module_sign (noupdate switched)
+ir.module.module: base.module_social (noupdate switched)
+ir.module.module: base.module_stock_barcode (noupdate switched)
+ir.module.module: base.module_timesheet_grid (noupdate switched)
+ir.module.module: base.module_voip (noupdate switched)
+ir.module.module: base.module_web_mobile (noupdate switched)
+ir.module.module: base.module_web_studio (noupdate switched)
+DEL ir.module.module: base.module_industry_fsm (noupdate)
+DEL ir.rule: base.api_key_admin (noupdate)
+DEL ir.rule: base.api_key_public (noupdate)
+DEL ir.rule: base.api_key_user (noupdate)
+DEL ir.rule: base.change_password_own_rule (noupdate)
+DEL ir.rule: base.change_password_rule (noupdate)
+DEL ir.rule: base.embedded_action_admin_delete_rule (noupdate)
+DEL ir.rule: base.embedded_action_user_delete_rule (noupdate)
+DEL ir.rule: base.ir_default_system_rule (noupdate)
+DEL ir.rule: base.ir_default_user_rule (noupdate)
+DEL ir.rule: base.ir_filters_admin_all_rights_rule (noupdate)
+DEL ir.rule: base.ir_filters_employee_rule (noupdate)
+DEL ir.rule: base.ir_filters_portal_public_rule (noupdate)
+DEL ir.rule: base.ir_ui_view_custom_personal (noupdate)
+DEL ir.rule: base.properties_base_definition_rule_admin (noupdate)
+DEL ir.rule: base.res_company_rule_employee (noupdate)
+DEL ir.rule: base.res_company_rule_erp_manager (noupdate)
+DEL ir.rule: base.res_company_rule_portal (noupdate)
+DEL ir.rule: base.res_company_rule_public (noupdate)
+DEL ir.rule: base.res_currency_rate_rule (noupdate)
+DEL ir.rule: base.res_partner_bank_rule (noupdate)
+DEL ir.rule: base.res_partner_portal_public_rule (noupdate)
+DEL ir.rule: base.res_partner_rule (noupdate)
+DEL ir.rule: base.res_users_identity_check (noupdate)
+DEL ir.rule: base.res_users_log_rule (noupdate)
+DEL ir.rule: base.res_users_rule (noupdate)
+DEL ir.rule: base.res_users_rule_portal (noupdate)
+DEL ir.rule: base.res_users_settings_rule_admin (noupdate)
+DEL ir.rule: base.res_users_settings_rule_user (noupdate)
+DEL ir.rule: base.user_device (noupdate)
+DEL ir.rule: base.user_device_admin (noupdate)
+DEL ir.rule: base.user_device_logs (noupdate)
+DEL ir.rule: base.user_device_logs_admin (noupdate)
+NEW ir.ui.menu: base.menu_action_user_session
+NEW ir.ui.menu: base.menu_ir_access
+DEL ir.ui.menu: base.menu_action_rule
+DEL ir.ui.menu: base.menu_ir_access_act
+NEW ir.ui.view: base.clearing_label_list
+NEW ir.ui.view: base.ir_access_form_view
+NEW ir.ui.view: base.ir_access_kanban_view
+NEW ir.ui.view: base.ir_access_list_view
+NEW ir.ui.view: base.ir_access_search_view
+NEW ir.ui.view: base.ir_profile_query_view_form
+NEW ir.ui.view: base.ir_profile_query_view_list
+NEW ir.ui.view: base.ir_profile_query_view_search
+NEW ir.ui.view: base.res_session_view_form
+NEW ir.ui.view: base.res_session_view_kanban
+NEW ir.ui.view: base.res_session_view_tree
+NEW ir.ui.view: base.view_groups_kanban
+NEW ir.ui.view: base.view_res_groups_privilege_kanban
+NEW ir.ui.view: base.view_res_groups_privilege_search
+DEL ir.ui.view: base.ir_access_view_form
+DEL ir.ui.view: base.ir_access_view_search
+DEL ir.ui.view: base.ir_access_view_tree
+DEL ir.ui.view: base.ir_access_view_tree_edition
+DEL ir.ui.view: base.res_bank_view_search
+DEL ir.ui.view: base.res_device_view_kanban
+DEL ir.ui.view: base.view_res_bank_form
+DEL ir.ui.view: base.view_res_bank_tree
+DEL ir.ui.view: base.view_rule_form
+DEL ir.ui.view: base.view_rule_search
+DEL ir.ui.view: base.view_rule_tree
+report.paperformat: base.paperformat_batch_deposit (noupdate switched)
+report.paperformat: base.paperformat_euro (noupdate switched)
+report.paperformat: base.paperformat_us (noupdate switched)
+DEL res.bank: base.res_bank_1 (noupdate)
+res.company: base.main_company (noupdate switched)
+res.country: base.ad (noupdate switched)
+res.country: base.ae (noupdate switched)
+res.country: base.af (noupdate switched)
+res.country: base.ag (noupdate switched)
+res.country: base.ai (noupdate switched)
+res.country: base.al (noupdate switched)
+res.country: base.am (noupdate switched)
+res.country: base.ao (noupdate switched)
+res.country: base.aq (noupdate switched)
+res.country: base.ar (noupdate switched)
+res.country: base.as (noupdate switched)
+res.country: base.at (noupdate switched)
+res.country: base.au (noupdate switched)
+res.country: base.aw (noupdate switched)
+res.country: base.ax (noupdate switched)
+res.country: base.az (noupdate switched)
+res.country: base.ba (noupdate switched)
+res.country: base.bb (noupdate switched)
+res.country: base.bd (noupdate switched)
+res.country: base.be (noupdate switched)
+res.country: base.bf (noupdate switched)
+res.country: base.bg (noupdate switched)
+res.country: base.bh (noupdate switched)
+res.country: base.bi (noupdate switched)
+res.country: base.bj (noupdate switched)
+res.country: base.bl (noupdate switched)
+res.country: base.bm (noupdate switched)
+res.country: base.bn (noupdate switched)
+res.country: base.bo (noupdate switched)
+res.country: base.bq (noupdate switched)
+res.country: base.br (noupdate switched)
+res.country: base.bs (noupdate switched)
+res.country: base.bt (noupdate switched)
+res.country: base.bv (noupdate switched)
+res.country: base.bw (noupdate switched)
+res.country: base.by (noupdate switched)
+res.country: base.bz (noupdate switched)
+res.country: base.ca (noupdate switched)
+res.country: base.cc (noupdate switched)
+res.country: base.cd (noupdate switched)
+res.country: base.cf (noupdate switched)
+res.country: base.cg (noupdate switched)
+res.country: base.ch (noupdate switched)
+res.country: base.ci (noupdate switched)
+res.country: base.ck (noupdate switched)
+res.country: base.cl (noupdate switched)
+res.country: base.cm (noupdate switched)
+res.country: base.cn (noupdate switched)
+res.country: base.co (noupdate switched)
+res.country: base.cr (noupdate switched)
+res.country: base.cu (noupdate switched)
+res.country: base.cv (noupdate switched)
+res.country: base.cw (noupdate switched)
+res.country: base.cx (noupdate switched)
+res.country: base.cy (noupdate switched)
+res.country: base.cz (noupdate switched)
+res.country: base.de (noupdate switched)
+res.country: base.dj (noupdate switched)
+res.country: base.dk (noupdate switched)
+res.country: base.dm (noupdate switched)
+res.country: base.do (noupdate switched)
+res.country: base.dz (noupdate switched)
+res.country: base.ec (noupdate switched)
+res.country: base.ee (noupdate switched)
+res.country: base.eg (noupdate switched)
+res.country: base.eh (noupdate switched)
+res.country: base.er (noupdate switched)
+res.country: base.es (noupdate switched)
+res.country: base.et (noupdate switched)
+res.country: base.fi (noupdate switched)
+res.country: base.fj (noupdate switched)
+res.country: base.fk (noupdate switched)
+res.country: base.fm (noupdate switched)
+res.country: base.fo (noupdate switched)
+res.country: base.fr (noupdate switched)
+res.country: base.ga (noupdate switched)
+res.country: base.gd (noupdate switched)
+res.country: base.ge (noupdate switched)
+res.country: base.gf (noupdate switched)
+res.country: base.gg (noupdate switched)
+res.country: base.gh (noupdate switched)
+res.country: base.gi (noupdate switched)
+res.country: base.gl (noupdate switched)
+res.country: base.gm (noupdate switched)
+res.country: base.gn (noupdate switched)
+res.country: base.gp (noupdate switched)
+res.country: base.gq (noupdate switched)
+res.country: base.gr (noupdate switched)
+res.country: base.gs (noupdate switched)
+res.country: base.gt (noupdate switched)
+res.country: base.gu (noupdate switched)
+res.country: base.gw (noupdate switched)
+res.country: base.gy (noupdate switched)
+res.country: base.hk (noupdate switched)
+res.country: base.hm (noupdate switched)
+res.country: base.hn (noupdate switched)
+res.country: base.hr (noupdate switched)
+res.country: base.ht (noupdate switched)
+res.country: base.hu (noupdate switched)
+res.country: base.id (noupdate switched)
+res.country: base.ie (noupdate switched)
+res.country: base.il (noupdate switched)
+res.country: base.im (noupdate switched)
+res.country: base.in (noupdate switched)
+res.country: base.io (noupdate switched)
+res.country: base.iq (noupdate switched)
+res.country: base.ir (noupdate switched)
+res.country: base.is (noupdate switched)
+res.country: base.it (noupdate switched)
+res.country: base.je (noupdate switched)
+res.country: base.jm (noupdate switched)
+res.country: base.jo (noupdate switched)
+res.country: base.jp (noupdate switched)
+res.country: base.ke (noupdate switched)
+res.country: base.kg (noupdate switched)
+res.country: base.kh (noupdate switched)
+res.country: base.ki (noupdate switched)
+res.country: base.km (noupdate switched)
+res.country: base.kn (noupdate switched)
+res.country: base.kp (noupdate switched)
+res.country: base.kr (noupdate switched)
+res.country: base.kw (noupdate switched)
+res.country: base.ky (noupdate switched)
+res.country: base.kz (noupdate switched)
+res.country: base.la (noupdate switched)
+res.country: base.lb (noupdate switched)
+res.country: base.lc (noupdate switched)
+res.country: base.li (noupdate switched)
+res.country: base.lk (noupdate switched)
+res.country: base.lr (noupdate switched)
+res.country: base.ls (noupdate switched)
+res.country: base.lt (noupdate switched)
+res.country: base.lu (noupdate switched)
+res.country: base.lv (noupdate switched)
+res.country: base.ly (noupdate switched)
+res.country: base.ma (noupdate switched)
+res.country: base.mc (noupdate switched)
+res.country: base.md (noupdate switched)
+res.country: base.me (noupdate switched)
+res.country: base.mf (noupdate switched)
+res.country: base.mg (noupdate switched)
+res.country: base.mh (noupdate switched)
+res.country: base.mk (noupdate switched)
+res.country: base.ml (noupdate switched)
+res.country: base.mm (noupdate switched)
+res.country: base.mn (noupdate switched)
+res.country: base.mo (noupdate switched)
+res.country: base.mp (noupdate switched)
+res.country: base.mq (noupdate switched)
+res.country: base.mr (noupdate switched)
+res.country: base.ms (noupdate switched)
+res.country: base.mt (noupdate switched)
+res.country: base.mu (noupdate switched)
+res.country: base.mv (noupdate switched)
+res.country: base.mw (noupdate switched)
+res.country: base.mx (noupdate switched)
+res.country: base.my (noupdate switched)
+res.country: base.mz (noupdate switched)
+res.country: base.na (noupdate switched)
+res.country: base.nc (noupdate switched)
+res.country: base.ne (noupdate switched)
+res.country: base.nf (noupdate switched)
+res.country: base.ng (noupdate switched)
+res.country: base.ni (noupdate switched)
+res.country: base.nl (noupdate switched)
+res.country: base.no (noupdate switched)
+res.country: base.np (noupdate switched)
+res.country: base.nr (noupdate switched)
+res.country: base.nu (noupdate switched)
+res.country: base.nz (noupdate switched)
+res.country: base.om (noupdate switched)
+res.country: base.pa (noupdate switched)
+res.country: base.pe (noupdate switched)
+res.country: base.pf (noupdate switched)
+res.country: base.pg (noupdate switched)
+res.country: base.ph (noupdate switched)
+res.country: base.pk (noupdate switched)
+res.country: base.pl (noupdate switched)
+res.country: base.pm (noupdate switched)
+res.country: base.pn (noupdate switched)
+res.country: base.pr (noupdate switched)
+res.country: base.ps (noupdate switched)
+res.country: base.pt (noupdate switched)
+res.country: base.pw (noupdate switched)
+res.country: base.py (noupdate switched)
+res.country: base.qa (noupdate switched)
+res.country: base.re (noupdate switched)
+res.country: base.ro (noupdate switched)
+res.country: base.rs (noupdate switched)
+res.country: base.ru (noupdate switched)
+res.country: base.rw (noupdate switched)
+res.country: base.sa (noupdate switched)
+res.country: base.sb (noupdate switched)
+res.country: base.sc (noupdate switched)
+res.country: base.sd (noupdate switched)
+res.country: base.se (noupdate switched)
+res.country: base.sg (noupdate switched)
+res.country: base.sh (noupdate switched)
+res.country: base.si (noupdate switched)
+res.country: base.sj (noupdate switched)
+res.country: base.sk (noupdate switched)
+res.country: base.sl (noupdate switched)
+res.country: base.sm (noupdate switched)
+res.country: base.sn (noupdate switched)
+res.country: base.so (noupdate switched)
+res.country: base.sr (noupdate switched)
+res.country: base.ss (noupdate switched)
+res.country: base.st (noupdate switched)
+res.country: base.sv (noupdate switched)
+res.country: base.sx (noupdate switched)
+res.country: base.sy (noupdate switched)
+res.country: base.sz (noupdate switched)
+res.country: base.tc (noupdate switched)
+res.country: base.td (noupdate switched)
+res.country: base.tf (noupdate switched)
+res.country: base.tg (noupdate switched)
+res.country: base.th (noupdate switched)
+res.country: base.tj (noupdate switched)
+res.country: base.tk (noupdate switched)
+res.country: base.tl (noupdate switched)
+res.country: base.tm (noupdate switched)
+res.country: base.tn (noupdate switched)
+res.country: base.to (noupdate switched)
+res.country: base.tr (noupdate switched)
+res.country: base.tt (noupdate switched)
+res.country: base.tv (noupdate switched)
+res.country: base.tw (noupdate switched)
+res.country: base.tz (noupdate switched)
+res.country: base.ua (noupdate switched)
+res.country: base.ug (noupdate switched)
+res.country: base.uk (noupdate switched)
+res.country: base.um (noupdate switched)
+res.country: base.us (noupdate switched)
+res.country: base.uy (noupdate switched)
+res.country: base.uz (noupdate switched)
+res.country: base.va (noupdate switched)
+res.country: base.vc (noupdate switched)
+res.country: base.ve (noupdate switched)
+res.country: base.vg (noupdate switched)
+res.country: base.vi (noupdate switched)
+res.country: base.vn (noupdate switched)
+res.country: base.vu (noupdate switched)
+res.country: base.wf (noupdate switched)
+res.country: base.ws (noupdate switched)
+res.country: base.xi (noupdate switched)
+res.country: base.xk (noupdate switched)
+res.country: base.ye (noupdate switched)
+res.country: base.yt (noupdate switched)
+res.country: base.za (noupdate switched)
+res.country: base.zm (noupdate switched)
+res.country: base.zw (noupdate switched)
+res.country.group: base.ch_and_li (noupdate switched)
+res.country.group: base.dom-tom (noupdate switched)
+res.country.group: base.eurasian_economic_union (noupdate switched)
+res.country.group: base.europe (noupdate switched)
+res.country.group: base.europe_prefix (noupdate switched)
+res.country.group: base.gulf_cooperation_council (noupdate switched)
+res.country.group: base.sepa_zone (noupdate switched)
+res.country.group: base.south_america (noupdate switched)
+NEW res.country.state: base.state_am_ag
+NEW res.country.state: base.state_am_ar
+NEW res.country.state: base.state_am_av
+NEW res.country.state: base.state_am_er
+NEW res.country.state: base.state_am_gr
+NEW res.country.state: base.state_am_kt
+NEW res.country.state: base.state_am_lo
+NEW res.country.state: base.state_am_sh
+NEW res.country.state: base.state_am_su
+NEW res.country.state: base.state_am_tv
+NEW res.country.state: base.state_am_vd
+NEW res.country.state: base.state_az_abs
+NEW res.country.state: base.state_az_aga
+NEW res.country.state: base.state_az_agc
+NEW res.country.state: base.state_az_agm
+NEW res.country.state: base.state_az_ags
+NEW res.country.state: base.state_az_agu
+NEW res.country.state: base.state_az_ast
+NEW res.country.state: base.state_az_ba
+NEW res.country.state: base.state_az_bab
+NEW res.country.state: base.state_az_bal
+NEW res.country.state: base.state_az_bar
+NEW res.country.state: base.state_az_bey
+NEW res.country.state: base.state_az_bil
+NEW res.country.state: base.state_az_cab
+NEW res.country.state: base.state_az_cal
+NEW res.country.state: base.state_az_cul
+NEW res.country.state: base.state_az_das
+NEW res.country.state: base.state_az_fuz
+NEW res.country.state: base.state_az_ga
+NEW res.country.state: base.state_az_gad
+NEW res.country.state: base.state_az_gor
+NEW res.country.state: base.state_az_goy
+NEW res.country.state: base.state_az_gyg
+NEW res.country.state: base.state_az_hac
+NEW res.country.state: base.state_az_imi
+NEW res.country.state: base.state_az_ism
+NEW res.country.state: base.state_az_kal
+NEW res.country.state: base.state_az_kan
+NEW res.country.state: base.state_az_kur
+NEW res.country.state: base.state_az_la
+NEW res.country.state: base.state_az_lac
+NEW res.country.state: base.state_az_lan
+NEW res.country.state: base.state_az_ler
+NEW res.country.state: base.state_az_mas
+NEW res.country.state: base.state_az_mi
+NEW res.country.state: base.state_az_na
+NEW res.country.state: base.state_az_nef
+NEW res.country.state: base.state_az_nv
+NEW res.country.state: base.state_az_ogu
+NEW res.country.state: base.state_az_ord
+NEW res.country.state: base.state_az_qab
+NEW res.country.state: base.state_az_qax
+NEW res.country.state: base.state_az_qaz
+NEW res.country.state: base.state_az_qba
+NEW res.country.state: base.state_az_qbi
+NEW res.country.state: base.state_az_qob
+NEW res.country.state: base.state_az_qus
+NEW res.country.state: base.state_az_sa
+NEW res.country.state: base.state_az_sab
+NEW res.country.state: base.state_az_sad
+NEW res.country.state: base.state_az_sah
+NEW res.country.state: base.state_az_sak
+NEW res.country.state: base.state_az_sal
+NEW res.country.state: base.state_az_sar
+NEW res.country.state: base.state_az_sat
+NEW res.country.state: base.state_az_sbn
+NEW res.country.state: base.state_az_siy
+NEW res.country.state: base.state_az_skr
+NEW res.country.state: base.state_az_sm
+NEW res.country.state: base.state_az_smi
+NEW res.country.state: base.state_az_smx
+NEW res.country.state: base.state_az_sr
+NEW res.country.state: base.state_az_sus
+NEW res.country.state: base.state_az_tar
+NEW res.country.state: base.state_az_tov
+NEW res.country.state: base.state_az_uca
+NEW res.country.state: base.state_az_xa
+NEW res.country.state: base.state_az_xac
+NEW res.country.state: base.state_az_xci
+NEW res.country.state: base.state_az_xiz
+NEW res.country.state: base.state_az_xvd
+NEW res.country.state: base.state_az_yar
+NEW res.country.state: base.state_az_ye
+NEW res.country.state: base.state_az_yev
+NEW res.country.state: base.state_az_zan
+NEW res.country.state: base.state_az_zaq
+NEW res.country.state: base.state_az_zar
+NEW res.country.state: base.state_bh_13
+NEW res.country.state: base.state_bh_14
+NEW res.country.state: base.state_bh_15
+NEW res.country.state: base.state_bh_17
+NEW res.country.state: base.state_cu_21
+NEW res.country.state: base.state_cu_22
+NEW res.country.state: base.state_cu_23
+NEW res.country.state: base.state_cu_24
+NEW res.country.state: base.state_cu_25
+NEW res.country.state: base.state_cu_26
+NEW res.country.state: base.state_cu_27
+NEW res.country.state: base.state_cu_28
+NEW res.country.state: base.state_cu_29
+NEW res.country.state: base.state_cu_30
+NEW res.country.state: base.state_cu_31
+NEW res.country.state: base.state_cu_32
+NEW res.country.state: base.state_cu_33
+NEW res.country.state: base.state_cu_34
+NEW res.country.state: base.state_cu_35
+NEW res.country.state: base.state_cu_40
+NEW res.country.state: base.state_ge_ab
+NEW res.country.state: base.state_ge_aj
+NEW res.country.state: base.state_ge_gu
+NEW res.country.state: base.state_ge_im
+NEW res.country.state: base.state_ge_ka
+NEW res.country.state: base.state_ge_kk
+NEW res.country.state: base.state_ge_mm
+NEW res.country.state: base.state_ge_rl
+NEW res.country.state: base.state_ge_sj
+NEW res.country.state: base.state_ge_sk
+NEW res.country.state: base.state_ge_sz
+NEW res.country.state: base.state_ge_tb
+NEW res.country.state: base.state_in_la
+NEW res.country.state: base.state_in_od
+NEW res.country.state: base.state_kg_b
+NEW res.country.state: base.state_kg_c
+NEW res.country.state: base.state_kg_gb
+NEW res.country.state: base.state_kg_go
+NEW res.country.state: base.state_kg_j
+NEW res.country.state: base.state_kg_n
+NEW res.country.state: base.state_kg_o
+NEW res.country.state: base.state_kg_t
+NEW res.country.state: base.state_kg_y
+NEW res.country.state: base.state_kw_ah
+NEW res.country.state: base.state_kw_fa
+NEW res.country.state: base.state_kw_ha
+NEW res.country.state: base.state_kw_ja
+NEW res.country.state: base.state_kw_ku
+NEW res.country.state: base.state_kw_mu
+NEW res.country.state: base.state_kz_10
+NEW res.country.state: base.state_kz_11
+NEW res.country.state: base.state_kz_15
+NEW res.country.state: base.state_kz_19
+NEW res.country.state: base.state_kz_23
+NEW res.country.state: base.state_kz_27
+NEW res.country.state: base.state_kz_31
+NEW res.country.state: base.state_kz_33
+NEW res.country.state: base.state_kz_35
+NEW res.country.state: base.state_kz_39
+NEW res.country.state: base.state_kz_43
+NEW res.country.state: base.state_kz_47
+NEW res.country.state: base.state_kz_55
+NEW res.country.state: base.state_kz_59
+NEW res.country.state: base.state_kz_61
+NEW res.country.state: base.state_kz_62
+NEW res.country.state: base.state_kz_63
+NEW res.country.state: base.state_kz_71
+NEW res.country.state: base.state_kz_75
+NEW res.country.state: base.state_kz_79
+NEW res.country.state: base.state_lb_ak
+NEW res.country.state: base.state_lb_as
+NEW res.country.state: base.state_lb_ba
+NEW res.country.state: base.state_lb_bh
+NEW res.country.state: base.state_lb_bi
+NEW res.country.state: base.state_lb_ja
+NEW res.country.state: base.state_lb_jl
+NEW res.country.state: base.state_lb_na
+NEW res.country.state: base.state_mm_01
+NEW res.country.state: base.state_mm_02
+NEW res.country.state: base.state_mm_03
+NEW res.country.state: base.state_mm_04
+NEW res.country.state: base.state_mm_05
+NEW res.country.state: base.state_mm_06
+NEW res.country.state: base.state_mm_07
+NEW res.country.state: base.state_mm_08
+NEW res.country.state: base.state_mm_09
+NEW res.country.state: base.state_mm_10
+NEW res.country.state: base.state_mm_11
+NEW res.country.state: base.state_mm_12
+NEW res.country.state: base.state_mm_13
+NEW res.country.state: base.state_mm_14
+NEW res.country.state: base.state_mm_15
+NEW res.country.state: base.state_om_bj
+NEW res.country.state: base.state_om_bs
+NEW res.country.state: base.state_om_bu
+NEW res.country.state: base.state_om_da
+NEW res.country.state: base.state_om_ma
+NEW res.country.state: base.state_om_mu
+NEW res.country.state: base.state_om_sj
+NEW res.country.state: base.state_om_ss
+NEW res.country.state: base.state_om_wu
+NEW res.country.state: base.state_om_za
+NEW res.country.state: base.state_om_zu
+NEW res.country.state: base.state_pa_1
+NEW res.country.state: base.state_pa_10
+NEW res.country.state: base.state_pa_11
+NEW res.country.state: base.state_pa_12
+NEW res.country.state: base.state_pa_13
+NEW res.country.state: base.state_pa_2
+NEW res.country.state: base.state_pa_3
+NEW res.country.state: base.state_pa_4
+NEW res.country.state: base.state_pa_5
+NEW res.country.state: base.state_pa_6
+NEW res.country.state: base.state_pa_7
+NEW res.country.state: base.state_pa_8
+NEW res.country.state: base.state_pa_9
+NEW res.country.state: base.state_qa_da
+NEW res.country.state: base.state_qa_kh
+NEW res.country.state: base.state_qa_ms
+NEW res.country.state: base.state_qa_ra
+NEW res.country.state: base.state_qa_sh
+NEW res.country.state: base.state_qa_us
+NEW res.country.state: base.state_qa_wa
+NEW res.country.state: base.state_qa_za
+NEW res.country.state: base.state_sa_001
+NEW res.country.state: base.state_sa_002
+NEW res.country.state: base.state_sa_003
+NEW res.country.state: base.state_sa_004
+NEW res.country.state: base.state_sa_005
+NEW res.country.state: base.state_sa_006
+NEW res.country.state: base.state_sa_007
+NEW res.country.state: base.state_sa_008
+NEW res.country.state: base.state_sa_009
+NEW res.country.state: base.state_sa_010
+NEW res.country.state: base.state_sa_011
+NEW res.country.state: base.state_sa_012
+NEW res.country.state: base.state_sa_014
+NEW res.country.state: base.state_tj_du
+NEW res.country.state: base.state_tj_gb
+NEW res.country.state: base.state_tj_kt
+NEW res.country.state: base.state_tj_ra
+NEW res.country.state: base.state_tj_su
+NEW res.country.state: base.state_tm_a
+NEW res.country.state: base.state_tm_b
+NEW res.country.state: base.state_tm_d
+NEW res.country.state: base.state_tm_l
+NEW res.country.state: base.state_tm_m
+NEW res.country.state: base.state_tm_s
+DEL res.country.state: base.state_eg_hu
+DEL res.country.state: base.state_eg_su
+DEL res.country.state: base.state_in_dd
+DEL res.country.state: base.state_in_or
+DEL res.country.state: base.state_sa_1
+DEL res.country.state: base.state_sa_10
+DEL res.country.state: base.state_sa_11
+DEL res.country.state: base.state_sa_12
+DEL res.country.state: base.state_sa_13
+DEL res.country.state: base.state_sa_14
+DEL res.country.state: base.state_sa_15
+DEL res.country.state: base.state_sa_16
+DEL res.country.state: base.state_sa_17
+DEL res.country.state: base.state_sa_18
+DEL res.country.state: base.state_sa_19
+DEL res.country.state: base.state_sa_2
+DEL res.country.state: base.state_sa_20
+DEL res.country.state: base.state_sa_21
+DEL res.country.state: base.state_sa_22
+DEL res.country.state: base.state_sa_23
+DEL res.country.state: base.state_sa_24
+DEL res.country.state: base.state_sa_25
+DEL res.country.state: base.state_sa_26
+DEL res.country.state: base.state_sa_27
+DEL res.country.state: base.state_sa_28
+DEL res.country.state: base.state_sa_29
+DEL res.country.state: base.state_sa_3
+DEL res.country.state: base.state_sa_30
+DEL res.country.state: base.state_sa_31
+DEL res.country.state: base.state_sa_32
+DEL res.country.state: base.state_sa_33
+DEL res.country.state: base.state_sa_34
+DEL res.country.state: base.state_sa_35
+DEL res.country.state: base.state_sa_36
+DEL res.country.state: base.state_sa_37
+DEL res.country.state: base.state_sa_38
+DEL res.country.state: base.state_sa_39
+DEL res.country.state: base.state_sa_4
+DEL res.country.state: base.state_sa_40
+DEL res.country.state: base.state_sa_41
+DEL res.country.state: base.state_sa_42
+DEL res.country.state: base.state_sa_43
+DEL res.country.state: base.state_sa_44
+DEL res.country.state: base.state_sa_45
+DEL res.country.state: base.state_sa_46
+DEL res.country.state: base.state_sa_47
+DEL res.country.state: base.state_sa_48
+DEL res.country.state: base.state_sa_49
+DEL res.country.state: base.state_sa_5
+DEL res.country.state: base.state_sa_50
+DEL res.country.state: base.state_sa_51
+DEL res.country.state: base.state_sa_52
+DEL res.country.state: base.state_sa_53
+DEL res.country.state: base.state_sa_54
+DEL res.country.state: base.state_sa_55
+DEL res.country.state: base.state_sa_56
+DEL res.country.state: base.state_sa_57
+DEL res.country.state: base.state_sa_58
+DEL res.country.state: base.state_sa_59
+DEL res.country.state: base.state_sa_6
+DEL res.country.state: base.state_sa_60
+DEL res.country.state: base.state_sa_61
+DEL res.country.state: base.state_sa_62
+DEL res.country.state: base.state_sa_63
+DEL res.country.state: base.state_sa_64
+DEL res.country.state: base.state_sa_65
+DEL res.country.state: base.state_sa_66
+DEL res.country.state: base.state_sa_67
+DEL res.country.state: base.state_sa_68
+DEL res.country.state: base.state_sa_69
+DEL res.country.state: base.state_sa_7
+DEL res.country.state: base.state_sa_70
+DEL res.country.state: base.state_sa_71
+DEL res.country.state: base.state_sa_72
+DEL res.country.state: base.state_sa_73
+DEL res.country.state: base.state_sa_74
+DEL res.country.state: base.state_sa_75
+DEL res.country.state: base.state_sa_76
+DEL res.country.state: base.state_sa_77
+DEL res.country.state: base.state_sa_78
+DEL res.country.state: base.state_sa_79
+DEL res.country.state: base.state_sa_8
+DEL res.country.state: base.state_sa_80
+DEL res.country.state: base.state_sa_81
+DEL res.country.state: base.state_sa_82
+DEL res.country.state: base.state_sa_83
+DEL res.country.state: base.state_sa_84
+DEL res.country.state: base.state_sa_85
+DEL res.country.state: base.state_sa_86
+DEL res.country.state: base.state_sa_87
+DEL res.country.state: base.state_sa_88
+DEL res.country.state: base.state_sa_89
+DEL res.country.state: base.state_sa_9
+DEL res.country.state: base.state_sa_90
+DEL res.country.state: base.state_sa_91
+DEL res.country.state: base.state_sa_92
+DEL res.country.state: base.state_sa_93
+res.currency: base.AED (noupdate switched)
+res.currency: base.AFN (noupdate switched)
+res.currency: base.ALL (noupdate switched)
+res.currency: base.AMD (noupdate switched)
+res.currency: base.ANG (noupdate switched)
+res.currency: base.AOA (noupdate switched)
+res.currency: base.ARS (noupdate switched)
+res.currency: base.AUD (noupdate switched)
+res.currency: base.AWG (noupdate switched)
+res.currency: base.AZN (noupdate switched)
+res.currency: base.BAM (noupdate switched)
+res.currency: base.BBD (noupdate switched)
+res.currency: base.BDT (noupdate switched)
+res.currency: base.BGN (noupdate switched)
+res.currency: base.BHD (noupdate switched)
+res.currency: base.BIF (noupdate switched)
+res.currency: base.BMD (noupdate switched)
+res.currency: base.BND (noupdate switched)
+res.currency: base.BOB (noupdate switched)
+res.currency: base.BRL (noupdate switched)
+res.currency: base.BSD (noupdate switched)
+res.currency: base.BTN (noupdate switched)
+res.currency: base.BWP (noupdate switched)
+res.currency: base.BYN (noupdate switched)
+res.currency: base.BYR (noupdate switched)
+res.currency: base.BZD (noupdate switched)
+res.currency: base.CAD (noupdate switched)
+res.currency: base.CDF (noupdate switched)
+res.currency: base.CHF (noupdate switched)
+res.currency: base.CLF (noupdate switched)
+res.currency: base.CLP (noupdate switched)
+res.currency: base.CNH (noupdate switched)
+res.currency: base.CNY (noupdate switched)
+res.currency: base.COP (noupdate switched)
+res.currency: base.COU (noupdate switched)
+res.currency: base.CRC (noupdate switched)
+res.currency: base.CUC (noupdate switched)
+res.currency: base.CUP (noupdate switched)
+res.currency: base.CVE (noupdate switched)
+res.currency: base.CZK (noupdate switched)
+res.currency: base.DJF (noupdate switched)
+res.currency: base.DKK (noupdate switched)
+res.currency: base.DOP (noupdate switched)
+res.currency: base.DZD (noupdate switched)
+res.currency: base.EGP (noupdate switched)
+res.currency: base.ERN (noupdate switched)
+res.currency: base.ETB (noupdate switched)
+res.currency: base.EUR (noupdate switched)
+res.currency: base.FJD (noupdate switched)
+res.currency: base.FKP (noupdate switched)
+res.currency: base.GBP (noupdate switched)
+res.currency: base.GEL (noupdate switched)
+res.currency: base.GHS (noupdate switched)
+res.currency: base.GIP (noupdate switched)
+res.currency: base.GMD (noupdate switched)
+res.currency: base.GNF (noupdate switched)
+res.currency: base.GTQ (noupdate switched)
+res.currency: base.GYD (noupdate switched)
+res.currency: base.HKD (noupdate switched)
+res.currency: base.HNL (noupdate switched)
+res.currency: base.HRK (noupdate switched)
+res.currency: base.HTG (noupdate switched)
+res.currency: base.HUF (noupdate switched)
+res.currency: base.IDR (noupdate switched)
+res.currency: base.ILS (noupdate switched)
+res.currency: base.INR (noupdate switched)
+res.currency: base.IQD (noupdate switched)
+res.currency: base.IRR (noupdate switched)
+res.currency: base.ISK (noupdate switched)
+res.currency: base.JMD (noupdate switched)
+res.currency: base.JOD (noupdate switched)
+res.currency: base.JPY (noupdate switched)
+res.currency: base.KES (noupdate switched)
+res.currency: base.KGS (noupdate switched)
+res.currency: base.KHR (noupdate switched)
+res.currency: base.KMF (noupdate switched)
+res.currency: base.KPW (noupdate switched)
+res.currency: base.KRW (noupdate switched)
+res.currency: base.KWD (noupdate switched)
+res.currency: base.KYD (noupdate switched)
+res.currency: base.KZT (noupdate switched)
+res.currency: base.LAK (noupdate switched)
+res.currency: base.LBP (noupdate switched)
+res.currency: base.LKR (noupdate switched)
+res.currency: base.LRD (noupdate switched)
+res.currency: base.LSL (noupdate switched)
+res.currency: base.LTL (noupdate switched)
+res.currency: base.LVL (noupdate switched)
+res.currency: base.LYD (noupdate switched)
+res.currency: base.MAD (noupdate switched)
+res.currency: base.MDL (noupdate switched)
+res.currency: base.MGA (noupdate switched)
+res.currency: base.MKD (noupdate switched)
+res.currency: base.MMK (noupdate switched)
+res.currency: base.MNT (noupdate switched)
+res.currency: base.MOP (noupdate switched)
+res.currency: base.MRO (noupdate switched)
+res.currency: base.MRU (noupdate switched)
+res.currency: base.MUR (noupdate switched)
+res.currency: base.MVR (noupdate switched)
+res.currency: base.MWK (noupdate switched)
+res.currency: base.MXN (noupdate switched)
+res.currency: base.MYR (noupdate switched)
+res.currency: base.MZN (noupdate switched)
+res.currency: base.NAD (noupdate switched)
+res.currency: base.NGN (noupdate switched)
+res.currency: base.NIO (noupdate switched)
+res.currency: base.NOK (noupdate switched)
+res.currency: base.NPR (noupdate switched)
+res.currency: base.NZD (noupdate switched)
+res.currency: base.OMR (noupdate switched)
+res.currency: base.PAB (noupdate switched)
+res.currency: base.PEN (noupdate switched)
+res.currency: base.PGK (noupdate switched)
+res.currency: base.PHP (noupdate switched)
+res.currency: base.PKR (noupdate switched)
+res.currency: base.PLN (noupdate switched)
+res.currency: base.PYG (noupdate switched)
+res.currency: base.QAR (noupdate switched)
+res.currency: base.RON (noupdate switched)
+res.currency: base.RSD (noupdate switched)
+res.currency: base.RUB (noupdate switched)
+res.currency: base.RWF (noupdate switched)
+res.currency: base.SAR (noupdate switched)
+res.currency: base.SBD (noupdate switched)
+res.currency: base.SCR (noupdate switched)
+res.currency: base.SDG (noupdate switched)
+res.currency: base.SEK (noupdate switched)
+res.currency: base.SGD (noupdate switched)
+res.currency: base.SHP (noupdate switched)
+res.currency: base.SLE (noupdate switched)
+res.currency: base.SLL (noupdate switched)
+res.currency: base.SOS (noupdate switched)
+res.currency: base.SRD (noupdate switched)
+res.currency: base.SSP (noupdate switched)
+res.currency: base.STD (noupdate switched)
+res.currency: base.STN (noupdate switched)
+res.currency: base.SVC (noupdate switched)
+res.currency: base.SYP (noupdate switched)
+res.currency: base.SZL (noupdate switched)
+res.currency: base.THB (noupdate switched)
+res.currency: base.TJS (noupdate switched)
+res.currency: base.TMT (noupdate switched)
+res.currency: base.TND (noupdate switched)
+res.currency: base.TOP (noupdate switched)
+res.currency: base.TRY (noupdate switched)
+res.currency: base.TTD (noupdate switched)
+res.currency: base.TWD (noupdate switched)
+res.currency: base.TZS (noupdate switched)
+res.currency: base.UAH (noupdate switched)
+res.currency: base.UGX (noupdate switched)
+res.currency: base.USD (noupdate switched)
+res.currency: base.UYI (noupdate switched)
+res.currency: base.UYU (noupdate switched)
+res.currency: base.UYW (noupdate switched)
+res.currency: base.UZS (noupdate switched)
+res.currency: base.VEF (noupdate switched)
+res.currency: base.VES (noupdate switched)
+res.currency: base.VND (noupdate switched)
+res.currency: base.VUV (noupdate switched)
+res.currency: base.WST (noupdate switched)
+res.currency: base.XAF (noupdate switched)
+res.currency: base.XCD (noupdate switched)
+res.currency: base.XCG (noupdate switched)
+res.currency: base.XOF (noupdate switched)
+res.currency: base.XPF (noupdate switched)
+res.currency: base.YER (noupdate switched)
+res.currency: base.ZAR (noupdate switched)
+res.currency: base.ZIG (noupdate switched)
+res.currency: base.ZMW (noupdate switched)
+res.groups: base.default_user_group (noupdate switched)
+NEW res.groups: base.group_everyone
+res.groups: base.group_user (noupdate switched)
+NEW res.groups: base.group_user_regular
+res.partner: base.main_partner (noupdate switched)
+res.partner: base.partner_admin (noupdate switched)
+res.partner: base.partner_root (noupdate switched)
+res.partner: base.public_partner (noupdate switched)
+res.partner.industry: base.res_partner_industry_A (noupdate switched)
+res.partner.industry: base.res_partner_industry_B (noupdate switched)
+res.partner.industry: base.res_partner_industry_C (noupdate switched)
+res.partner.industry: base.res_partner_industry_D (noupdate switched)
+res.partner.industry: base.res_partner_industry_E (noupdate switched)
+res.partner.industry: base.res_partner_industry_F (noupdate switched)
+res.partner.industry: base.res_partner_industry_G (noupdate switched)
+res.partner.industry: base.res_partner_industry_H (noupdate switched)
+res.partner.industry: base.res_partner_industry_I (noupdate switched)
+res.partner.industry: base.res_partner_industry_J (noupdate switched)
+res.partner.industry: base.res_partner_industry_K (noupdate switched)
+res.partner.industry: base.res_partner_industry_L (noupdate switched)
+res.partner.industry: base.res_partner_industry_M (noupdate switched)
+res.partner.industry: base.res_partner_industry_N (noupdate switched)
+res.partner.industry: base.res_partner_industry_O (noupdate switched)
+res.partner.industry: base.res_partner_industry_P (noupdate switched)
+res.partner.industry: base.res_partner_industry_Q (noupdate switched)
+res.partner.industry: base.res_partner_industry_R (noupdate switched)
+res.partner.industry: base.res_partner_industry_S (noupdate switched)
+res.partner.industry: base.res_partner_industry_T (noupdate switched)
+res.partner.industry: base.res_partner_industry_U (noupdate switched)
+res.users: base.public_user (noupdate switched)
+res.users: base.user_admin (noupdate switched)
+res.users: base.user_root (noupdate switched)
+res.users.settings: base.user_admin_settings (noupdate switched)
+NEW website: base.default_website [renamed from website module] (noupdate switched)

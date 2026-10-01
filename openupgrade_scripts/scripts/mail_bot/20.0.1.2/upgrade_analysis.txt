@@ -1,0 +1,4 @@
+---Models in module 'mail_bot'---
+---Fields in module 'mail_bot'---
+---XML records in module 'mail_bot'---
+res.users: base.user_root (noupdate switched)

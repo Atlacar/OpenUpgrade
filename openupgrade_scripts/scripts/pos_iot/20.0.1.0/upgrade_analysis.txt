@@ -1,0 +1,24 @@
+---Models in module 'pos_iot'---
+new model auto.config.pos.iot [transient]
+---Fields in module 'pos_iot'---
+pos_iot      / pos.config               / iot_display_id (many2one)     : NEW relation: iot.device
+pos_iot      / pos.config               / iot_printer_id (many2one)     : NEW relation: iot.device
+pos_iot      / pos.config               / iot_scale_id (many2one)       : NEW relation: iot.device
+pos_iot      / pos.config               / iot_scanner_ids (many2many)   : NEW relation: iot.device
+pos_iot      / pos.config               / use_iot_box (boolean)         : NEW
+pos_iot      / pos.payment.method       / iot_device_id (many2one)      : NEW relation: iot.device
+pos_iot      / pos.printer              / company_id (many2one)         : previously in module point_of_sale
+pos_iot      / pos.printer              / iot_device_id (many2one)      : NEW relation: iot.device
+pos_iot      / pos.printer              / printer_type (False)          : NEW selection_keys: ['epson_epos', 'iot'], mode: modify
+---XML records in module 'pos_iot'---
+NEW ir.access: pos_iot.access_auto_config_pos_iot
+NEW ir.ui.view: pos_iot.pos_iot_config_view_form
+NEW ir.ui.view: pos_iot.pos_iot_inherit_device_view_form
+NEW ir.ui.view: pos_iot.pos_iot_inherit_device_view_kanban
+NEW ir.ui.view: pos_iot.pos_iot_inherit_iot_box_view_form
+NEW ir.ui.view: pos_iot.pos_iot_inherit_iot_box_view_kanban
+NEW ir.ui.view: pos_iot.pos_iot_payment_method_view_tree
+NEW ir.ui.view: pos_iot.res_config_view_form_inherit_pos_iot
+NEW ir.ui.view: pos_iot.view_auto_config_pos_iot
+NEW ir.ui.view: pos_iot.view_pos_printer_iot_form
+NEW ir.ui.view: pos_iot.view_pos_printer_iot_list

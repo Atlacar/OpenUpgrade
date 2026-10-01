@@ -1,0 +1,18 @@
+---Models in module 'mail_enterprise'---
+new model res.group.functional
+---Fields in module 'mail_enterprise'---
+mail_enterprise / res.group.functional     / image_1024 (binary)           : NEW attachment: True, isrelated: related, stored
+mail_enterprise / res.group.functional     / image_128 (binary)            : NEW attachment: True, isrelated: related, stored
+mail_enterprise / res.group.functional     / image_1920 (binary)           : NEW attachment: True
+mail_enterprise / res.group.functional     / image_256 (binary)            : NEW attachment: True, isrelated: related, stored
+mail_enterprise / res.group.functional     / image_512 (binary)            : NEW attachment: True, isrelated: related, stored
+mail_enterprise / res.group.functional     / name (char)                   : NEW required
+mail_enterprise / res.group.functional     / responsible_ids (many2many)   : NEW relation: res.users, required
+mail_enterprise / res.group.functional     / user_ids (many2many)          : NEW relation: res.users
+---XML records in module 'mail_enterprise'---
+NEW ir.access: mail_enterprise.access_res_group_functional_group_user
+NEW ir.access: mail_enterprise.res_group_functional_update_responsible_only_rule
+NEW ir.access: mail_enterprise.res_group_functional_update_system_rule
+NEW ir.actions.act_window: mail_enterprise.res_group_functional_action
+NEW ir.ui.view: mail_enterprise.res_group_functional_view_form
+NEW ir.ui.view: mail_enterprise.res_group_functional_view_list

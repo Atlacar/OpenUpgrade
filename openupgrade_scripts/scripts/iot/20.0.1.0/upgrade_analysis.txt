@@ -1,0 +1,81 @@
+---Models in module 'iot'---
+new model add.iot.box [transient]
+new model iot.box
+new model iot.channel [abstract]
+new model iot.device
+new model iot.discovered.box [transient]
+new model iot.keyboard.layout
+---Fields in module 'iot'---
+iot          / iot.box                  / company_id (many2one)         : NEW relation: res.company
+iot          / iot.box                  / device_ids (one2many)         : NEW relation: iot.device
+iot          / iot.box                  / identifier (char)             : NEW
+iot          / iot.box                  / ip (char)                     : NEW
+iot          / iot.box                  / name (char)                   : NEW required
+iot          / iot.box                  / ssl_certificate_end_date (datetime): NEW
+iot          / iot.box                  / token (char)                  : NEW
+iot          / iot.box                  / use_custom_handlers (boolean) : NEW hasdefault: default
+iot          / iot.box                  / use_lna (boolean)             : NEW
+iot          / iot.box                  / version (char)                : NEW
+iot          / iot.device               / connected_status (selection)  : NEW selection_keys: ['connected', 'disconnected']
+iot          / iot.device               / connection (selection)        : NEW selection_keys: ['bluetooth', 'direct', 'hdmi', 'network', 'serial']
+iot          / iot.device               / display_orientation (selection): NEW selection_keys: ['inverted', 'left', 'normal', 'right'], hasdefault: default
+iot          / iot.device               / display_url (char)            : NEW hasdefault: default
+iot          / iot.device               / identifier (char)             : NEW
+iot          / iot.device               / iot_id (many2one)             : NEW relation: iot.box, required
+iot          / iot.device               / keyboard_layout (many2one)    : NEW relation: iot.keyboard.layout
+iot          / iot.device               / name (char)                   : NEW
+iot          / iot.device               / printer_id (many2one)         : NEW relation: printer.printer, isfunction: function, stored
+iot          / iot.device               / type (selection)              : NEW selection_keys: ['camera', 'device', 'display', 'fiscal_data_module', 'keyboard', 'payment', 'printer', 'scale', 'scanner', 'unsupported']
+iot          / iot.keyboard.layout      / layout (char)                 : NEW
+iot          / iot.keyboard.layout      / name (char)                   : NEW
+iot          / iot.keyboard.layout      / variant (char)                : NEW
+iot          / printer.printer          / iot_device_id (many2one)      : NEW relation: iot.device
+iot          / printer.printer          / type (False)                  : NEW selection_keys: ['epos', 'iot', 'zpl'], mode: modify
+---XML records in module 'iot'---
+NEW ir.access: iot.access_add_iot_box
+NEW ir.access: iot.access_iot_box_admin
+NEW ir.access: iot.access_iot_box_user
+NEW ir.access: iot.access_iot_device_admin
+NEW ir.access: iot.access_iot_device_user
+NEW ir.access: iot.access_iot_discovered_box
+NEW ir.access: iot.access_iot_keyboard_layout
+NEW ir.access: iot.access_iot_select_printers_wizard_user
+NEW ir.access: iot.access_printer_iot_admin
+NEW ir.access: iot.iot_box_comp_rule
+NEW ir.access: iot.iot_device_comp_rule
+NEW ir.actions.act_url: iot.action_download_iot_box_image
+NEW ir.actions.act_url: iot.action_download_virtual_iot
+NEW ir.actions.act_window: iot.action_add_iot_box
+NEW ir.actions.act_window: iot.iot_box_action
+NEW ir.actions.act_window: iot.iot_device_action
+NEW ir.actions.client: iot.action_discover_iot_boxes
+NEW ir.actions.client: iot.action_iot_delete_linked_devices_menu
+NEW ir.ui.menu: iot.iot_box_menu_action
+NEW ir.ui.menu: iot.iot_clear_selected_devices
+NEW ir.ui.menu: iot.iot_configuration_menu
+NEW ir.ui.menu: iot.iot_configuration_menu_links_section
+NEW ir.ui.menu: iot.iot_configuration_menu_reporting_section
+NEW ir.ui.menu: iot.iot_device_menu_action
+NEW ir.ui.menu: iot.iot_download_iot_box_image_menu
+NEW ir.ui.menu: iot.iot_download_virtual_iot_box_installer_menu
+NEW ir.ui.menu: iot.iot_menu_root
+NEW ir.ui.menu: iot.manage_printers_action
+NEW ir.ui.view: iot.act_report_xml_view_tree_iot
+NEW ir.ui.view: iot.iot_box_view_form
+NEW ir.ui.view: iot.iot_box_view_kanban
+NEW ir.ui.view: iot.iot_box_view_list
+NEW ir.ui.view: iot.iot_device_search
+NEW ir.ui.view: iot.iot_device_view_form
+NEW ir.ui.view: iot.iot_device_view_kanban
+NEW ir.ui.view: iot.iot_device_view_list
+NEW ir.ui.view: iot.printer_view_form_inherit_iot
+NEW ir.ui.view: iot.printer_view_list_inherit_iot
+NEW ir.ui.view: iot.view_add_iot_box
+NEW ir.ui.view: iot.view_enter_pairing_code
+NEW ir.ui.view: iot.view_no_iot_box_found
+NEW ir.ui.view: iot.view_pair_offline
+NEW ir.ui.view: iot.view_select_box_to_connect
+NEW ir.ui.view: iot.view_select_printers_wizard_inherit_iot
+NEW res.groups: iot.group_iot_admin
+NEW res.groups: iot.group_iot_user
+NEW res.groups.privilege: iot.res_groups_privilege_iot

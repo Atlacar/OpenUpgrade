@@ -1,0 +1,28 @@
+---Models in module 'product_unspsc'---
+---Fields in module 'product_unspsc'---
+---XML records in module 'product_unspsc'---
+NEW ir.access: product_unspsc.access_product_unspsc_code
+DEL ir.model.access: product_unspsc.access_product_unspsc_code
+NEW ir.ui.view: product_unspsc.uom_uom_view_form
+DEL ir.ui.view: product_unspsc.view_product_uom_form_unspsc
+uom.uom: uom.product_uom_cm (noupdate switched)
+uom.uom: uom.product_uom_day (noupdate switched)
+uom.uom: uom.product_uom_dozen (noupdate switched)
+uom.uom: uom.product_uom_floz (noupdate switched)
+uom.uom: uom.product_uom_foot (noupdate switched)
+uom.uom: uom.product_uom_gal (noupdate switched)
+uom.uom: uom.product_uom_gram (noupdate switched)
+uom.uom: uom.product_uom_hour (noupdate switched)
+uom.uom: uom.product_uom_inch (noupdate switched)
+uom.uom: uom.product_uom_kgm (noupdate switched)
+uom.uom: uom.product_uom_km (noupdate switched)
+uom.uom: uom.product_uom_lb (noupdate switched)
+uom.uom: uom.product_uom_litre (noupdate switched)
+uom.uom: uom.product_uom_meter (noupdate switched)
+uom.uom: uom.product_uom_mile (noupdate switched)
+uom.uom: uom.product_uom_oz (noupdate switched)
+uom.uom: uom.product_uom_qt (noupdate switched)
+uom.uom: uom.product_uom_square_foot (noupdate switched)
+uom.uom: uom.product_uom_square_meter (noupdate switched)
+uom.uom: uom.product_uom_ton (noupdate switched)
+uom.uom: uom.product_uom_unit (noupdate switched)

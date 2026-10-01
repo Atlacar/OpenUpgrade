@@ -1,0 +1,8 @@
+---Models in module 'sale_account_accountant'---
+---Fields in module 'sale_account_accountant'---
+sale_account_accountant / sale.order.line          / deferred_revenue (boolean)    : module is now 'sale' ('sale_account_accountant')
+sale_account_accountant / sale.order.line          / invoice_to_be_issued (boolean): module is now 'sale' ('sale_account_accountant')
+---XML records in module 'sale_account_accountant'---
+ir.actions.act_window: sale_account_accountant.sale_order_line_accrual_deferred_revenues_action (deleted domain)
+ir.actions.act_window: sale_account_accountant.sale_order_line_accrual_to_bill_action (deleted domain)
+NEW ir.ui.view: sale_account_accountant.res_config_settings_view_form

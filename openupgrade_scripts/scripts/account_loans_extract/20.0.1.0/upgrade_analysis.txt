@@ -1,0 +1,16 @@
+---Models in module 'account_loans_extract'---
+---Fields in module 'account_loans_extract'---
+account_loans_extract / account.loan             / extract_attachment_id (many2one): NEW relation: ir.attachment
+account_loans_extract / account.loan             / extract_document_uuid (char)  : NEW
+account_loans_extract / account.loan             / extract_state (selection)     : NEW selection_keys: ['done', 'error_status', 'extract_not_ready', 'no_extract_requested', 'not_enough_credit', 'to_validate', 'waiting_extraction', 'waiting_validation'], hasdefault: default
+account_loans_extract / account.loan             / extract_state_processed (boolean): NEW isfunction: function, stored
+account_loans_extract / account.loan             / extract_status (char)         : NEW
+account_loans_extract / account.loan             / extracted_dates (json)        : NEW
+account_loans_extract / account.loan             / extracted_numbers (json)      : NEW
+account_loans_extract / account.loan             / extracted_words (json)        : NEW
+account_loans_extract / account.loan             / is_in_extractable_state (boolean): NEW isfunction: function, stored
+account_loans_extract / account.loan             / message_main_attachment_id (many2one): NEW relation: ir.attachment
+account_loans_extract / res.company              / extract_loan_digitalization_mode (selection): NEW selection_keys: ['auto_send', 'no_send'], hasdefault: default
+---XML records in module 'account_loans_extract'---
+NEW ir.ui.view: account_loans_extract.account_loan_form_view_inherit_account_loans_extract
+NEW ir.ui.view: account_loans_extract.res_config_settings_view_form

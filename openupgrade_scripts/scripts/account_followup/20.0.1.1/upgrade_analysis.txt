@@ -1,0 +1,50 @@
+---Models in module 'account_followup'---
+---Fields in module 'account_followup'---
+account_followup / account.move             / last_auto_reminder (date)     : NEW
+account_followup / account.move             / last_reminder (date)          : NEW
+account_followup / account_followup.followup.line / additional_follower_ids (many2many): DEL relation: res.users
+account_followup / account_followup.followup.line / auto_execute (boolean)        : DEL
+account_followup / account_followup.followup.line / join_invoices (boolean)       : DEL
+account_followup / account_followup.followup.line / name (char)                   : DEL required
+account_followup / res.company              / automatic_invoice_reminder (boolean): NEW
+---XML records in module 'account_followup'---
+NEW account_followup.followup.line: account_followup.demo_followup_line0
+account_followup.followup.line: account_followup.demo_followup_line1 (noupdate switched)
+account_followup.followup.line: account_followup.demo_followup_line2 (noupdate switched)
+NEW ir.access: account_followup.access_account_followup_followup_line
+NEW ir.access: account_followup.access_account_followup_followup_line_manager
+NEW ir.access: account_followup.access_account_followup_followup_line_readonly
+NEW ir.access: account_followup.access_account_followup_manual_reminder_account_basic
+NEW ir.access: account_followup.access_account_followup_missing_information
+NEW ir.access: account_followup.access_sms_template_account_manager
+NEW ir.access: account_followup.account_followup_comp_rule
+NEW ir.access: account_followup.ir_rule_sms_template_account_manager
+DEL ir.actions.act_window: account_followup.manual_reminder_action
+ir.actions.client: account_followup.action_account_followup (noupdate switched)
+DEL ir.model.access: account_followup.access_account_followup_followup_line
+DEL ir.model.access: account_followup.access_account_followup_followup_line_manager
+DEL ir.model.access: account_followup.access_account_followup_followup_line_readonly
+DEL ir.model.access: account_followup.access_account_followup_manual_reminder_account_basic
+DEL ir.model.access: account_followup.access_account_followup_manual_reminder_account_manager
+DEL ir.model.access: account_followup.access_account_followup_missing_information
+DEL ir.model.access: account_followup.access_sms_template_account_manager
+ir.model.constraint: account_followup.constraint_account_followup_followup_line_days_uniq (changed definition: is now 'False' ('unique(company_id, delay)'))
+DEL ir.model.constraint: account_followup.constraint_account_followup_followup_line_uniq_name
+DEL ir.rule: account_followup.account_followup_comp_rule (noupdate)
+DEL ir.rule: account_followup.ir_rule_sms_template_account_manager (noupdate)
+NEW ir.ui.view: account_followup.res_config_settings_view_form
+NEW ir.ui.view: account_followup.res_partner_view_tree
+NEW ir.ui.view: account_followup.view_invoice_tree_reminder_inherit
+NEW ir.ui.view: account_followup.view_mail_compose_message_form_inherit_cache
+NEW ir.ui.view: account_followup.view_out_invoice_tree_reminder_inherit
+DEL ir.ui.view: account_followup.customer_statements_search_view
+DEL ir.ui.view: account_followup.view_followup_invoice_list
+NEW mail.template: account_followup.mail_template_invoice_payment_kind_reminder
+NEW mail.template: account_followup.mail_template_invoice_payment_last_reminder
+NEW mail.template: account_followup.mail_template_invoice_payment_second_reminder
+NEW mail.template: account_followup.mail_template_partner_payment_kind_reminder
+NEW mail.template: account_followup.mail_template_partner_payment_last_reminder
+NEW mail.template: account_followup.mail_template_partner_payment_second_reminder
+NEW mail.template: account_followup.mail_template_payment_reminder_before_due
+DEL mail.template: account_followup.demo_followup_email_template_2 (noupdate)
+DEL mail.template: account_followup.email_template_followup_1 (noupdate)

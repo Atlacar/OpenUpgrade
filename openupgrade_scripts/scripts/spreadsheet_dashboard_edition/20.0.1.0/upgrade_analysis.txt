@@ -1,0 +1,6 @@
+---Models in module 'spreadsheet_dashboard_edition'---
+---Fields in module 'spreadsheet_dashboard_edition'---
+---XML records in module 'spreadsheet_dashboard_edition'---
+NEW ir.access: spreadsheet_dashboard_edition.ir_rule_spreadsheet_dashboard_threads
+NEW ir.access: spreadsheet_dashboard_edition.ir_rule_spreadsheet_dashboard_threads_1
+DEL ir.rule: spreadsheet_dashboard_edition.ir_rule_spreadsheet_dashboard_threads

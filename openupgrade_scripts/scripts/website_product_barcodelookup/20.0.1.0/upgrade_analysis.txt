@@ -1,0 +1,4 @@
+---Models in module 'website_product_barcodelookup'---
+---Fields in module 'website_product_barcodelookup'---
+---XML records in module 'website_product_barcodelookup'---
+product.attribute: product_barcodelookup.product_attribute_lookup_5 (noupdate switched)

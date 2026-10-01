@@ -1,0 +1,4 @@
+---Models in module 'website_sale_dashboard'---
+---Fields in module 'website_sale_dashboard'---
+---XML records in module 'website_sale_dashboard'---
+ir.actions.act_window: website_sale_dashboard.sale_dashboard (deleted domain)

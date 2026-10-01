@@ -1,0 +1,243 @@
+---Models in module 'account_asset'---
+new model account.asset.variant
+new model account.depreciation.model
+new model depreciation.ledger.wizard [transient]
+---Fields in module 'account_asset'---
+account_asset / account.account          / asset_depreciation_account_id (many2one): NEW relation: account.account
+account_asset / account.account          / asset_expense_account_id (many2one): NEW relation: account.account
+account_asset / account.account          / asset_model_ids (many2many)   : DEL relation: account.asset
+account_asset / account.account          / asset_properties_definition (properties_definition): NEW
+account_asset / account.account          / create_asset (selection)      : DEL required, selection_keys: ['draft', 'no', 'validate']
+account_asset / account.account          / depreciation_model_id (many2one): NEW relation: account.depreciation.model
+account_asset / account.account          / ledger_depreciation_model_ids (many2many): NEW relation: account.depreciation.model
+account_asset / account.account          / multiple_assets_per_line (boolean): DEL
+account_asset / account.asset            / account_depreciation_expense_id (many2one): DEL relation: account.account
+account_asset / account.asset            / account_depreciation_id (many2one): DEL relation: account.account
+account_asset / account.asset            / already_depreciated_amount_import (float): not stored anymore
+account_asset / account.asset            / already_depreciated_amount_import (float): now related
+account_asset / account.asset            / asset_paused_days (float)     : DEL
+account_asset / account.asset            / asset_properties_definition (properties_definition): DEL
+account_asset / account.asset            / book_value (float)            : not a function anymore
+account_asset / account.asset            / book_value (float)            : not stored anymore
+account_asset / account.asset            / book_value (float)            : now related
+account_asset / account.asset            / children_ids (one2many)       : DEL relation: account.asset
+account_asset / account.asset            / depreciation_entries_count (integer): not a function anymore
+account_asset / account.asset            / depreciation_entries_count (integer): now related
+account_asset / account.asset            / depreciation_move_ids (one2many): not stored anymore
+account_asset / account.asset            / depreciation_move_ids (one2many): now related
+account_asset / account.asset            / derived_asset_ids (one2many)  : NEW relation: account.asset
+account_asset / account.asset            / disposal_date (date)          : DEL
+account_asset / account.asset            / gross_increase_count (integer): not a function anymore
+account_asset / account.asset            / gross_increase_count (integer): now related
+account_asset / account.asset            / gross_increase_value (float)  : not a function anymore
+account_asset / account.asset            / gross_increase_value (float)  : now related
+account_asset / account.asset            / import_account_depreciation_expense_id (many2one): NEW relation: account.account, stored: False
+account_asset / account.asset            / import_account_depreciation_id (many2one): NEW relation: account.account, stored: False
+account_asset / account.asset            / journal_id (many2one)         : not stored anymore
+account_asset / account.asset            / journal_id (many2one)         : now related
+account_asset / account.asset            / main_variant_id (many2one)    : NEW relation: account.asset.variant, isfunction: function, stored
+account_asset / account.asset            / method (selection)            : not stored anymore
+account_asset / account.asset            / method (selection)            : now related
+account_asset / account.asset            / method (selection)            : selection_keys is now 'function' ('['degressive', 'degressive_then_linear', 'linear']')
+account_asset / account.asset            / method_number (integer)       : DEL
+account_asset / account.asset            / method_period (selection)     : DEL selection_keys: ['1', '12']
+account_asset / account.asset            / method_progress_factor (float): DEL
+account_asset / account.asset            / model_id (many2one)           : not stored anymore
+account_asset / account.asset            / model_id (many2one)           : now related
+account_asset / account.asset            / model_id (many2one)           : relation is now 'account.depreciation.model' ('account.asset') [nothing to do]
+account_asset / account.asset            / name (char)                   : now translatable
+account_asset / account.asset            / net_gain_on_sale (float)      : DEL
+account_asset / account.asset            / origin_asset_id (many2one)    : NEW relation: account.asset
+account_asset / account.asset            / parent_id (many2one)          : not stored anymore
+account_asset / account.asset            / parent_id (many2one)          : now related
+account_asset / account.asset            / parent_id (many2one)          : relation is now 'account.asset.variant' ('account.asset') [nothing to do]
+account_asset / account.asset            / prorata_computation_type (selection): not stored anymore
+account_asset / account.asset            / prorata_computation_type (selection): now related
+account_asset / account.asset            / prorata_computation_type (selection): selection_keys is now 'function' ('['constant_periods', 'daily_computation', 'none']')
+account_asset / account.asset            / prorata_date (date)           : not stored anymore
+account_asset / account.asset            / prorata_date (date)           : now related
+account_asset / account.asset            / salvage_value (float)         : not stored anymore
+account_asset / account.asset            / salvage_value (float)         : now related
+account_asset / account.asset            / salvage_value_pct (float)     : DEL
+account_asset / account.asset            / state (selection)             : not stored anymore
+account_asset / account.asset            / state (selection)             : now a function
+account_asset / account.asset            / state (selection)             : selection_keys removed: [model]
+account_asset / account.asset            / total_depreciation_entries_count (integer): not a function anymore
+account_asset / account.asset            / total_depreciation_entries_count (integer): now related
+account_asset / account.asset            / value_residual (float)        : not a function anymore
+account_asset / account.asset            / value_residual (float)        : now related
+account_asset / account.asset            / variant_ids (one2many)        : NEW relation: account.asset.variant
+account_asset / account.asset            / website_message_ids (one2many): DEL relation: mail.message
+account_asset / account.asset.variant    / account_depreciation_expense_id (many2one): NEW relation: account.account, hasdefault: compute
+account_asset / account.asset.variant    / account_depreciation_id (many2one): NEW relation: account.account, hasdefault: compute
+account_asset / account.asset.variant    / already_depreciated_amount_import (float): NEW
+account_asset / account.asset.variant    / asset_id (many2one)           : NEW relation: account.asset, required
+account_asset / account.asset.variant    / asset_paused_days (float)     : NEW
+account_asset / account.asset.variant    / book_value (float)            : NEW isfunction: function, stored
+account_asset / account.asset.variant    / children_ids (one2many)       : NEW relation: account.asset.variant
+account_asset / account.asset.variant    / depreciation_move_ids (one2many): NEW relation: account.move
+account_asset / account.asset.variant    / disposal_date (date)          : NEW hasdefault: compute
+account_asset / account.asset.variant    / journal_id (many2one)         : NEW relation: account.journal, isfunction: function, stored
+account_asset / account.asset.variant    / model_id (many2one)           : NEW relation: account.depreciation.model, required, hasdefault: compute
+account_asset / account.asset.variant    / net_gain_on_sale (float)      : NEW
+account_asset / account.asset.variant    / parent_id (many2one)          : NEW relation: account.asset.variant
+account_asset / account.asset.variant    / prorata_computation_type (selection): NEW required, selection_keys: ['constant_periods', 'daily_computation', 'none'], hasdefault: compute
+account_asset / account.asset.variant    / prorata_date (date)           : NEW required, hasdefault: compute
+account_asset / account.asset.variant    / recovery_account_id (many2one): NEW relation: account.account, hasdefault: compute
+account_asset / account.asset.variant    / salvage_value (float)         : NEW hasdefault: compute
+account_asset / account.asset.variant    / state (selection)             : NEW selection_keys: ['cancelled', 'close', 'draft', 'open', 'paused']
+account_asset / account.depreciation.model / active (boolean)              : NEW hasdefault: default
+account_asset / account.depreciation.model / activity_ids (one2many)       : NEW relation: mail.activity
+account_asset / account.depreciation.model / asset_ids (one2many)          : NEW relation: account.asset.variant
+account_asset / account.depreciation.model / company_id (many2one)         : NEW relation: res.company
+account_asset / account.depreciation.model / is_name_custom (boolean)      : NEW hasdefault: default
+account_asset / account.depreciation.model / journal_id (many2one)         : NEW relation: account.journal, hasdefault: compute
+account_asset / account.depreciation.model / ledger_depreciation_account_id (many2one): NEW relation: account.account
+account_asset / account.depreciation.model / ledger_expense_account_id (many2one): NEW relation: account.account
+account_asset / account.depreciation.model / ledger_recovery_account_id (many2one): NEW relation: account.account
+account_asset / account.depreciation.model / message_follower_ids (one2many): NEW relation: mail.followers
+account_asset / account.depreciation.model / message_ids (one2many)        : NEW relation: mail.message
+account_asset / account.depreciation.model / method (selection)            : NEW required, selection_keys: ['degressive', 'degressive_then_linear', 'linear', 'no_depreciation'], hasdefault: default
+account_asset / account.depreciation.model / method_mode (selection)       : NEW selection_keys: ['duration', 'rate'], hasdefault: default
+account_asset / account.depreciation.model / method_number (float)         : NEW required, hasdefault: default
+account_asset / account.depreciation.model / method_period (selection)     : NEW required, selection_keys: ['1', '12'], hasdefault: default
+account_asset / account.depreciation.model / method_progress_factor (float): NEW hasdefault: default
+account_asset / account.depreciation.model / name (char)                   : NEW isfunction: function, stored
+account_asset / account.depreciation.model / prorata_computation_type (selection): NEW required, selection_keys: ['constant_periods', 'daily_computation', 'none'], hasdefault: default
+account_asset / account.depreciation.model / rating_ids (one2many)         : NEW relation: rating.rating
+account_asset / account.depreciation.model / salvage_value_percent (float) : NEW hasdefault: default
+account_asset / account.move             / asset_id (many2one)           : DEL relation: account.asset
+account_asset / account.move             / asset_variant_id (many2one)   : NEW relation: account.asset.variant
+account_asset / account.move.line        / depreciation_model_id (many2one): NEW relation: account.depreciation.model, hasdefault: compute
+---XML records in module 'account_asset'---
+NEW account.depreciation.model: account_asset.asset_10_year_linear
+NEW account.depreciation.model: account_asset.asset_20_year_linear
+NEW account.depreciation.model: account_asset.asset_3_year_linear
+NEW account.depreciation.model: account_asset.asset_5_year_linear
+NEW account.depreciation.model: account_asset.asset_no_depreciation
+NEW account.report: account_asset.account_grouped_assets_report
+NEW account.report: account_asset.asset_grouped_assets_report
+NEW account.report.column: account_asset.account_grouped_assets_report_acquisition_date
+NEW account.report.column: account_asset.account_grouped_assets_report_assets_date_to
+NEW account.report.column: account_asset.account_grouped_assets_report_assets_minus
+NEW account.report.column: account_asset.account_grouped_assets_report_assets_plus
+NEW account.report.column: account_asset.account_grouped_assets_report_balance
+NEW account.report.column: account_asset.account_grouped_assets_report_date_from
+NEW account.report.column: account_asset.account_grouped_assets_report_depre_date_from
+NEW account.report.column: account_asset.account_grouped_assets_report_depre_date_to
+NEW account.report.column: account_asset.account_grouped_assets_report_depre_minus
+NEW account.report.column: account_asset.account_grouped_assets_report_depre_plus
+NEW account.report.column: account_asset.account_grouped_assets_report_duration_rate
+NEW account.report.column: account_asset.account_grouped_assets_report_first_method
+NEW account.report.column: account_asset.asset_grouped_assets_report_acquisition_date
+NEW account.report.column: account_asset.asset_grouped_assets_report_assets_date_to
+NEW account.report.column: account_asset.asset_grouped_assets_report_assets_minus
+NEW account.report.column: account_asset.asset_grouped_assets_report_assets_plus
+NEW account.report.column: account_asset.asset_grouped_assets_report_balance
+NEW account.report.column: account_asset.asset_grouped_assets_report_date_from
+NEW account.report.column: account_asset.asset_grouped_assets_report_depre_date_from
+NEW account.report.column: account_asset.asset_grouped_assets_report_depre_date_to
+NEW account.report.column: account_asset.asset_grouped_assets_report_depre_minus
+NEW account.report.column: account_asset.asset_grouped_assets_report_depre_plus
+NEW account.report.column: account_asset.asset_grouped_assets_report_duration_rate
+NEW account.report.column: account_asset.asset_grouped_assets_report_first_method
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_acquisition_date
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_assets_date_from
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_assets_date_to
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_assets_minus
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_assets_plus
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_balance
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_depre_date_from
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_depre_date_to
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_depre_minus
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_depre_plus
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_duration_rate
+NEW account.report.expression: account_asset.account_grouped_depreciation_schedule_line_method
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_acquisition_date
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_assets_date_from
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_assets_date_to
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_assets_minus
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_assets_plus
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_balance
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_depre_date_from
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_depre_date_to
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_depre_minus
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_depre_plus
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_duration_rate
+NEW account.report.expression: account_asset.asset_grouped_depreciation_schedule_line_method
+NEW account.report.expression: account_asset.depreciation_schedule_line_acquisition_date
+NEW account.report.expression: account_asset.depreciation_schedule_line_assets_date_from
+NEW account.report.expression: account_asset.depreciation_schedule_line_assets_date_to
+NEW account.report.expression: account_asset.depreciation_schedule_line_assets_minus
+NEW account.report.expression: account_asset.depreciation_schedule_line_assets_plus
+NEW account.report.expression: account_asset.depreciation_schedule_line_balance
+NEW account.report.expression: account_asset.depreciation_schedule_line_depre_date_from
+NEW account.report.expression: account_asset.depreciation_schedule_line_depre_date_to
+NEW account.report.expression: account_asset.depreciation_schedule_line_depre_minus
+NEW account.report.expression: account_asset.depreciation_schedule_line_depre_plus
+NEW account.report.expression: account_asset.depreciation_schedule_line_duration_rate
+NEW account.report.expression: account_asset.depreciation_schedule_line_method
+NEW account.report.line: account_asset.account_grouped_depreciation_schedule_line
+NEW account.report.line: account_asset.asset_grouped_depreciation_schedule_line
+NEW account.report.line: account_asset.depreciation_schedule_line
+NEW ir.access: account_asset.access_account_asset
+NEW ir.access: account_asset.access_account_asset_group
+NEW ir.access: account_asset.access_account_asset_group_manager
+NEW ir.access: account_asset.access_account_asset_invoicing_payment
+NEW ir.access: account_asset.access_account_asset_manager
+NEW ir.access: account_asset.access_account_asset_variant
+NEW ir.access: account_asset.access_account_asset_variant_invoicing_payment
+NEW ir.access: account_asset.access_account_asset_variant_manager
+NEW ir.access: account_asset.access_account_depreciation_model
+NEW ir.access: account_asset.access_account_depreciation_model_manager
+NEW ir.access: account_asset.access_asset_modify
+NEW ir.access: account_asset.access_depreciation_ledger_wizard
+NEW ir.access: account_asset.account_asset_group_multi_company_rule
+NEW ir.access: account_asset.account_asset_multi_company_rule
+NEW ir.access: account_asset.account_asset_variant_multi_company_rule
+NEW ir.access: account_asset.account_depreciation_model_multi_company_rule
+ir.actions.act_window: account_asset.action_account_asset_form (deleted domain)
+NEW ir.actions.act_window: account_asset.action_account_asset_variant_form
+NEW ir.actions.act_window: account_asset.action_account_depreciation_model_form
+DEL ir.actions.act_window: account_asset.action_account_asset_model_form
+NEW ir.exports: account_asset.account_asset_export_template
+NEW ir.exports: account_asset.account_depreciation_model_export_template
+NEW ir.exports.line: account_asset.account_asset_export_template_line_account_asset_id
+NEW ir.exports.line: account_asset.account_asset_export_template_line_account_depreciation_expense_id
+NEW ir.exports.line: account_asset.account_asset_export_template_line_account_depreciation_id
+NEW ir.exports.line: account_asset.account_asset_export_template_line_acquisition_date
+NEW ir.exports.line: account_asset.account_asset_export_template_line_already_depreciated_amount_import
+NEW ir.exports.line: account_asset.account_asset_export_template_line_method
+NEW ir.exports.line: account_asset.account_asset_export_template_line_method_number
+NEW ir.exports.line: account_asset.account_asset_export_template_line_method_period
+NEW ir.exports.line: account_asset.account_asset_export_template_line_method_progress_factor
+NEW ir.exports.line: account_asset.account_asset_export_template_line_name
+NEW ir.exports.line: account_asset.account_asset_export_template_line_original_value
+NEW ir.exports.line: account_asset.account_asset_export_template_line_prorata_date
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_company_id
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_journal_id
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_method
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_method_mode
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_method_number
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_method_period
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_method_progress_factor
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_prorata_computation_type
+NEW ir.exports.line: account_asset.account_depreciation_model_export_template_line_salvage_value_percent
+DEL ir.model.access: account_asset.access_account_asset
+DEL ir.model.access: account_asset.access_account_asset_group
+DEL ir.model.access: account_asset.access_account_asset_group_manager
+DEL ir.model.access: account_asset.access_account_asset_invoicing_payment
+DEL ir.model.access: account_asset.access_account_asset_manager
+DEL ir.model.access: account_asset.access_asset_modify
+DEL ir.rule: account_asset.account_asset_group_multi_company_rule (noupdate)
+DEL ir.rule: account_asset.account_asset_multi_company_rule (noupdate)
+NEW ir.ui.menu: account_asset.menu_action_account_depreciation_model_form
+DEL ir.ui.menu: account_asset.menu_action_account_asset_model_form
+NEW ir.ui.view: account_asset.depreciation_ledger_wizard_form
+NEW ir.ui.view: account_asset.view_account_asset_variant_tree
+NEW ir.ui.view: account_asset.view_account_depreciation_model_form
+NEW ir.ui.view: account_asset.view_account_depreciation_model_kanban
+NEW ir.ui.view: account_asset.view_account_depreciation_model_search
+NEW ir.ui.view: account_asset.view_account_depreciation_model_tree
+DEL ir.ui.view: account_asset.view_account_asset_model_search
+DEL ir.ui.view: account_asset.view_account_asset_model_tree

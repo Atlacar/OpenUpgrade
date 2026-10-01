@@ -1,0 +1,4 @@
+---Models in module 'stock_accountant'---
+---Fields in module 'stock_accountant'---
+---XML records in module 'stock_accountant'---
+DEL ir.ui.menu: stock_accountant.menu_action_stock_account_report_stock_valuation [renamed to account_reports module]

@@ -1,0 +1,22 @@
+---Models in module 'digest'---
+new model digest.test [transient]
+---Fields in module 'digest'---
+digest       / res.users                / digest_ids (many2many)        : NEW relation: digest.digest
+---XML records in module 'digest'---
+digest.digest: digest.digest_digest_default (noupdate switched)
+NEW ir.access: digest.access_digest_digest_system
+NEW ir.access: digest.access_digest_digest_user
+NEW ir.access: digest.access_digest_test
+NEW ir.access: digest.access_digest_tip_system
+NEW ir.access: digest.access_digest_tip_user
+ir.config_parameter: digest.default_digest (noupdate switched)
+ir.config_parameter: digest.default_emails_digest (noupdate switched)
+DEL ir.model.access: digest.access_digest_digest_system
+DEL ir.model.access: digest.access_digest_digest_user
+DEL ir.model.access: digest.access_digest_tip_system
+DEL ir.model.access: digest.access_digest_tip_user
+ir.ui.view: digest.digest_mail_layout (noupdate switched)
+ir.ui.view: digest.digest_mail_main (noupdate switched)
+ir.ui.view: digest.digest_section_mobile (noupdate switched)
+NEW ir.ui.view: digest.digest_test_view_form
+ir.ui.view: digest.digest_tool_kpi (noupdate switched)

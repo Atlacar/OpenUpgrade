@@ -1,0 +1,6 @@
+---Models in module 'snailmail_account_followup'---
+---Fields in module 'snailmail_account_followup'---
+---XML records in module 'snailmail_account_followup'---
+account_followup.followup.line: account_followup.demo_followup_line1 (noupdate switched)
+account_followup.followup.line: account_followup.demo_followup_line2 (noupdate switched)
+DEL ir.ui.view: snailmail_account_followup.manual_reminder_view_form_inherit_snailmail

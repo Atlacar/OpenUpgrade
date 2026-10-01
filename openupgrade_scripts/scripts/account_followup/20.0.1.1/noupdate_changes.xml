@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <record id="demo_followup_line1" model="account_followup.followup.line" forcecreate="False">
+    <field name="mail_template_id" ref="account_followup.mail_template_partner_payment_second_reminder"/>
+  </record>
+  <record id="demo_followup_line2" model="account_followup.followup.line" forcecreate="False">
+    <field name="mail_template_id" ref="account_followup.mail_template_partner_payment_last_reminder"/>
+    <field name="activity_summary">Invoice reminder</field>
+    <field name="activity_type_id" ref="mail.mail_activity_data_call"/>
+    <field name="create_activity">True</field>
+  </record>
+  <record id="ir_cron_follow_up" model="ir.cron">
+    <field name="active">False</field>
+  </record>
+</odoo>

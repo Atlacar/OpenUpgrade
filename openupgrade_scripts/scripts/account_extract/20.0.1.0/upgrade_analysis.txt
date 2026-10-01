@@ -1,0 +1,4 @@
+---Models in module 'account_extract'---
+---Fields in module 'account_extract'---
+---XML records in module 'account_extract'---
+NEW ir.ui.view: account_extract.res_config_settings_view_form

@@ -1,0 +1,6 @@
+---Models in module 'l10n_mx_edi_pos'---
+---Fields in module 'l10n_mx_edi_pos'---
+---XML records in module 'l10n_mx_edi_pos'---
+NEW ir.access: l10n_mx_edi_pos.access_l10n_mx_edi_document_pos_user
+NEW ir.ui.view: l10n_mx_edi_pos.ticket_validation_screen
+NEW ir.ui.view: l10n_mx_edi_pos.view_partner_form_pos_ui_inherit_l10n_mx_edi_pos

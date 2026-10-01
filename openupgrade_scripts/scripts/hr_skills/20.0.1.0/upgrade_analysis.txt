@@ -1,0 +1,122 @@
+---Models in module 'hr_skills'---
+obsolete model hr.employee.certification.report [abstract]
+---Fields in module 'hr_skills'---
+hr_skills    / hr.employee.skill        / _order                        : _order is now 'skill_type_id, skill_level_id desc' ('skill_type_id, skill_level_id')
+hr_skills    / hr.employee.skill        / certificate_file (binary)     : NEW attachment: True
+hr_skills    / hr.job.skill             / certificate_file (binary)     : NEW attachment: True
+hr_skills    / hr.resume.line           / certificate_filename (char)   : DEL
+---XML records in module 'hr_skills'---
+hr.skill: hr_skills.hr_skill_adaptability (noupdate switched)
+hr.skill: hr_skills.hr_skill_arabic (noupdate switched)
+hr.skill: hr_skills.hr_skill_bengali (noupdate switched)
+hr.skill: hr_skills.hr_skill_communication (noupdate switched)
+hr.skill: hr_skills.hr_skill_conflict_management (noupdate switched)
+hr.skill: hr_skills.hr_skill_creativity (noupdate switched)
+hr.skill: hr_skills.hr_skill_critical_thinking (noupdate switched)
+hr.skill: hr_skills.hr_skill_decision_making (noupdate switched)
+hr.skill: hr_skills.hr_skill_english (noupdate switched)
+hr.skill: hr_skills.hr_skill_filipino (noupdate switched)
+hr.skill: hr_skills.hr_skill_french (noupdate switched)
+hr.skill: hr_skills.hr_skill_german (noupdate switched)
+hr.skill: hr_skills.hr_skill_hindi (noupdate switched)
+hr.skill: hr_skills.hr_skill_indonesian (noupdate switched)
+hr.skill: hr_skills.hr_skill_japanese (noupdate switched)
+hr.skill: hr_skills.hr_skill_javanese (noupdate switched)
+hr.skill: hr_skills.hr_skill_korean (noupdate switched)
+hr.skill: hr_skills.hr_skill_leadership (noupdate switched)
+hr.skill: hr_skills.hr_skill_mandarin_chinese (noupdate switched)
+hr.skill: hr_skills.hr_skill_marathi (noupdate switched)
+hr.skill: hr_skills.hr_skill_openness_to_criticism (noupdate switched)
+hr.skill: hr_skills.hr_skill_organizational (noupdate switched)
+hr.skill: hr_skills.hr_skill_persuasion (noupdate switched)
+hr.skill: hr_skills.hr_skill_portuguese (noupdate switched)
+hr.skill: hr_skills.hr_skill_problem_solving (noupdate switched)
+hr.skill: hr_skills.hr_skill_punjabi (noupdate switched)
+hr.skill: hr_skills.hr_skill_resourcefulness (noupdate switched)
+hr.skill: hr_skills.hr_skill_russian (noupdate switched)
+hr.skill: hr_skills.hr_skill_spanish (noupdate switched)
+hr.skill: hr_skills.hr_skill_stress_management (noupdate switched)
+hr.skill: hr_skills.hr_skill_teamwork (noupdate switched)
+hr.skill: hr_skills.hr_skill_telugu (noupdate switched)
+hr.skill: hr_skills.hr_skill_time_management (noupdate switched)
+hr.skill: hr_skills.hr_skill_turkish (noupdate switched)
+hr.skill: hr_skills.hr_skill_urdu (noupdate switched)
+hr.skill: hr_skills.hr_skill_wu_chinese (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_a1 (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_a2 (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_advanced_softskill (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_b1 (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_b2 (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_beginner_softskill (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_c1 (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_c2 (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_elementary_softskill (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_expert_softskill (noupdate switched)
+hr.skill.level: hr_skills.hr_skill_level_intermediate_softskill (noupdate switched)
+hr.skill.type: hr_skills.hr_skill_type_lang (noupdate switched)
+hr.skill.type: hr_skills.hr_skill_type_softskill (noupdate switched)
+NEW ir.access: hr_skills.access_hr_employee_cv_wizard
+NEW ir.access: hr_skills.access_hr_job_skill
+NEW ir.access: hr_skills.access_hr_job_skill_employee
+NEW ir.access: hr_skills.access_hr_resume_line_type
+NEW ir.access: hr_skills.access_hr_resume_line_type_employee
+NEW ir.access: hr_skills.access_hr_skill
+NEW ir.access: hr_skills.access_hr_skill_employee
+NEW ir.access: hr_skills.access_hr_skill_level
+NEW ir.access: hr_skills.access_hr_skill_level_employee
+NEW ir.access: hr_skills.access_hr_skill_type
+NEW ir.access: hr_skills.access_hr_skill_type_employee
+NEW ir.access: hr_skills.hr_employee_skill_history_report_hr_user
+NEW ir.access: hr_skills.hr_employee_skill_history_report_manager
+NEW ir.access: hr_skills.hr_employee_skill_report_hr_user
+NEW ir.access: hr_skills.hr_employee_skill_report_manager
+NEW ir.access: hr_skills.hr_employee_skill_report_multicompany
+NEW ir.access: hr_skills.hr_resume_rule_employee
+NEW ir.access: hr_skills.hr_resume_rule_employee_hr_user
+NEW ir.access: hr_skills.hr_skill_rule_employee
+NEW ir.access: hr_skills.hr_skill_rule_employee_update
+NEW ir.access: hr_skills.hr_skill_rule_hr_user
+NEW ir.access: hr_skills.hr_skills_rule_employee_update
+ir.actions.act_window: hr_skills.action_hr_employee_skill_certification (deleted domain)
+ir.actions.act_window: hr_skills.hr_resume_lines_training_action (deleted domain)
+DEL ir.actions.act_window: hr_skills.hr_employee_certification_report_action
+NEW ir.actions.server: hr_skills.action_server_hr_employee_skill_certification
+DEL ir.model.access: hr_skills.access_hr_employee_certification_report_user
+DEL ir.model.access: hr_skills.access_hr_employee_cv_wizard
+DEL ir.model.access: hr_skills.access_hr_employee_skill
+DEL ir.model.access: hr_skills.access_hr_employee_skill_employee
+DEL ir.model.access: hr_skills.access_hr_employee_skill_history_report
+DEL ir.model.access: hr_skills.access_hr_employee_skill_history_report_manager
+DEL ir.model.access: hr_skills.access_hr_employee_skill_report_manager
+DEL ir.model.access: hr_skills.access_hr_employee_skill_report_user
+DEL ir.model.access: hr_skills.access_hr_job_skill
+DEL ir.model.access: hr_skills.access_hr_job_skill_employee
+DEL ir.model.access: hr_skills.access_hr_resume_line
+DEL ir.model.access: hr_skills.access_hr_resume_line_employee
+DEL ir.model.access: hr_skills.access_hr_resume_line_type
+DEL ir.model.access: hr_skills.access_hr_resume_line_type_employee
+DEL ir.model.access: hr_skills.access_hr_skill
+DEL ir.model.access: hr_skills.access_hr_skill_employee
+DEL ir.model.access: hr_skills.access_hr_skill_level
+DEL ir.model.access: hr_skills.access_hr_skill_level_employee
+DEL ir.model.access: hr_skills.access_hr_skill_type
+DEL ir.model.access: hr_skills.access_hr_skill_type_employee
+ir.model.constraint: hr_skills.constraint_hr_resume_line_date_check (changed definition: is now 'False' ('CHECK ((date_start <= date_end OR date_end IS NULL))'))
+ir.model.constraint: hr_skills.constraint_hr_skill_level_check_level_progress (changed definition: is now 'False' ('CHECK(level_progress BETWEEN 0 AND 100)'))
+DEL ir.rule: hr_skills.hr_employee_skill_history_report_hr_user (noupdate)
+DEL ir.rule: hr_skills.hr_employee_skill_history_report_manager (noupdate)
+DEL ir.rule: hr_skills.hr_employee_skill_report_hr_user (noupdate)
+DEL ir.rule: hr_skills.hr_employee_skill_report_manager (noupdate)
+DEL ir.rule: hr_skills.hr_employee_skill_report_multicompany (noupdate)
+DEL ir.rule: hr_skills.hr_resume_rule_employee (noupdate)
+DEL ir.rule: hr_skills.hr_resume_rule_employee_hr_user (noupdate)
+DEL ir.rule: hr_skills.hr_skill_rule_employee (noupdate)
+DEL ir.rule: hr_skills.hr_skill_rule_employee_update (noupdate)
+DEL ir.rule: hr_skills.hr_skill_rule_hr_user (noupdate)
+DEL ir.rule: hr_skills.hr_skills_rule_employee_update (noupdate)
+DEL ir.ui.menu: hr_skills.hr_employee_certification_report_menu
+DEL ir.ui.menu: hr_skills.hr_employee_skill_report_menu
+DEL ir.ui.view: hr_skills.hr_employee_certification_report_view_list
+DEL ir.ui.view: hr_skills.hr_employee_certification_report_view_pivot
+DEL ir.ui.view: hr_skills.hr_employee_certification_report_view_search
+DEL mail.activity.type: hr_skills.mail_activity_data_upload_certification (noupdate)

@@ -1,0 +1,4 @@
+---Models in module 'website_enterprise'---
+---Fields in module 'website_enterprise'---
+---XML records in module 'website_enterprise'---
+DEL ir.ui.view: website_enterprise.res_config_settings_view_form

@@ -1,0 +1,6 @@
+---Models in module 'website_appointment_account_payment'---
+---Fields in module 'website_appointment_account_payment'---
+---XML records in module 'website_appointment_account_payment'---
+NEW ir.ui.view: website_appointment_account_payment.appointment_picture_item
+DEL ir.ui.view: website_appointment_account_payment.appointments_template_list
+DEL ir.ui.view: website_appointment_account_payment.appointments_template_picture

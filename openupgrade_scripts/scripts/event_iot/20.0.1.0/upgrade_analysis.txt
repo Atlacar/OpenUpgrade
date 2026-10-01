@@ -1,0 +1,7 @@
+---Models in module 'event_iot'---
+new model report.event_iot.event_registration_badge_printer_report [abstract]
+---Fields in module 'event_iot'---
+event_iot    / event.event              / badge_format (False)          : NEW selection_keys: ['96x82', 'A4_french_fold', 'A6', 'four_per_sheet'], mode: modify
+---XML records in module 'event_iot'---
+NEW ir.actions.report: event_iot.action_report_event_registration_badge_96x82
+NEW ir.ui.view: event_iot.event_registration_badge_printer_report

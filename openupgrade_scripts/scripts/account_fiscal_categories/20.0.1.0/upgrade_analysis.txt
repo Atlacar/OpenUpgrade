@@ -1,0 +1,14 @@
+---Models in module 'account_fiscal_categories'---
+---Fields in module 'account_fiscal_categories'---
+---XML records in module 'account_fiscal_categories'---
+NEW ir.access: account_fiscal_categories.access_account_account_fiscal_rate
+NEW ir.access: account_fiscal_categories.access_account_account_fiscal_rate_readonly
+NEW ir.access: account_fiscal_categories.access_account_fiscal_category
+NEW ir.access: account_fiscal_categories.access_account_fiscal_category_readonly
+NEW ir.access: account_fiscal_categories.account_fiscal_categories_comp_rule
+DEL ir.model.access: account_fiscal_categories.access_account_account_fiscal_rate
+DEL ir.model.access: account_fiscal_categories.access_account_account_fiscal_rate_readonly
+DEL ir.model.access: account_fiscal_categories.access_account_fiscal_category
+DEL ir.model.access: account_fiscal_categories.access_account_fiscal_category_readonly
+ir.model.constraint: account_fiscal_categories.constraint_account_fiscal_category_unique_code (changed definition: is now 'False' ('UNIQUE(code)'))
+DEL ir.rule: account_fiscal_categories.account_fiscal_categories_comp_rule (noupdate)

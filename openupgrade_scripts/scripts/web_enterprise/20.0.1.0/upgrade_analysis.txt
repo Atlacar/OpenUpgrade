@@ -1,0 +1,6 @@
+---Models in module 'web_enterprise'---
+---Fields in module 'web_enterprise'---
+web_enterprise / res.partner              / contact_address_complete (char): previously in module web_map
+web_enterprise / res.users                / contact_address_complete (char): previously in module web_map
+---XML records in module 'web_enterprise'---
+NEW ir.ui.view: web_enterprise.res_config_settings_view_form

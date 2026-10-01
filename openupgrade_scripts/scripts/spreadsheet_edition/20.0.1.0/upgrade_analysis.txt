@@ -1,0 +1,15 @@
+---Models in module 'spreadsheet_edition'---
+---Fields in module 'spreadsheet_edition'---
+spreadsheet_edition / spreadsheet.cell.thread  / website_message_ids (one2many): DEL relation: mail.message
+spreadsheet_edition / spreadsheet.dashboard    / spreadsheet_image_ids (many2many): NEW relation: ir.attachment
+spreadsheet_edition / spreadsheet.dashboard.share / spreadsheet_image_ids (many2many): NEW relation: ir.attachment
+---XML records in module 'spreadsheet_edition'---
+NEW ir.access: spreadsheet_edition.spreadsheet_no_access_rule
+NEW ir.access: spreadsheet_edition.spreadsheet_no_access_rule_1
+NEW ir.access: spreadsheet_edition.spreadsheet_revision
+DEL ir.model.access: spreadsheet_edition.spreadsheet_cell_thread_system
+DEL ir.model.access: spreadsheet_edition.spreadsheet_cell_thread_user
+DEL ir.model.access: spreadsheet_edition.spreadsheet_revision
+ir.model.constraint: spreadsheet_edition.constraint_spreadsheet_revision_initial_unique (changed definition: is now 'False' ('UNIQUE INDEX (res_model, res_id) WHERE parent_revision_id IS NULL'))
+ir.model.constraint: spreadsheet_edition.constraint_spreadsheet_revision_parent_unique (changed definition: is now 'False' ('UNIQUE INDEX (parent_revision_id, res_model, res_id) WHERE parent_revision_id IS NOT NULL'))
+ir.model.constraint: spreadsheet_edition.constraint_spreadsheet_revision_res_model_res_id_idx (changed definition: is now 'False' ('INDEX (res_model, res_id)'))

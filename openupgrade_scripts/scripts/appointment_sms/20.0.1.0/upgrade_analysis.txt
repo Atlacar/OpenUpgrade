@@ -1,0 +1,4 @@
+---Models in module 'appointment_sms'---
+---Fields in module 'appointment_sms'---
+---XML records in module 'appointment_sms'---
+calendar.alarm: appointment_sms.calendar_alarm_data_1h_sms (noupdate switched)

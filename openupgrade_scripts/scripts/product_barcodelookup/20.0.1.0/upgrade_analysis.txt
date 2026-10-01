@@ -1,0 +1,15 @@
+---Models in module 'product_barcodelookup'---
+---Fields in module 'product_barcodelookup'---
+---XML records in module 'product_barcodelookup'---
+NEW ir.access: product_barcodelookup.access_product_get_pic_barcode_manager
+NEW ir.access: product_barcodelookup.product_fetch_image_wizard_rule
+DEL ir.model.access: product_barcodelookup.access_product_get_pic_barcode_manager
+DEL ir.rule: product_barcodelookup.product_fetch_image_wizard_rule (noupdate)
+product.attribute: product_barcodelookup.product_attribute_lookup_2 (noupdate switched)
+product.attribute: product_barcodelookup.product_attribute_lookup_5 (noupdate switched)
+product.attribute: product_barcodelookup.product_attribute_lookup_8 (noupdate switched)
+DEL product.attribute: product_barcodelookup.product_attribute_lookup_1 (noupdate)
+DEL product.attribute: product_barcodelookup.product_attribute_lookup_3 (noupdate)
+DEL product.attribute: product_barcodelookup.product_attribute_lookup_4 (noupdate)
+DEL product.attribute: product_barcodelookup.product_attribute_lookup_6 (noupdate)
+DEL product.attribute: product_barcodelookup.product_attribute_lookup_7 (noupdate)

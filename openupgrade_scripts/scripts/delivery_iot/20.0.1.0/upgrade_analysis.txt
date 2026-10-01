@@ -1,0 +1,8 @@
+---Models in module 'delivery_iot'---
+---Fields in module 'delivery_iot'---
+delivery_iot / iot.device               / picking_type_ids (many2many)  : NEW relation: stock.picking.type
+delivery_iot / stock.picking.type       / iot_scale_ids (many2many)     : NEW relation: iot.device
+---XML records in module 'delivery_iot'---
+NEW ir.ui.view: delivery_iot.iot_device_view_form_inherit
+NEW ir.ui.view: delivery_iot.stock_put_in_pack_form
+NEW ir.ui.view: delivery_iot.view_picking_type_form_inherit

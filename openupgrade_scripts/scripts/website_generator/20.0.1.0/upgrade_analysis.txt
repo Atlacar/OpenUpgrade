@@ -1,0 +1,24 @@
+---Models in module 'website_generator'---
+new model website_generator.request
+---Fields in module 'website_generator'---
+website_generator / website_generator.request / additional_urls (char)        : NEW
+website_generator / website_generator.request / generation_progress (json)    : NEW
+website_generator / website_generator.request / import_website (boolean)      : NEW hasdefault: default
+website_generator / website_generator.request / out_json_attachment_id (many2one): NEW relation: ir.attachment
+website_generator / website_generator.request / page_count (integer)          : NEW
+website_generator / website_generator.request / status (char)                 : NEW hasdefault: default
+website_generator / website_generator.request / target_url (char)             : NEW required
+website_generator / website_generator.request / uuid (char)                   : NEW
+website_generator / website_generator.request / version (char)                : NEW hasdefault: default
+website_generator / website_generator.request / website_id (many2one)         : NEW relation: website
+---XML records in module 'website_generator'---
+NEW ir.access: website_generator.access_website_generator_request
+NEW ir.access: website_generator.access_website_generator_request_user
+NEW ir.actions.client: website_generator.action_open_website_import_form
+NEW ir.actions.client: website_generator.website_generator_screen
+NEW ir.actions.server: website_generator.action_convert_scraping_request_ICP
+NEW ir.actions.todo: website_generator.website_generator_wait
+NEW ir.cron: website_generator.cron_generate_site
+NEW ir.cron: website_generator.cron_get_result
+NEW ir.ui.view: website_generator.res_config_settings_view_form
+NEW mail.template: website_generator.email_template_website_scrapped

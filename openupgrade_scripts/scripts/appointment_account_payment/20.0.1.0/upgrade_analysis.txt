@@ -1,0 +1,17 @@
+---Models in module 'appointment_account_payment'---
+---Fields in module 'appointment_account_payment'---
+---XML records in module 'appointment_account_payment'---
+NEW ir.access: appointment_account_payment.access_calendar_booking_line_manager
+NEW ir.access: appointment_account_payment.access_calendar_booking_line_user
+NEW ir.access: appointment_account_payment.access_calendar_booking_manager
+NEW ir.access: appointment_account_payment.access_calendar_booking_user
+ir.actions.act_window: appointment.appointment_answer_input_action (deleted domain)
+DEL ir.model.access: appointment_account_payment.access_calendar_booking_line_manager
+DEL ir.model.access: appointment_account_payment.access_calendar_booking_line_user
+DEL ir.model.access: appointment_account_payment.access_calendar_booking_manager
+DEL ir.model.access: appointment_account_payment.access_calendar_booking_user
+ir.model.constraint: appointment_account_payment.constraint_appointment_answer_input_check_event_or_booking (changed definition: is now 'False' ('CHECK(calendar_booking_id IS NOT NULL OR calendar_event_id IS NOT NULL)'))
+ir.model.constraint: appointment_account_payment.constraint_appointment_type_check_product_and_payment_step (changed definition: is now 'False' ('CHECK(has_payment_step IS NULL OR NOT has_payment_step OR product_id IS NOT NULL)'))
+NEW ir.ui.view: appointment_account_payment.appointment_list_item
+DEL ir.ui.view: appointment_account_payment.appointment_progress_bar
+DEL product.product: appointment_account_payment.default_booking_product (noupdate)

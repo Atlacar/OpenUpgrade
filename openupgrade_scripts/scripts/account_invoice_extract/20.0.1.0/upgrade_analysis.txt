@@ -1,0 +1,5 @@
+---Models in module 'account_invoice_extract'---
+---Fields in module 'account_invoice_extract'---
+account_invoice_extract / account.move             / extract_partner_name (char)   : DEL
+---XML records in module 'account_invoice_extract'---
+ir.model.constraint: account_invoice_extract.constraint_res_partner_ocr_name_uniq (changed definition: is now 'False' ('UNIQUE INDEX (name, is_created_by_ocr) WHERE is_created_by_ocr = TRUE AND active = TRUE'))

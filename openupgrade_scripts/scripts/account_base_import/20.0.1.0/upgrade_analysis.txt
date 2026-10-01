@@ -1,0 +1,6 @@
+---Models in module 'account_base_import'---
+---Fields in module 'account_base_import'---
+---XML records in module 'account_base_import'---
+NEW ir.access: account_base_import.access_account_import_summary
+NEW ir.actions.client: account_base_import.action_depreciation_model_import
+DEL ir.model.access: account_base_import.access_account_import_summary

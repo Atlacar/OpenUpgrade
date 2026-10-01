@@ -1,0 +1,12 @@
+---Models in module 'stock_enterprise'---
+---Fields in module 'stock_enterprise'---
+---XML records in module 'stock_enterprise'---
+NEW ir.access: stock_enterprise.access_stock_report
+NEW ir.access: stock_enterprise.stock_report_comp_rule
+ir.actions.act_window: stock.action_picking_tree_all (deleted domain)
+ir.actions.act_window: stock.action_picking_tree_late (deleted domain)
+ir.actions.act_window: stock.action_picking_tree_ready (deleted domain)
+ir.actions.act_window: stock.action_picking_tree_waiting (deleted domain)
+ir.actions.act_window: stock_enterprise.stock_report_action_performance (deleted domain)
+DEL ir.model.access: stock_enterprise.access_stock_report
+DEL ir.rule: stock_enterprise.stock_report_comp_rule (noupdate)

@@ -1,0 +1,18 @@
+---Models in module 'account_transfer'---
+---Fields in module 'account_transfer'---
+---XML records in module 'account_transfer'---
+NEW ir.access: account_transfer.access_account_transfer_model
+NEW ir.access: account_transfer.access_account_transfer_model_invoicing_payment
+NEW ir.access: account_transfer.access_account_transfer_model_line
+NEW ir.access: account_transfer.access_account_transfer_model_line_invoicing_payment
+NEW ir.access: account_transfer.access_account_transfer_model_line_manager
+NEW ir.access: account_transfer.access_account_transfer_model_manager
+NEW ir.access: account_transfer.account_transfer_rule
+DEL ir.model.access: account_transfer.access_account_transfer_model
+DEL ir.model.access: account_transfer.access_account_transfer_model_invoicing_payment
+DEL ir.model.access: account_transfer.access_account_transfer_model_line
+DEL ir.model.access: account_transfer.access_account_transfer_model_line_invoicing_payment
+DEL ir.model.access: account_transfer.access_account_transfer_model_line_manager
+DEL ir.model.access: account_transfer.access_account_transfer_model_manager
+ir.model.constraint: account_transfer.constraint_account_transfer_model_line_unique_account_by_transfer_model (changed definition: is now 'False' ('UNIQUE(transfer_model_id, account_id)'))
+DEL ir.rule: account_transfer.account_transfer_rule (noupdate)

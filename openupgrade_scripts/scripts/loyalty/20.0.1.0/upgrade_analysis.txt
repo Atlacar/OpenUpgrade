@@ -1,0 +1,47 @@
+---Models in module 'loyalty'---
+---Fields in module 'loyalty'---
+loyalty      / loyalty.card             / points (float)                : not stored anymore
+loyalty      / loyalty.card             / points (float)                : now a function
+loyalty      / loyalty.card             / program_id (many2one)         : now required
+loyalty      / loyalty.card             / website_message_ids (one2many): DEL relation: mail.message
+loyalty      / loyalty.history          / _order                        : _order is now 'points_changed_date desc, id desc' ('id desc')
+loyalty      / loyalty.history          / expiration_date (date)        : NEW
+loyalty      / loyalty.history          / linked_loyalty_history_id (many2one): NEW relation: loyalty.history
+loyalty      / loyalty.history          / points_changed_date (datetime): NEW required
+loyalty      / loyalty.program          / expire_after (integer)        : NEW
+loyalty      / loyalty.program          / once_per_user (boolean)       : NEW
+loyalty      / loyalty.program          / partner_ids (many2many)       : NEW relation: res.partner
+---XML records in module 'loyalty'---
+NEW ir.access: loyalty.loyalty_history_company_rule
+NEW ir.access: loyalty.sale_loyalty_card_company_rule
+NEW ir.access: loyalty.sale_loyalty_program_company_rule
+NEW ir.access: loyalty.sale_loyalty_reward_company_rule
+NEW ir.access: loyalty.sale_loyalty_rule_company_rule
+ir.actions.act_window: loyalty.loyalty_card_action (deleted domain)
+ir.actions.act_window: loyalty.loyalty_program_discount_loyalty_action (deleted domain)
+ir.actions.act_window: loyalty.loyalty_program_gift_ewallet_action (deleted domain)
+ir.config_parameter: loyalty.config_online_sync_proxy_mode (noupdate switched)
+DEL ir.model.access: loyalty.access_loyalty_card
+DEL ir.model.access: loyalty.access_loyalty_card_update_balance_user
+DEL ir.model.access: loyalty.access_loyalty_generate_wizard
+DEL ir.model.access: loyalty.access_loyalty_history
+DEL ir.model.access: loyalty.access_loyalty_mail
+DEL ir.model.access: loyalty.access_loyalty_program
+DEL ir.model.access: loyalty.access_loyalty_reward
+DEL ir.model.access: loyalty.access_loyalty_rule
+ir.model.constraint: loyalty.constraint_loyalty_card_card_code_unique (changed definition: is now 'False' ('UNIQUE(code)'))
+NEW ir.model.constraint: loyalty.constraint_loyalty_history_issued_and_used_positive
+NEW ir.model.constraint: loyalty.constraint_loyalty_history_issued_or_used
+NEW ir.model.constraint: loyalty.constraint_loyalty_program_check_expire_after
+ir.model.constraint: loyalty.constraint_loyalty_program_check_max_usage (changed definition: is now 'False' ('CHECK (limit_usage = False OR max_usage > 0)'))
+ir.model.constraint: loyalty.constraint_loyalty_reward_discount_positive (changed definition: is now 'False' ('CHECK (reward_type != 'discount' OR discount > 0)'))
+ir.model.constraint: loyalty.constraint_loyalty_reward_product_qty_positive (changed definition: is now 'False' ('CHECK (reward_type != 'product' OR reward_product_qty > 0)'))
+ir.model.constraint: loyalty.constraint_loyalty_reward_required_points_positive (changed definition: is now 'False' ('CHECK (required_points > 0)'))
+ir.model.constraint: loyalty.constraint_loyalty_rule_reward_point_amount_positive (changed definition: is now 'False' ('CHECK (reward_point_amount > 0)'))
+DEL ir.rule: loyalty.loyalty_history_company_rule (noupdate)
+DEL ir.rule: loyalty.sale_loyalty_card_company_rule (noupdate)
+DEL ir.rule: loyalty.sale_loyalty_program_company_rule (noupdate)
+DEL ir.rule: loyalty.sale_loyalty_reward_company_rule (noupdate)
+DEL ir.rule: loyalty.sale_loyalty_rule_company_rule (noupdate)
+product.product: loyalty.ewallet_product_50 (noupdate switched)
+product.product: loyalty.gift_card_product_50 (noupdate switched)

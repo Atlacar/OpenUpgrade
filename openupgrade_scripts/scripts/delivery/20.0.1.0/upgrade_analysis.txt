@@ -1,0 +1,46 @@
+---Models in module 'delivery'---
+new model delivery.note.wizard [transient]
+new model delivery.note.wizard.line [transient]
+---Fields in module 'delivery'---
+delivery     / payment.provider         / custom_mode (False)           : selection_keys added: [pay_on_invoice] (most likely nothing to do)
+delivery     / res.partner              / is_pickup_location (boolean)  : DEL
+delivery     / sale.order               / pickup_location_data (json)   : DEL
+---XML records in module 'delivery'---
+delivery.carrier: delivery.free_delivery_carrier (noupdate switched)
+NEW ir.access: delivery.access_choose_delivery_carrier
+NEW ir.access: delivery.access_delivery_carrier
+NEW ir.access: delivery.access_delivery_carrier_manager
+NEW ir.access: delivery.access_delivery_carrier_partner_manager
+NEW ir.access: delivery.access_delivery_note_line_user
+NEW ir.access: delivery.access_delivery_note_user
+NEW ir.access: delivery.access_delivery_price_rule
+NEW ir.access: delivery.access_delivery_price_rule_manager
+NEW ir.access: delivery.access_delivery_zip_prefix
+NEW ir.access: delivery.access_delivery_zip_prefix_sale_manager
+NEW ir.access: delivery.delivery_carrier_comp_rule
+NEW ir.actions.report: delivery.action_report_delivery_note
+DEL ir.model.access: delivery.access_choose_delivery_carrier
+DEL ir.model.access: delivery.access_delivery_carrier
+DEL ir.model.access: delivery.access_delivery_carrier_manager
+DEL ir.model.access: delivery.access_delivery_carrier_partner_manager
+DEL ir.model.access: delivery.access_delivery_carrier_system
+DEL ir.model.access: delivery.access_delivery_price_rule
+DEL ir.model.access: delivery.access_delivery_price_rule_manager
+DEL ir.model.access: delivery.access_delivery_price_rule_sale_manager
+DEL ir.model.access: delivery.access_delivery_zip_prefix
+DEL ir.model.access: delivery.access_delivery_zip_prefix_sale_manager
+ir.model.constraint: delivery.constraint_delivery_carrier_margin_not_under_100_percent (changed definition: is now 'False' ('CHECK (margin >= -1)'))
+ir.model.constraint: delivery.constraint_delivery_carrier_shipping_insurance_is_percentage (changed definition: is now 'False' ('CHECK(shipping_insurance >= 0 AND shipping_insurance <= 100)'))
+ir.model.constraint: delivery.constraint_delivery_zip_prefix_name_uniq (changed definition: is now 'False' ('unique (name)'))
+DEL ir.rule: delivery.delivery_carrier_comp_rule (noupdate)
+NEW ir.sequence: delivery.seq_delivery_note
+NEW ir.ui.view: delivery.delivery_note_form_view
+NEW ir.ui.view: delivery.delivery_note_list_view
+NEW ir.ui.view: delivery.report_delivery_note
+NEW ir.ui.view: delivery.state_header
+NEW ir.ui.view: delivery.view_delivery_carrier_so_list
+NEW mail.template: delivery.mail_template_data_delivery_note
+payment.method: delivery.payment_method_cash_on_delivery (noupdate switched)
+payment.provider: delivery.payment_provider_cod (noupdate switched)
+product.category: delivery.product_category_deliveries (noupdate switched)
+product.product: delivery.product_product_delivery (noupdate switched)

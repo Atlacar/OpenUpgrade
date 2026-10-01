@@ -1,0 +1,35 @@
+---Models in module 'web_studio'---
+---Fields in module 'web_studio'---
+web_studio   / studio.approval.rule     / child_ids (one2many)          : NEW relation: studio.approval.rule
+web_studio   / studio.approval.rule     / parent_id (many2one)          : NEW relation: studio.approval.rule
+web_studio   / studio.approval.rule     / website_message_ids (one2many): DEL relation: mail.message
+---XML records in module 'web_studio'---
+NEW ir.access: web_studio.access_studio_approval_approver
+NEW ir.access: web_studio.access_studio_approval_delegate
+NEW ir.access: web_studio.access_studio_approval_request_settings
+NEW ir.access: web_studio.access_studio_approval_rule_settings
+NEW ir.access: web_studio.access_studio_approval_rule_user
+NEW ir.access: web_studio.access_studio_export_model
+NEW ir.access: web_studio.access_studio_export_wizard
+NEW ir.access: web_studio.access_studio_export_wizard_data
+NEW ir.access: web_studio.studio_approval_entry_group_system_rule
+NEW ir.access: web_studio.studio_approval_entry_group_user_rule
+ir.actions.act_window: web_studio.webhook_automation_act (deleted domain)
+DEL ir.model.access: web_studio.access_studio_approval_approver
+DEL ir.model.access: web_studio.access_studio_approval_delegate
+DEL ir.model.access: web_studio.access_studio_approval_entry_settings
+DEL ir.model.access: web_studio.access_studio_approval_entry_user
+DEL ir.model.access: web_studio.access_studio_approval_request_settings
+DEL ir.model.access: web_studio.access_studio_approval_rule_settings
+DEL ir.model.access: web_studio.access_studio_approval_rule_user
+DEL ir.model.access: web_studio.access_studio_export_model
+DEL ir.model.access: web_studio.access_studio_export_wizard
+DEL ir.model.access: web_studio.access_studio_export_wizard_data
+ir.model.constraint: web_studio.constraint_studio_approval_entry_model_res_id_idx (changed definition: is now 'False' ('INDEX (model, res_id)'))
+ir.model.constraint: web_studio.constraint_studio_approval_entry_uniq_combination (changed definition: is now 'False' ('unique(rule_id,model,res_id)'))
+ir.model.constraint: web_studio.constraint_studio_approval_rule_method_or_action_together (changed definition: is now 'False' ('CHECK(method IS NULL OR action_id IS NULL)'))
+ir.model.constraint: web_studio.constraint_studio_export_model_unique_model (changed definition: is now 'False' ('unique(model_id)'))
+DEL ir.model.constraint: web_studio.constraint_studio_approval_rule_method_or_action_not_null
+DEL ir.rule: web_studio.studio_approval_entry_group_system_rule (noupdate)
+DEL ir.rule: web_studio.studio_approval_entry_group_user_rule (noupdate)
+NEW ir.ui.menu: web_studio.menu_technical_studio_approvals

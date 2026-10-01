@@ -1,0 +1,322 @@
+---Models in module 'l10n_mx_reports'---
+obsolete model l10n_mx_xml_polizas.xml_polizas_wizard [transient]
+new model l10n_mx_reports.sat.export.wizard [transient]
+new model l10n_mx_reports.xml_polizas_wizard [transient]
+---Fields in module 'l10n_mx_reports'---
+---XML records in module 'l10n_mx_reports'---
+NEW account.report: l10n_mx_reports.l10n_mx_bs_nif_b6
+NEW account.report: l10n_mx_reports.l10n_mx_pl_nif_b3
+NEW account.report.column: l10n_mx_reports.l10n_mx_bs_nif_b6_balance
+NEW account.report.column: l10n_mx_reports.l10n_mx_pl_nif_b3_column
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_aac
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_adi
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_assets
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_axp
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_cac
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_cai
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_contributed_capital
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_cumulative_results
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_current_assets
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_cxc
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_cxp
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_dad
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_efe
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_equity
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_exercise_result
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_ier
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_imt
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_inv
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_iof
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_liabilities
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_long_term_assets
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_long_term_liabilities
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_net_worth
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_oal
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_opc
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_other_capital_accounts
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_pld
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_ppe
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_psi
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_reserves
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_short_term_liabilities
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_total_liabilities_equity
+NEW account.report.line: l10n_mx_reports.l10n_mx_bs_nif_b6_unalloc_gains_losses
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_determined_ptu
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_ebit
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_financial_expenses
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_financial_products
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_gross_profit
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_income
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_isr_paid
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_less_costs_of_revenue
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_less_operating_expenses
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_net_profit
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_operating_expenses
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_other_financial_operations
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_plus_other_income
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_profit_before_taxes
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_revenue
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_rif
+NEW account.report.line: l10n_mx_reports.l10n_mx_pl_nif_b3_taxes
+NEW ir.access: l10n_mx_reports.access_l10n_mx_reports_sat_export_wizard
+NEW ir.access: l10n_mx_reports.access_l10n_mx_reports_xml_polizas_wizard
+NEW ir.actions.act_window: l10n_mx_reports.xml_polizas_action [renamed from l10n_mx_xml_polizas module]
+DEL ir.actions.act_window: l10n_mx_xml_polizas.xml_polizas_action [renamed to l10n_mx_reports module]
+DEL ir.model.access: l10n_mx_xml_polizas.access_l10n_mx_xml_polizas_xml_polizas_wizard
+NEW ir.model.constraint: l10n_mx_reports.constraint_account_move_l10n_mx_closing_move_on_dec_31 [renamed from l10n_mx_reports_closing module] (changed definition: is now 'False' ('CHECK(DATE_PART('month', date) = 12 AND DATE_PART('day', date) = 31 OR l10n_mx_closing_move = FALSE)'))
+DEL ir.model.constraint: l10n_mx_reports_closing.constraint_account_move_l10n_mx_closing_move_on_dec_31 [renamed to l10n_mx_reports module]
+NEW ir.ui.view: l10n_mx_reports.l10n_mx_reports_sat_export_wizard
+NEW ir.ui.view: l10n_mx_reports.view_account_move_closing_mx
+NEW ir.ui.view: l10n_mx_reports.xml_polizas
+NEW ir.ui.view: l10n_mx_reports.xml_polizas_wizard_form
+DEL ir.ui.view: l10n_mx_reports_closing.view_account_move_closing_mx
+DEL ir.ui.view: l10n_mx_xml_polizas.xml_polizas
+DEL ir.ui.view: l10n_mx_xml_polizas.xml_polizas_wizard_form
+res.country: base.ad (noupdate switched)
+res.country: base.ae (noupdate switched)
+res.country: base.af (noupdate switched)
+res.country: base.ag (noupdate switched)
+res.country: base.ai (noupdate switched)
+res.country: base.al (noupdate switched)
+res.country: base.am (noupdate switched)
+res.country: base.ao (noupdate switched)
+res.country: base.aq (noupdate switched)
+res.country: base.ar (noupdate switched)
+res.country: base.as (noupdate switched)
+res.country: base.at (noupdate switched)
+res.country: base.au (noupdate switched)
+res.country: base.aw (noupdate switched)
+res.country: base.ax (noupdate switched)
+res.country: base.az (noupdate switched)
+res.country: base.ba (noupdate switched)
+res.country: base.bb (noupdate switched)
+res.country: base.bd (noupdate switched)
+res.country: base.be (noupdate switched)
+res.country: base.bf (noupdate switched)
+res.country: base.bg (noupdate switched)
+res.country: base.bh (noupdate switched)
+res.country: base.bi (noupdate switched)
+res.country: base.bj (noupdate switched)
+res.country: base.bl (noupdate switched)
+res.country: base.bm (noupdate switched)
+res.country: base.bn (noupdate switched)
+res.country: base.bo (noupdate switched)
+res.country: base.bq (noupdate switched)
+res.country: base.br (noupdate switched)
+res.country: base.bs (noupdate switched)
+res.country: base.bt (noupdate switched)
+res.country: base.bv (noupdate switched)
+res.country: base.bw (noupdate switched)
+res.country: base.by (noupdate switched)
+res.country: base.bz (noupdate switched)
+res.country: base.ca (noupdate switched)
+res.country: base.cc (noupdate switched)
+res.country: base.cd (noupdate switched)
+res.country: base.cf (noupdate switched)
+res.country: base.cg (noupdate switched)
+res.country: base.ch (noupdate switched)
+res.country: base.ci (noupdate switched)
+res.country: base.ck (noupdate switched)
+res.country: base.cl (noupdate switched)
+res.country: base.cm (noupdate switched)
+res.country: base.cn (noupdate switched)
+res.country: base.co (noupdate switched)
+res.country: base.cr (noupdate switched)
+res.country: base.cu (noupdate switched)
+res.country: base.cv (noupdate switched)
+res.country: base.cw (noupdate switched)
+res.country: base.cx (noupdate switched)
+res.country: base.cy (noupdate switched)
+res.country: base.cz (noupdate switched)
+res.country: base.de (noupdate switched)
+res.country: base.dj (noupdate switched)
+res.country: base.dk (noupdate switched)
+res.country: base.dm (noupdate switched)
+res.country: base.do (noupdate switched)
+res.country: base.dz (noupdate switched)
+res.country: base.ec (noupdate switched)
+res.country: base.ee (noupdate switched)
+res.country: base.eg (noupdate switched)
+res.country: base.eh (noupdate switched)
+res.country: base.er (noupdate switched)
+res.country: base.es (noupdate switched)
+res.country: base.et (noupdate switched)
+res.country: base.fi (noupdate switched)
+res.country: base.fj (noupdate switched)
+res.country: base.fk (noupdate switched)
+res.country: base.fm (noupdate switched)
+res.country: base.fo (noupdate switched)
+res.country: base.fr (noupdate switched)
+res.country: base.ga (noupdate switched)
+res.country: base.gd (noupdate switched)
+res.country: base.ge (noupdate switched)
+res.country: base.gf (noupdate switched)
+res.country: base.gg (noupdate switched)
+res.country: base.gh (noupdate switched)
+res.country: base.gi (noupdate switched)
+res.country: base.gl (noupdate switched)
+res.country: base.gm (noupdate switched)
+res.country: base.gn (noupdate switched)
+res.country: base.gp (noupdate switched)
+res.country: base.gq (noupdate switched)
+res.country: base.gr (noupdate switched)
+res.country: base.gs (noupdate switched)
+res.country: base.gt (noupdate switched)
+res.country: base.gu (noupdate switched)
+res.country: base.gw (noupdate switched)
+res.country: base.gy (noupdate switched)
+res.country: base.hk (noupdate switched)
+res.country: base.hm (noupdate switched)
+res.country: base.hn (noupdate switched)
+res.country: base.hr (noupdate switched)
+res.country: base.ht (noupdate switched)
+res.country: base.hu (noupdate switched)
+res.country: base.id (noupdate switched)
+res.country: base.ie (noupdate switched)
+res.country: base.il (noupdate switched)
+res.country: base.im (noupdate switched)
+res.country: base.in (noupdate switched)
+res.country: base.io (noupdate switched)
+res.country: base.iq (noupdate switched)
+res.country: base.ir (noupdate switched)
+res.country: base.is (noupdate switched)
+res.country: base.it (noupdate switched)
+res.country: base.je (noupdate switched)
+res.country: base.jm (noupdate switched)
+res.country: base.jo (noupdate switched)
+res.country: base.jp (noupdate switched)
+res.country: base.ke (noupdate switched)
+res.country: base.kg (noupdate switched)
+res.country: base.kh (noupdate switched)
+res.country: base.ki (noupdate switched)
+res.country: base.km (noupdate switched)
+res.country: base.kn (noupdate switched)
+res.country: base.kp (noupdate switched)
+res.country: base.kr (noupdate switched)
+res.country: base.kw (noupdate switched)
+res.country: base.ky (noupdate switched)
+res.country: base.kz (noupdate switched)
+res.country: base.la (noupdate switched)
+res.country: base.lb (noupdate switched)
+res.country: base.lc (noupdate switched)
+res.country: base.li (noupdate switched)
+res.country: base.lk (noupdate switched)
+res.country: base.lr (noupdate switched)
+res.country: base.ls (noupdate switched)
+res.country: base.lt (noupdate switched)
+res.country: base.lu (noupdate switched)
+res.country: base.lv (noupdate switched)
+res.country: base.ly (noupdate switched)
+res.country: base.ma (noupdate switched)
+res.country: base.mc (noupdate switched)
+res.country: base.md (noupdate switched)
+res.country: base.me (noupdate switched)
+res.country: base.mf (noupdate switched)
+res.country: base.mg (noupdate switched)
+res.country: base.mh (noupdate switched)
+res.country: base.mk (noupdate switched)
+res.country: base.ml (noupdate switched)
+res.country: base.mm (noupdate switched)
+res.country: base.mn (noupdate switched)
+res.country: base.mo (noupdate switched)
+res.country: base.mp (noupdate switched)
+res.country: base.mq (noupdate switched)
+res.country: base.mr (noupdate switched)
+res.country: base.ms (noupdate switched)
+res.country: base.mt (noupdate switched)
+res.country: base.mu (noupdate switched)
+res.country: base.mv (noupdate switched)
+res.country: base.mw (noupdate switched)
+res.country: base.mx (noupdate switched)
+res.country: base.my (noupdate switched)
+res.country: base.mz (noupdate switched)
+res.country: base.na (noupdate switched)
+res.country: base.nc (noupdate switched)
+res.country: base.ne (noupdate switched)
+res.country: base.nf (noupdate switched)
+res.country: base.ng (noupdate switched)
+res.country: base.ni (noupdate switched)
+res.country: base.nl (noupdate switched)
+res.country: base.no (noupdate switched)
+res.country: base.np (noupdate switched)
+res.country: base.nr (noupdate switched)
+res.country: base.nu (noupdate switched)
+res.country: base.nz (noupdate switched)
+res.country: base.om (noupdate switched)
+res.country: base.pa (noupdate switched)
+res.country: base.pe (noupdate switched)
+res.country: base.pf (noupdate switched)
+res.country: base.pg (noupdate switched)
+res.country: base.ph (noupdate switched)
+res.country: base.pk (noupdate switched)
+res.country: base.pl (noupdate switched)
+res.country: base.pm (noupdate switched)
+res.country: base.pn (noupdate switched)
+res.country: base.pr (noupdate switched)
+res.country: base.ps (noupdate switched)
+res.country: base.pt (noupdate switched)
+res.country: base.pw (noupdate switched)
+res.country: base.py (noupdate switched)
+res.country: base.qa (noupdate switched)
+res.country: base.re (noupdate switched)
+res.country: base.ro (noupdate switched)
+res.country: base.rs (noupdate switched)
+res.country: base.ru (noupdate switched)
+res.country: base.rw (noupdate switched)
+res.country: base.sa (noupdate switched)
+res.country: base.sb (noupdate switched)
+res.country: base.sc (noupdate switched)
+res.country: base.sd (noupdate switched)
+res.country: base.se (noupdate switched)
+res.country: base.sg (noupdate switched)
+res.country: base.sh (noupdate switched)
+res.country: base.si (noupdate switched)
+res.country: base.sj (noupdate switched)
+res.country: base.sk (noupdate switched)
+res.country: base.sl (noupdate switched)
+res.country: base.sm (noupdate switched)
+res.country: base.sn (noupdate switched)
+res.country: base.so (noupdate switched)
+res.country: base.sr (noupdate switched)
+res.country: base.ss (noupdate switched)
+res.country: base.st (noupdate switched)
+res.country: base.sv (noupdate switched)
+res.country: base.sx (noupdate switched)
+res.country: base.sy (noupdate switched)
+res.country: base.sz (noupdate switched)
+res.country: base.tc (noupdate switched)
+res.country: base.td (noupdate switched)
+res.country: base.tf (noupdate switched)
+res.country: base.tg (noupdate switched)
+res.country: base.th (noupdate switched)
+res.country: base.tj (noupdate switched)
+res.country: base.tk (noupdate switched)
+res.country: base.tm (noupdate switched)
+res.country: base.tn (noupdate switched)
+res.country: base.to (noupdate switched)
+res.country: base.tr (noupdate switched)
+res.country: base.tt (noupdate switched)
+res.country: base.tv (noupdate switched)
+res.country: base.tw (noupdate switched)
+res.country: base.tz (noupdate switched)
+res.country: base.ua (noupdate switched)
+res.country: base.ug (noupdate switched)
+res.country: base.uk (noupdate switched)
+res.country: base.um (noupdate switched)
+res.country: base.us (noupdate switched)
+res.country: base.uy (noupdate switched)
+res.country: base.uz (noupdate switched)
+res.country: base.va (noupdate switched)
+res.country: base.vc (noupdate switched)
+res.country: base.ve (noupdate switched)
+res.country: base.vg (noupdate switched)
+res.country: base.vi (noupdate switched)
+res.country: base.vn (noupdate switched)
+res.country: base.vu (noupdate switched)
+res.country: base.wf (noupdate switched)
+res.country: base.ws (noupdate switched)
+res.country: base.ye (noupdate switched)
+res.country: base.yt (noupdate switched)
+res.country: base.za (noupdate switched)
+res.country: base.zm (noupdate switched)
+res.country: base.zw (noupdate switched)

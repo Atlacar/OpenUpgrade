@@ -1,0 +1,4 @@
+---Models in module 'currency_rate_live'---
+---Fields in module 'currency_rate_live'---
+currency_rate_live / res.company              / currency_provider (selection) : selection_keys added: [cbar, nbs, sama] (most likely nothing to do)
+---XML records in module 'currency_rate_live'---

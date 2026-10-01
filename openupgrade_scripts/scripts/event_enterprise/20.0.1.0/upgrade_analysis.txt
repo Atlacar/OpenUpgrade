@@ -1,0 +1,6 @@
+---Models in module 'event_enterprise'---
+---Fields in module 'event_enterprise'---
+event_enterprise / event.registration       / event_begin_date (False)      : DEL mode: modify
+---XML records in module 'event_enterprise'---
+ir.actions.act_window: event.act_event_registration_from_event (deleted domain)
+ir.actions.act_window: event.action_registration (deleted domain)

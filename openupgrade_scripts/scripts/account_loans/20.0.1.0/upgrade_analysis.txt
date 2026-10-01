@@ -1,0 +1,24 @@
+---Models in module 'account_loans'---
+---Fields in module 'account_loans'---
+account_loans / account.loan             / analytic_distribution (json)  : NEW hasdefault: compute
+account_loans / account.loan             / analytic_precision (integer)  : NEW hasdefault: default, stored: False
+account_loans / account.loan             / website_message_ids (one2many): DEL relation: mail.message
+---XML records in module 'account_loans'---
+NEW ir.access: account_loans.access_account_loan_close_wizard
+NEW ir.access: account_loans.access_account_loan_compute_wizard
+NEW ir.access: account_loans.access_account_loan_line_readonly
+NEW ir.access: account_loans.access_account_loan_line_write
+NEW ir.access: account_loans.access_account_loan_readonly
+NEW ir.access: account_loans.access_account_loan_write
+NEW ir.access: account_loans.account_loan_line_rule
+NEW ir.access: account_loans.account_loan_rule
+DEL ir.model.access: account_loans.access_account_loan_close_wizard
+DEL ir.model.access: account_loans.access_account_loan_compute_wizard
+DEL ir.model.access: account_loans.access_account_loan_line_readonly
+DEL ir.model.access: account_loans.access_account_loan_line_write
+DEL ir.model.access: account_loans.access_account_loan_readonly
+DEL ir.model.access: account_loans.access_account_loan_write
+DEL ir.rule: account_loans.account_loan_line_rule
+DEL ir.rule: account_loans.account_loan_rule
+NEW ir.ui.view: account_loans.account_loan_line_form_view
+NEW ir.ui.view: account_loans.account_loan_line_kanban_view

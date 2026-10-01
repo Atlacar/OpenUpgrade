@@ -1,0 +1,4 @@
+---Models in module 'website_sale_enterprise'---
+---Fields in module 'website_sale_enterprise'---
+---XML records in module 'website_sale_enterprise'---
+NEW ir.actions.act_window.view: website_sale_enterprise.action_orders_ecommerce_map

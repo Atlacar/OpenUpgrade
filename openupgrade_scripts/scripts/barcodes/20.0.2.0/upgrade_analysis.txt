@@ -1,0 +1,15 @@
+---Models in module 'barcodes'---
+obsolete model barcodes.barcode_events_mixin [abstract]
+---Fields in module 'barcodes'---
+---XML records in module 'barcodes'---
+barcode.nomenclature: barcodes.default_barcode_nomenclature (noupdate switched)
+barcode.rule: barcodes.barcode_rule_product (noupdate switched)
+NEW ir.access: barcodes.access_barcode_nomenclature_manager
+NEW ir.access: barcodes.access_barcode_nomenclature_user
+NEW ir.access: barcodes.access_barcode_rule_manager
+NEW ir.access: barcodes.access_barcode_rule_user
+DEL ir.model.access: barcodes.access_barcode_nomenclature_manager
+DEL ir.model.access: barcodes.access_barcode_nomenclature_user
+DEL ir.model.access: barcodes.access_barcode_rule_manager
+DEL ir.model.access: barcodes.access_barcode_rule_user
+NEW ir.ui.view: barcodes.view_partner_barcodes_form

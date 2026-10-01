@@ -1,0 +1,4 @@
+---Models in module 'iap_extract'---
+---Fields in module 'iap_extract'---
+---XML records in module 'iap_extract'---
+ir.config_parameter: iap_extract.iap_extract_endpoint (noupdate switched)

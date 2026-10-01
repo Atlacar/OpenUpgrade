@@ -1,0 +1,28 @@
+---Models in module 'sales_team'---
+---Fields in module 'sales_team'---
+---XML records in module 'sales_team'---
+crm.team: sales_team.pos_sales_team (noupdate switched)
+crm.team: sales_team.salesteam_website_sales (noupdate switched)
+crm.team: sales_team.team_sales_department (noupdate switched)
+crm.team.member: sales_team.crm_team_member_admin_sales (noupdate switched)
+NEW ir.access: sales_team.access_crm_tag_manager
+NEW ir.access: sales_team.access_crm_tag_salesman
+NEW ir.access: sales_team.access_crm_team
+NEW ir.access: sales_team.access_crm_team_member_manager
+NEW ir.access: sales_team.access_crm_team_member_user
+NEW ir.access: sales_team.crm_rule_all_salesteam
+NEW ir.access: sales_team.sale_team_comp_rule
+ir.actions.act_window: sales_team.mail_activity_type_action_config_sales (deleted domain)
+DEL ir.actions.act_window: sales_team.crm_team_action_sales
+DEL ir.model.access: sales_team.access_crm_tag
+DEL ir.model.access: sales_team.access_crm_tag_manager
+DEL ir.model.access: sales_team.access_crm_tag_salesman
+DEL ir.model.access: sales_team.access_crm_team
+DEL ir.model.access: sales_team.access_crm_team_manager
+DEL ir.model.access: sales_team.access_crm_team_member_all
+DEL ir.model.access: sales_team.access_crm_team_member_manager
+DEL ir.model.access: sales_team.access_crm_team_member_user
+DEL ir.model.access: sales_team.access_crm_team_user
+ir.model.constraint: sales_team.constraint_crm_tag_name_uniq (changed definition: is now 'False' ('unique (name)'))
+DEL ir.rule: sales_team.crm_rule_all_salesteam (noupdate)
+DEL ir.rule: sales_team.sale_team_comp_rule (noupdate)

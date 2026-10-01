@@ -1,0 +1,8 @@
+---Models in module 'auth_signup'---
+---Fields in module 'auth_signup'---
+auth_signup  / res.users                / state (selection)             : selection_keys added: [inactive] (most likely nothing to do)
+---XML records in module 'auth_signup'---
+mail.template: auth_signup.mail_template_data_unregistered_users (noupdate switched)
+mail.template: auth_signup.mail_template_user_signup_account_created (noupdate switched)
+mail.template: auth_signup.portal_set_password_email (noupdate switched)
+mail.template: auth_signup.set_password_email (noupdate switched)

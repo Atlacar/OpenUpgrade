@@ -1,0 +1,21 @@
+---Models in module 'spreadsheet_sale_management'---
+---Fields in module 'spreadsheet_sale_management'---
+spreadsheet_sale_management / sale.order.spreadsheet   / spreadsheet_image_ids (many2many): NEW relation: ir.attachment
+---XML records in module 'spreadsheet_sale_management'---
+NEW ir.access: spreadsheet_sale_management.sale_order_spreadsheet_rule_company
+NEW ir.access: spreadsheet_sale_management.sale_order_spreadsheet_rule_sale_manager
+NEW ir.access: spreadsheet_sale_management.sale_order_spreadsheet_rule_salesman
+NEW ir.access: spreadsheet_sale_management.sale_order_spreadsheet_rule_salesman_all_leads
+NEW ir.access: spreadsheet_sale_management.sale_order_spreadsheet_rule_salesman_template
+NEW ir.access: spreadsheet_sale_management.spreadsheet_cell_thread_rule_sale_manager
+NEW ir.access: spreadsheet_sale_management.spreadsheet_cell_thread_rule_salesman
+NEW ir.access: spreadsheet_sale_management.spreadsheet_cell_thread_rule_salesman_all_leads
+DEL ir.model.access: spreadsheet_sale_management.access_sale_order_spreadsheet
+DEL ir.rule: spreadsheet_sale_management.sale_order_spreadsheet_rule_company (noupdate)
+DEL ir.rule: spreadsheet_sale_management.sale_order_spreadsheet_rule_sale_manager (noupdate)
+DEL ir.rule: spreadsheet_sale_management.sale_order_spreadsheet_rule_salesman (noupdate)
+DEL ir.rule: spreadsheet_sale_management.sale_order_spreadsheet_rule_salesman_all_leads (noupdate)
+DEL ir.rule: spreadsheet_sale_management.sale_order_spreadsheet_rule_salesman_template (noupdate)
+DEL ir.rule: spreadsheet_sale_management.spreadsheet_cell_thread_rule_sale_manager (noupdate)
+DEL ir.rule: spreadsheet_sale_management.spreadsheet_cell_thread_rule_salesman (noupdate)
+DEL ir.rule: spreadsheet_sale_management.spreadsheet_cell_thread_rule_salesman_all_leads (noupdate)
