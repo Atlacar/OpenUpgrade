@@ -62,7 +62,17 @@ def stock_location_valuation_account_id(env):
 
 def stock_move_value(env):
     """
-    Set stock.move#value to sum of product.value#value for this move
+    Set stock.move#value from the stock.valuation.layer records of the move.
+
+    In v18 the layers of an outgoing move carry a negative quantity and value,
+    while in v19 stock.move#value is always the (positive) amount of the move,
+    whatever its direction (see `stock.move#_set_value`, which sets
+    `standard_price * qty` or `_run_fifo(qty)` for outgoing moves). The value of
+    an outgoing move is reused as a positive amount, for example by
+    `_get_value_from_returns` (value of a return) or `_get_cogs_price_unit`.
+    So the sign of the layers is reverted for outgoing moves (negative valued
+    quantity). Dropshipped moves have an incoming and an outgoing layer in v18
+    that cancel each other: take the incoming one.
     """
     openupgrade.logged_query(
         env.cr,
@@ -71,9 +81,16 @@ def stock_move_value(env):
         SET value=aggregated_values.agg_value
         FROM (
             SELECT
-            stock_move_id, sum(value) AS agg_value
+            stock_move_id,
+            CASE
+                WHEN SUM(quantity) < 0 THEN -SUM(value)
+                WHEN SUM(quantity) = 0 AND BOOL_OR(quantity > 0)
+                    THEN SUM(value) FILTER (WHERE quantity > 0)
+                ELSE SUM(value)
+            END AS agg_value
             FROM
             stock_valuation_layer
+            WHERE stock_move_id IS NOT NULL
             GROUP BY stock_move_id
         ) aggregated_values
         WHERE aggregated_values.stock_move_id=stock_move.id

@@ -79,3 +79,16 @@ class TestStockAccountMigration(TransactionCase):
         # 2*24 (v19)
         self.assertEqual(out_move.value, 48)
         self.assertEqual(self.product_fifo.standard_price, 24)
+
+    def test_migrated_out_move_value(self):
+        """The value of outgoing moves done in v18 is positive, as in v19"""
+        out_move = self.env["stock.move"].search(
+            [
+                ("product_id", "=", self.product_fifo.id),
+                ("location_dest_id", "=", self.location_customer.id),
+                ("state", "=", "done"),
+            ]
+        )
+        self.assertEqual(len(out_move), 1)
+        # 2*20 (v18, FIFO)
+        self.assertEqual(out_move.value, 40)
