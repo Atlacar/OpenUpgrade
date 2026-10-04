@@ -648,3 +648,5 @@ mail.activity.plan.template: hr.onboarding_training (noupdate switched)
 mail.message.subtype: hr.mt_contract_close (noupdate switched)
 mail.message.subtype: hr.mt_contract_pending (noupdate switched)
 mail.message.subtype: hr.mt_department_contract_pending (noupdate switched)
+
+# DONE: post-migration _deactivate_overridden_accesses: base.res_partner_bank_rule_user(_1) deactivated (hr noupdate override skipped on update)

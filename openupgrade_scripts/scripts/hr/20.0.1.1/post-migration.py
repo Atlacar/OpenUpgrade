@@ -82,8 +82,25 @@ def create_departures(env):
         )
 
 
+def _deactivate_overridden_accesses(env):
+    """hr/security/hr_security.xml (noupdate) deactivates the base ir.access
+    records `res_partner_bank_rule_user(_1)` and replaces them by the hr ones that
+    restrict the employee bank accounts. A noupdate file is skipped on an update
+    while base has just created these records (active), so they would stay active
+    and give every internal user the unrestricted read/write of the base rule on top
+    of the hr restriction. Replicate the install-time effect."""
+    for xmlid in (
+        "base.res_partner_bank_rule_user",
+        "base.res_partner_bank_rule_user_1",
+    ):
+        access = env.ref(xmlid, raise_if_not_found=False)
+        if access and access.active:
+            access.active = False
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     create_departures(env)
     openupgrade.load_data(env, "hr", "20.0.1.1/noupdate_changes.xml")
     openupgrade.delete_records_safely_by_xml_id(env, _deleted_xmlids)
+    _deactivate_overridden_accesses(env)
