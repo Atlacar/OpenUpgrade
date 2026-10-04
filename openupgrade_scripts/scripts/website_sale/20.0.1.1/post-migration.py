@@ -121,6 +121,22 @@ def product_stock_notification(env):
     )
 
 
+def _deactivate_overridden_accesses(env):
+    """website_sale/security/ir_access.xml (noupdate) deactivates the `product`
+    pricelist (item) company rules, replaced by the multi-website ones of
+    website_sale (its uninstall_hook re-enables them). A noupdate file is skipped on
+    an update while `product` has just created these records (active): replicate
+    the install-time effect, otherwise the plain company rule stays active next to
+    the website one."""
+    for xmlid in (
+        "product.product_pricelist_comp_rule",
+        "product.product_pricelist_item_comp_rule",
+    ):
+        access = env.ref(xmlid, raise_if_not_found=False)
+        if access and access.active:
+            access.active = False
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     template_tools.load_data_keep_customized(env, "website_sale", "20.0.1.1/noupdate_changes.xml")
@@ -129,3 +145,4 @@ def migrate(env, version):
     website_checkout_steps(env)
     product_image_variant(env)
     product_stock_notification(env)
+    _deactivate_overridden_accesses(env)

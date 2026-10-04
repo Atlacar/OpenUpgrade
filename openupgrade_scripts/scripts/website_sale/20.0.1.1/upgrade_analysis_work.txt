@@ -720,3 +720,5 @@ DEL website.snippet.filter: website_sale.dynamic_filter_newest_products
 
 # NOTHING TO DO: record removed from the module data (xmlid not noupdate), deleted by the ORM when the update ends
 
+
+# DONE: post-migration _deactivate_overridden_accesses: product.product_pricelist(_item)_comp_rule deactivated (website_sale noupdate override skipped on update)
