@@ -62,10 +62,12 @@ html = post.render_tracking_html(
     [
         (None, "Draft", "Sent", "Status"),
         ("ACME", "None", "<b>x</b>", "Name & co"),
+        (None, "$\xa010.00", "7", "Amount"),
     ]
 )
 assert html == (
-    "<div>Draft → <b>Sent</b> <i>(Status)</i><br/>"
-    "<em>ACME: </em>None → <b>&lt;b&gt;x&lt;/b&gt;</b> <i>(Name &amp; co)</i></div>"
+    "<div>Draft → <b>Sent</b> <i>(Status)</i><br>"
+    "<em>ACME: </em>None → <b>&lt;b&gt;x&lt;/b&gt;</b> <i>(Name &amp; co)</i><br>"
+    "$&nbsp;10.00 → <b>7</b> <i>(Amount)</i>\n</div>"
 ), html
 print("OK")

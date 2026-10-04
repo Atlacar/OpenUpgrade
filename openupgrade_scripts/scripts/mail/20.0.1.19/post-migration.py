@@ -132,7 +132,11 @@ def render_tracking_html(items):
             line += _escape(old_text)
         line += " → <b>%s</b> <i>(%s)</i>" % (_escape(new_text), _escape(label))
         lines.append(line)
-    return "<div>%s</div>" % "<br/>".join(lines)
+    # byte-compatible with what a native 20 write stores (checked on a rolled-back
+    # write in a migrated DB): html serialisation `<br>`, a newline before the closing
+    # tag (the qweb template ends with one) and U+00A0 (amounts, babel dates) stored
+    # as the &nbsp; entity by the html sanitizer
+    return ("<div>%s\n</div>" % "<br>".join(lines)).replace("\xa0", "&nbsp;")
 
 
 def _tracking_values_to_body(env):
