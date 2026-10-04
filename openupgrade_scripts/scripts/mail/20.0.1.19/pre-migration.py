@@ -6,6 +6,8 @@ from openupgradelib import openupgrade
 
 _logger = logging.getLogger(__name__)
 
+LEGACY_TRACKING_TABLE = "openupgrade_legacy_20_0_mail_tracking_value"
+
 
 def _drop_legacy_access_xmlids(env):
     """Odoo 20 replaced ir.model.access and ir.rule by ir.access and often keeps
@@ -26,20 +28,40 @@ def _drop_legacy_access_xmlids(env):
 def _tracking_values(env):
     """mail.tracking.value moved from ``mail`` to the new module ``mail_tracking``.
 
+    * a legacy copy of the whole table (plus model/res_id of the message) is taken
+      first: it is the reference of the "no tracking row lost" check done in
+      end-migration (see the stock.scrap case there) and the fallback copy when
+      mail_tracking is not installed (the ORM drops the table of the obsolete
+      model of ``mail`` at the end of the update).
     * currency_id is not a column of the new model anymore: it lives in the json
       field_info (``field_info['currency_id']``), see
       mail_tracking_value._create_mail_tracking_values in Odoo 20.
     * if mail_tracking is going to be installed (forced install, see
       docs/scripts_mail.md), move the model/field xmlids so that the table and
       its 49k rows survive the removal of the obsolete model of ``mail``.
-    * else keep a legacy copy of the table: the ORM drops the table of the
-      obsolete model at the end of the update.
     The chatter history itself (rendered into mail_message.body) is handled in
     post-migration.
     """
     cr = env.cr
     if not openupgrade.table_exists(cr, "mail_tracking_value"):
         return
+    if not openupgrade.table_exists(cr, LEGACY_TRACKING_TABLE):
+        openupgrade.logged_query(
+            cr,
+            f"""
+            CREATE TABLE {LEGACY_TRACKING_TABLE} AS
+            SELECT t.*, m.model AS legacy_message_model,
+                m.res_id AS legacy_message_res_id
+            FROM mail_tracking_value t
+            LEFT JOIN mail_message m ON m.id = t.mail_message_id
+            """,
+        )
+        cr.execute(f"SELECT COUNT(*) FROM {LEGACY_TRACKING_TABLE}")
+        _logger.info(
+            "tracking rows before the migration: %s (copy in %s)",
+            cr.fetchone()[0],
+            LEGACY_TRACKING_TABLE,
+        )
     if openupgrade.column_exists(cr, "mail_tracking_value", "currency_id"):
         openupgrade.logged_query(
             cr,
@@ -61,15 +83,9 @@ def _tracking_values(env):
         )
     else:
         _logger.warning(
-            "mail_tracking is not selected for installation: keeping a copy of "
-            "mail_tracking_value in openupgrade_legacy_20_0_mail_tracking_value"
-        )
-        openupgrade.logged_query(
-            cr,
-            """
-            CREATE TABLE openupgrade_legacy_20_0_mail_tracking_value AS
-            SELECT * FROM mail_tracking_value
-            """,
+            "mail_tracking is not selected for installation: the raw rows are only "
+            "kept in %s",
+            LEGACY_TRACKING_TABLE,
         )
 
 
