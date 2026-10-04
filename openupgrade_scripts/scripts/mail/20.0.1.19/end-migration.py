@@ -29,18 +29,24 @@ def _check_tracking_rows(env):
         return
     cr.execute(f"SELECT COUNT(*) FROM {LEGACY_TRACKING_TABLE}")  # noqa: E8103
     before = cr.fetchone()[0]
+    # The obsolete ir.model records (and with them, through
+    # mail.ir_model._unlink_related_mail_data, the messages and their tracking rows)
+    # are only deleted at the very end of the registry load, i.e. AFTER this script.
+    # So "explained" = the message model is not in the registry any more: the row is
+    # either already gone or still there but will go with its message.
     cr.execute(
         f"""
-        SELECT l.id, l.mail_message_id, l.legacy_message_model,
-            EXISTS (SELECT 1 FROM ir_model m WHERE m.model = l.legacy_message_model)
+        SELECT l.id, l.legacy_message_model,
+            EXISTS (SELECT 1 FROM mail_tracking_value t WHERE t.id = l.id)
         FROM {LEGACY_TRACKING_TABLE} l
-        WHERE NOT EXISTS (SELECT 1 FROM mail_tracking_value t WHERE t.id = l.id)
         ORDER BY l.id
         """  # noqa: E8103
     )
-    lost = cr.fetchall()
-    explained = [row for row in lost if not row[3]]
-    unexplained = [row for row in lost if row[3]]
+    rows = cr.fetchall()
+    explained = [row for row in rows if row[1] and row[1] not in env.registry]
+    explained_ids = {row[0] for row in explained}
+    unexplained = [row for row in rows if not row[2] and row[0] not in explained_ids]
+    kept = len([row for row in rows if row[2] and row[0] not in explained_ids])
     cr.execute(
         f"""
         SELECT COUNT(*) FROM mail_tracking_value t
@@ -48,9 +54,6 @@ def _check_tracking_rows(env):
         """  # noqa: E8103
     )
     created = cr.fetchone()[0]
-    cr.execute(f"SELECT COUNT(*) FROM {LEGACY_TRACKING_TABLE} l JOIN "  # noqa: E8103
-               "mail_tracking_value t ON t.id = l.id")
-    kept = cr.fetchone()[0]
     _logger.info(
         "tracking rows: before=%s kept=%s dropped with an obsolete model=%s "
         "unexplained=%s created during the run=%s",
@@ -63,7 +66,7 @@ def _check_tracking_rows(env):
     if explained:
         _logger.warning(
             "tracking rows dropped with the messages of obsolete models %s: ids %s",
-            sorted({row[2] for row in explained}),
+            sorted({row[1] for row in explained}),
             [row[0] for row in explained],
         )
     if before != kept + len(explained):
