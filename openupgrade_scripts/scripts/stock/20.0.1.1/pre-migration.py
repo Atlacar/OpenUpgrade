@@ -186,6 +186,18 @@ def _map_tracking(env):
     )
 
 
+def _orphan_repair_picking_type(env):
+    """code 'repair_operation' only exists with the `repair` module (uninstalled in
+    aquila): the key is outside the 20 selection. 1 unused type (id 10, 0 moves, 0
+    pickings): make it an archived internal type instead of leaving an invalid value
+    (the xmlid and the sequence stay)."""
+    openupgrade.logged_query(
+        env.cr,
+        "UPDATE stock_picking_type SET code = 'internal', active = FALSE "
+        "WHERE code = 'repair_operation'",
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     for model, fields, new_module in _moved_fields:
@@ -195,3 +207,4 @@ def migrate(env, version):
     _prefill_move_quantity_product_uom(env)
     _convert_scrap_reason_tag_color(env)
     _map_tracking(env)
+    _orphan_repair_picking_type(env)

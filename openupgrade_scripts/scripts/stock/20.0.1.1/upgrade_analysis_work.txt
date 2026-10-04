@@ -985,3 +985,5 @@ stock.route: stock.route_warehouse0_mto (noupdate switched)
 # NOTHING TO DO: only the noupdate flag changed
 stock.warehouse: stock.warehouse0 (noupdate switched)
 # NOTHING TO DO: only the noupdate flag changed
+
+# DONE: pre-migration _orphan_repair_picking_type: stock.picking.type.code repair_operation (module repair uninstalled, 1 unused type id 10) -> internal + archived
