@@ -95,7 +95,7 @@ def _deactivate_overridden_accesses(env):
     ):
         access = env.ref(xmlid, raise_if_not_found=False)
         if access and access.active:
-            access.active = False
+            access.with_context(tracking_disable=True).active = False
 
 
 @openupgrade.migrate()
