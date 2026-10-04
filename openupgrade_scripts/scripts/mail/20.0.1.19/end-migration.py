@@ -32,18 +32,31 @@ def _check_tracking_rows(env):
     # The obsolete ir.model records (and with them, through
     # mail.ir_model._unlink_related_mail_data, the messages and their tracking rows)
     # are only deleted at the very end of the registry load, i.e. AFTER this script.
-    # So "explained" = the message model is not in the registry any more: the row is
-    # either already gone or still there but will go with its message.
+    # So "explained" = the message model is not in the registry any more AND its
+    # ir.model record is owned (xmlid) by a module loaded in this run, which is what
+    # `ir.model.data._process_end` deletes. The models of modules that are not loaded
+    # (the custom addons, still `to upgrade`) are kept, so their rows are not explained.
     cr.execute(
         f"""
         SELECT l.id, l.legacy_message_model,
-            EXISTS (SELECT 1 FROM mail_tracking_value t WHERE t.id = l.id)
+            EXISTS (SELECT 1 FROM mail_tracking_value t WHERE t.id = l.id),
+            ARRAY(
+                SELECT d.module FROM ir_model m
+                JOIN ir_model_data d ON d.model = 'ir.model' AND d.res_id = m.id
+                WHERE m.model = l.legacy_message_model)
         FROM {LEGACY_TRACKING_TABLE} l
         ORDER BY l.id
         """  # noqa: E8103
     )
     rows = cr.fetchall()
-    explained = [row for row in rows if row[1] and row[1] not in env.registry]
+    loaded = env.registry._init_modules
+    explained = [
+        row
+        for row in rows
+        if row[1]
+        and row[1] not in env.registry
+        and any(module in loaded for module in row[3])
+    ]
     explained_ids = {row[0] for row in explained}
     unexplained = [row for row in rows if not row[2] and row[0] not in explained_ids]
     kept = len([row for row in rows if row[2] and row[0] not in explained_ids])
