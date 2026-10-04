@@ -12,7 +12,7 @@ obsolete model stock.return.picking [transient]
 obsolete model stock.return.picking.line [transient]
 # NOTHING TO DO: transient/abstract model, no data
 obsolete model stock.scrap (merged to stock.move)
-# DONE: pre-migration: 13 done scraps already own their stock.move (scrap_id): moves flagged is_scrap, should_replenish_scrapped, reference = scrap name, origin/picking_id completed; post-migration: scrap_reason_tag_ids copied. Draft scraps (no move) would be lost: a warning is logged (0 in aquila)
+# DONE: pre-migration: 13 done scraps already own their stock.move (scrap_id): moves flagged is_scrap, should_replenish_scrapped, reference = scrap name ONLY when the move has no reference (kept otherwise: 2 of the 13 carry the picking reference SV-IN-2606090001; the other 11 already equal the scrap name), origin/picking_id completed; post-migration: scrap_reason_tag_ids copied. Draft scraps (no move) would be lost: a warning is logged (0 in aquila)
 new model stock.allocation.report [abstract]
 # NOTHING TO DO: new model
 new model stock.location.label.layout [transient]
@@ -87,7 +87,7 @@ stock        / stock.move               / product_uom (many2one)        : DEL re
 stock        / stock.move               / quantity_product_uom (float)  : NEW isfunction: function, stored
 # DONE: pre-migration: column pre-filled in SQL (quantity, all moves use the product uom in aquila), other moves computed in post-migration
 stock        / stock.move               / reference (char)              : not a function anymore
-# NOTHING TO DO: stored values kept (scrap moves: reference set to the scrap name)
+# NOTHING TO DO: stored values kept (scrap moves: existing reference kept, scrap name only when empty)
 stock        / stock.move               / scrap_id (many2one)           : DEL relation: stock.scrap
 # DONE: pre/post-migration: used to flag the scrap moves (13 rows), then dropped with the stock.scrap model
 stock        / stock.move               / scrap_reason_tag_ids (many2many): NEW relation: stock.scrap.reason.tag
@@ -131,11 +131,11 @@ stock        / stock.picking.type       / wave_date_granularity (selection): NEW
 stock        / stock.picking.type       / wave_group_by_date (boolean)  : NEW
 # NOTHING TO DO: new optional field / default
 stock        / stock.scrap              / company_id (many2one)         : DEL relation: res.company, required
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / date_done (datetime)          : DEL
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / location_id (many2one)        : DEL relation: stock.location, required
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / lot_id (many2one)             : DEL relation: stock.lot
 # NOTHING TO DO: 0 rows; lot/owner/package are on the move lines of the done move
 stock        / stock.scrap              / message_follower_ids (one2many): DEL relation: mail.followers
@@ -145,31 +145,31 @@ stock        / stock.scrap              / message_ids (one2many)        : DEL re
 stock        / stock.scrap              / move_ids (one2many)           : DEL relation: stock.move
 # NOTHING TO DO: one2many (mail/rating messages of the scrap stay in their tables, orphaned and removed with the model)
 stock        / stock.scrap              / name (char)                   : DEL required
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / origin (char)                 : DEL
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / owner_id (many2one)           : DEL relation: res.partner
 # NOTHING TO DO: 0 rows; lot/owner/package are on the move lines of the done move
 stock        / stock.scrap              / package_id (many2one)         : DEL relation: stock.package
 # NOTHING TO DO: 0 rows; lot/owner/package are on the move lines of the done move
 stock        / stock.scrap              / picking_id (many2one)         : DEL relation: stock.picking
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / product_id (many2one)         : DEL relation: product.product, required
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / product_uom_id (many2one)     : DEL relation: uom.uom, required
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / rating_ids (one2many)         : DEL relation: rating.rating
 # NOTHING TO DO: one2many (mail/rating messages of the scrap stay in their tables, orphaned and removed with the model)
 stock        / stock.scrap              / scrap_location_id (many2one)  : DEL relation: stock.location, required
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / scrap_qty (float)             : DEL required
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / scrap_reason_tag_ids (many2many): DEL relation: stock.scrap.reason.tag
 # DONE: post-migration: copied to stock.move.scrap_reason_tag_ids
 stock        / stock.scrap              / should_replenish (boolean)    : DEL
 # DONE: pre-migration: copied to stock.move.should_replenish_scrapped (0 True)
 stock        / stock.scrap              / state (selection)             : DEL selection_keys: ['done', 'draft']
-# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference. Legacy table dropped with the model (13 rows)
+# NOTHING TO DO: the done scrap already owns its stock.move which carries the same data (company, product, quantities, locations, date, origin, picking); name -> reference only when the move has none (2 of 13 keep the picking reference). Legacy table dropped with the model (13 rows)
 stock        / stock.scrap              / website_message_ids (one2many): DEL relation: mail.message
 # NOTHING TO DO: website messages one2many not stored
 stock        / stock.scrap.reason.tag   / color (char)                  : type is now 'integer' ('char')

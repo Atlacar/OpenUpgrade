@@ -3,11 +3,11 @@
 l10n_mx      / res.bank                 / fiscal_country_codes (char)   : DEL stored: False
 # NOTHING TO DO: model res.bank removed in 20; denormalization into res.partner.bank is in the base script (prod: 106 res.bank rows, 9 bank accounts)
 l10n_mx      / res.bank                 / l10n_mx_edi_code (char)       : DEL
-# NOTHING TO DO: model res.bank removed in 20; denormalization into res.partner.bank is in the base script (prod: 106 res.bank rows, 9 bank accounts)
+# DONE: post-migration: res_partner_bank_clabe: the ABM code (3 digits bank code) is the 20 clearing number of Mexican bank accounts (clearing label base.clearing_label_mx 'ABM Code'): res.partner.bank.clearing_number = res_bank.l10n_mx_edi_code (9 of 9 prod accounts: 012 BBVA x6, 014 Santander x3); the res.bank record itself is denormalized by the base script
 l10n_mx      / res.partner.bank         / fiscal_country_codes (char)   : DEL stored: False
 # NOTHING TO DO: non stored field
 l10n_mx      / res.partner.bank         / l10n_mx_edi_clabe (char)      : DEL
-# DONE: post-migration: res_partner_bank_clabe: CLABE is the account number in 20 (8 of 9 prod accounts already equal); the different one is kept in the notes (prod 9 CLABEs)
+# DONE: post-migration: res_partner_bank_clabe: in 20 the CLABE is the account number (account_type 'clabe' is inferred, there is no separate clearing field for it): 8 of 9 prod accounts already have CLABE == account number; the 9th ('0123969479-Overland', CLABE 012210001239694792, used by 3 vendor bills) keeps its number and gets 'CLABE: ...' in the notes + a WARNING (owner decision: could instead be swapped to the CLABE as account number)
 ---XML records in module 'l10n_mx'---
 DEL ir.ui.view: l10n_mx.view_partner_bank_form_l10n_mx_edi_bank
 # NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)

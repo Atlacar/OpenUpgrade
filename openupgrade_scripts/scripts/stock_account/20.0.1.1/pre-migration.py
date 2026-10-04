@@ -82,42 +82,8 @@ def _rename_xmlids_if_free(env):
             openupgrade.rename_xmlids(cr, [(old, new)])
 
 
-def _map_cost_method_fifo(env):
-    """The 'fifo' costing method does not exist anymore (standard / average).
-    No product category uses it in aquila; map it defensively to 'average' in
-    the company dependent column and in the ir.default records."""
-    cr = env.cr
-    if openupgrade.column_exists(cr, "product_category", "property_cost_method"):
-        openupgrade.logged_query(
-            cr,
-            """
-            UPDATE product_category
-            SET property_cost_method = REPLACE(
-                property_cost_method::text, '"fifo"', '"average"')::jsonb
-            WHERE property_cost_method::text LIKE '%%"fifo"%%'
-            """,
-        )
-    openupgrade.logged_query(
-        cr,
-        """
-        UPDATE ir_default d
-        SET json_value = '"average"'
-        FROM ir_model_fields f
-        WHERE f.id = d.field_id AND f.model = 'product.category'
-            AND f.name = 'property_cost_method' AND d.json_value = '"fifo"'
-        """,
-    )
-    if openupgrade.column_exists(cr, "res_company", "cost_method"):
-        openupgrade.logged_query(
-            cr,
-            "UPDATE res_company SET cost_method = 'average' "
-            "WHERE cost_method = 'fifo'",
-        )
-
-
 @openupgrade.migrate()
 def migrate(env, version):
     for model, fields in _moved_fields:
         _move_fields(env, model, fields, "stock_account", "account")
     _rename_xmlids_if_free(env)
-    _map_cost_method_fifo(env)

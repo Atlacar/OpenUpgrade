@@ -97,7 +97,7 @@ def _convert_scrap_to_moves(env):
         UPDATE stock_move m
         SET is_scrap = TRUE,
             should_replenish_scrapped = COALESCE(s.should_replenish, FALSE),
-            reference = s.name,
+            reference = COALESCE(NULLIF(m.reference, ''), s.name),
             origin = COALESCE(m.origin, s.origin),
             picking_id = COALESCE(m.picking_id, s.picking_id)
         FROM stock_scrap s

@@ -1,12 +1,16 @@
 # Copyright 2026 Odoo Community Association (OCA)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import logging
+
 from lxml import etree
 from openupgradelib import openupgrade
 
 # pylint: disable=odoo-addons-relative-import
 from odoo.addons.openupgrade_scripts.apriori import merged_modules, renamed_modules
 from odoo.tools import file_open
+
+_logger = logging.getLogger(__name__)
 
 # xmlids that were renamed in the 20.0 data files of base with identical
 # code/name (diff of res.country.state.csv 19.0 vs 20.0): without the rename the
@@ -266,6 +270,43 @@ def _clearing_labels(env):
         openupgrade.add_xmlid(cr, "base", xmlid, "clearing.label", cr.fetchone()[0])
 
 
+def _legacy_columns(env):
+    """Data of fields removed in 20.0 that has no successor is copied to legacy
+    columns (openupgrade.get_legacy_name) so that the values survive in the
+    migrated database:
+    - res.partner.bank.currency_id (prod: 9 rows, all MXN)
+    - ir.actions.report.report_file (prod: 60 of 62 rows)
+    - res.company.layout_background ('Blank' in prod; 20.0 has no report background
+      at all, which is what 'Blank' meant; 'Demo logo' / 'Custom' have no 20.0
+      equivalent, the value is kept in the legacy column and logged)
+    """
+    cr = env.cr
+    openupgrade.copy_columns(
+        cr,
+        {
+            "res_partner_bank": [("currency_id", None, None)],
+            "ir_act_report_xml": [("report_file", None, None)],
+            "res_company": [("layout_background", None, None)],
+        },
+    )
+    legacy = openupgrade.get_legacy_name("layout_background")
+    cr.execute(
+        f"""
+        SELECT id, name, {legacy} FROM res_company
+        WHERE {legacy} IS NOT NULL AND {legacy} != 'Blank'
+        """
+    )
+    for company_id, name, value in cr.fetchall():
+        _logger.warning(
+            "Company %s (id %s) used the report background %r: Odoo 20.0 has no "
+            "report background, the value is kept in column %s.",
+            name,
+            company_id,
+            value,
+            legacy,
+        )
+
+
 def _res_country_zip_applicability(env):
     """res.country.zip_required (boolean) -> zip_applicability (selection, required).
     True -> required, False -> optional (zip was displayed but not required). The
@@ -402,6 +443,68 @@ def _res_groups_name_uniq(env):
     )
 
 
+def _drop_merged_modules_without_target(env):
+    """Merged modules whose target is not installed and that own no data.
+
+    ``update_module_names(merge_modules=True)`` hands the *state* of the old module
+    to a not installed merge target. ``iot_base`` (assets only, no model, no
+    xmlid) is merged into ``iot``: renaming it would leave ``iot`` installed,
+    which drags ``printer`` and every ``*_iot`` auto-install bridge into a database
+    without any IoT device. When the target is not installed and the old module
+    owns no ir_model_data (other than its own module record in base), the old
+    module row is dropped instead (nothing to move). Returns the merges left to
+    apply with ``update_module_names``."""
+    cr = env.cr
+    remaining = {}
+    for old_name, new_name in merged_modules.items():
+        cr.execute("SELECT id FROM ir_module_module WHERE name = %s", [old_name])
+        old = cr.fetchone()
+        cr.execute("SELECT state FROM ir_module_module WHERE name = %s", [new_name])
+        target = cr.fetchone()
+        target_installed = bool(
+            target and target[0] in ("installed", "to install", "to upgrade")
+        )
+        if not old or target_installed:
+            remaining[old_name] = new_name
+            continue
+        cr.execute("SELECT count(*) FROM ir_model_data WHERE module = %s", [old_name])
+        if cr.fetchone()[0]:
+            _logger.warning(
+                "Merged module %s owns data but its target %s is not installed: "
+                "applying the normal merge",
+                old_name,
+                new_name,
+            )
+            remaining[old_name] = new_name
+            continue
+        _logger.info(
+            "Merged module %s owns no data and its target %s is not installed: "
+            "dropping the module record instead of installing the target",
+            old_name,
+            new_name,
+        )
+        openupgrade.logged_query(
+            cr, "DELETE FROM ir_module_module_dependency WHERE module_id = %s", [old[0]]
+        )
+        openupgrade.logged_query(
+            cr, "DELETE FROM ir_module_module_dependency WHERE name = %s", [old_name]
+        )
+        openupgrade.logged_query(
+            cr,
+            "DELETE FROM ir_model_data WHERE module = 'base' "
+            "AND model = 'ir.module.module' AND name = %s",
+            ["module_%s" % old_name],
+        )
+        for table in ("ir_model_constraint", "ir_model_relation"):
+            openupgrade.logged_query(
+                cr, f"DELETE FROM {table} WHERE module = %s", [old[0]]
+            )
+        openupgrade.logged_query(
+            cr, "DELETE FROM ir_module_module WHERE id = %s", [old[0]]
+        )
+    return remaining
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.logged_query(
@@ -416,13 +519,17 @@ def migrate(env, version):
         env.cr, renamed_modules.items(), environment_namespec=True
     )
     openupgrade.update_module_names(
-        env.cr, merged_modules.items(), merge_modules=True, environment_namespec=True
+        env.cr,
+        _drop_merged_modules_without_target(env).items(),
+        merge_modules=True,
+        environment_namespec=True,
     )
     openupgrade.clean_transient_models(env.cr)
     _stash_access_xmlids(env)
     openupgrade.rename_xmlids(env.cr, _renamed_xmlids)
     _website_moved_to_base(env)
     _contact_address_inline_moved_to_base(env)
+    _legacy_columns(env)
     _res_partner_bank(env)
     _res_country_zip_applicability(env)
     _res_company(env)

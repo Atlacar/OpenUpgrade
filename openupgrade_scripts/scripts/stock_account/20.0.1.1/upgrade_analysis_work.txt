@@ -17,7 +17,7 @@ stock_account / account.move.line        / stock_move_id (many2one)      : NEW r
 stock_account / product.category         / account_stock_variation_id (many2one): module is now 'account' ('stock_account')
 # DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
 stock_account / product.category         / property_cost_method (False)  : NEW selection_keys: ['average', 'fifo', 'standard'], mode: modify
-# DONE: pre-migration: 'fifo' mapped to 'average' defensively (no category uses it, 6 categories are 'average')
+# NOTHING TO DO: 'fifo' still exists in 20 (selection_add in stock_account/models/product.py, res_company.py); no mapping, stored values untouched (prod: 6 categories average, no fifo)
 stock_account / product.category         / property_cost_method (selection): module is now 'account' ('stock_account')
 # DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
 stock_account / product.category         / property_price_difference_account_id (many2one): module is now 'account' ('stock_account')
@@ -33,7 +33,7 @@ stock_account / product.product          / cost_method (selection)       : modul
 stock_account / product.product          / valuation (selection)         : module is now 'account' ('stock_account')
 # DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
 stock_account / product.template         / cost_method (False)           : NEW selection_keys: ['average', 'fifo', 'standard'], mode: modify
-# DONE: pre-migration: 'fifo' mapped to 'average' defensively (no category uses it, 6 categories are 'average')
+# NOTHING TO DO: 'fifo' still exists in 20 (selection_add in stock_account/models/product.py, res_company.py); no mapping, stored values untouched (prod: 6 categories average, no fifo)
 stock_account / product.template         / cost_method (selection)       : module is now 'account' ('stock_account')
 # DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
 stock_account / product.template         / property_price_difference_account_id (many2one): DEL relation: account.account
@@ -57,7 +57,7 @@ stock_account / res.company              / account_stock_journal_id (many2one): 
 stock_account / res.company              / account_stock_valuation_id (many2one): module is now 'account' ('stock_account')
 # DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
 stock_account / res.company              / cost_method (False)           : NEW selection_keys: ['average', 'fifo', 'standard'], mode: modify
-# DONE: pre-migration: 'fifo' mapped to 'average' defensively (no category uses it, 6 categories are 'average')
+# NOTHING TO DO: 'fifo' still exists in 20 (selection_add in stock_account/models/product.py, res_company.py); no mapping, stored values untouched (prod: 6 categories average, no fifo)
 stock_account / res.company              / cost_method (selection)       : module is now 'account' ('stock_account')
 # DONE: pre-migration: stale stock_account imd of the field dropped / moved to account so that the stored column survives (account loads first)
 stock_account / res.company              / inventory_period (selection)  : module is now 'account' ('stock_account')

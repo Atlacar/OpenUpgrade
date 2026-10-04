@@ -2,6 +2,8 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 from openupgradelib import openupgrade
 
+from odoo.exceptions import UserError
+
 _renamed_xmlids = [
     # stock valuation closing moved from stock_account to account
     (
@@ -68,6 +70,25 @@ def account_move_line_deductible_percentage(env):
     """deductible_amount (percentage, 0-100, default 100) becomes
     deductible_percentage (ratio 0-1, default 1)."""
     cr = env.cr
+    if openupgrade.column_exists(cr, "account_move_line", "deductible_amount"):
+        # sanity check: the percentage must be within 0..100, otherwise the
+        # ratio would be wrong silently (prod: 55758 rows, all 100)
+        cr.execute(
+            """
+            SELECT count(*), min(deductible_amount), max(deductible_amount)
+            FROM account_move_line
+            WHERE deductible_amount < 0 OR deductible_amount > 100
+            """
+        )
+        count, minimum, maximum = cr.fetchone()
+        if count:
+            raise UserError(
+                f"Migration aborted: {count} account.move.line row(s) have a "
+                f"deductible_amount outside 0..100 (min {minimum}, max {maximum}). "
+                "Correct them in Odoo 19 (e.g. SELECT id, deductible_amount FROM "
+                "account_move_line WHERE deductible_amount < 0 OR "
+                "deductible_amount > 100) before migrating."
+            )
     if not openupgrade.column_exists(cr, "account_move_line", "deductible_percentage"):
         cr.execute(
             "ALTER TABLE account_move_line "
@@ -195,42 +216,6 @@ def account_report(env):
     cr.execute("DELETE FROM account_report_column WHERE report_id IS NULL")
 
 
-def stock_cost_method_fifo(env):
-    """FIFO costing method is removed: map it to average (AVCO), the closest
-    remaining method. Fields moved from stock_account to account; stored as
-    company dependent jsonb on product_category, as company field and as
-    ir_default."""
-    cr = env.cr
-    cr.execute(
-        """
-        UPDATE product_category
-        SET property_cost_method = (
-            SELECT jsonb_object_agg(
-                key,
-                CASE WHEN value = '"fifo"'::jsonb THEN '"average"'::jsonb ELSE value
-                END)
-            FROM jsonb_each(property_cost_method)
-        )
-        WHERE property_cost_method::text LIKE '%"fifo"%'
-        """
-    )
-    if openupgrade.column_exists(cr, "res_company", "cost_method"):
-        cr.execute(
-            "UPDATE res_company SET cost_method = 'average' "
-            "WHERE cost_method = 'fifo'"
-        )
-    cr.execute(
-        """
-        UPDATE ir_default
-        SET json_value = '"average"'
-        WHERE json_value = '"fifo"'
-            AND field_id IN (
-                SELECT id FROM ir_model_fields
-                WHERE model = 'product.category' AND name = 'property_cost_method')
-        """
-    )
-
-
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.rename_xmlids(env.cr, _renamed_xmlids)
@@ -240,4 +225,3 @@ def migrate(env, version):
     account_payment_state(env)
     account_reconcile_model(env)
     account_report(env)
-    stock_cost_method_fifo(env)

@@ -109,7 +109,7 @@ account      / account.move             / website_message_ids (one2many): DEL re
 account      / account.move.line        / cogs_origin_id (many2one)     : previously in module stock_account
 # NOTHING TO DO: field (and column) moved stock_account -> account, handled natively
 account      / account.move.line        / deductible_amount (float)     : DEL
-# DONE: pre-migration: account_move_line_deductible_percentage: deductible_amount / 100 (prod 55758 rows, all 100)
+# DONE: pre-migration: account_move_line_deductible_percentage: deductible_amount / 100 after a range check (<0 or >100 aborts the migration with a UserError listing count/min/max; prod: 55758 rows, all 100, none out of range)
 account      / account.move.line        / deductible_percentage (float) : NEW hasdefault: default
 # DONE: pre-migration: column pre-created from deductible_amount / 100
 account      / account.move.line        / discount_allocation_key (binary): type is now 'json' ('binary')
@@ -207,7 +207,7 @@ account      / ir.module.module         / account_templates (binary)    : type i
 account      / product.category         / account_stock_variation_id (many2one): previously in module stock_account
 # NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
 account      / product.category         / property_cost_method (selection): previously in module stock_account
-# DONE: pre-migration: stock_cost_method_fifo: fifo mapped to average (prod: no fifo, 6 categories average)
+# NOTHING TO DO: 'fifo' is NOT removed in 20: account defines the base selection (standard/average) and stock_account adds 'fifo' via selection_add (ondelete 'set default'); the selection row of 'fifo' keeps its stock_account xmlid so it is never deleted and no value is touched (verified in ir_model.py _reflect_selections/_process_ondelete); no mapping (prod: 6 categories average, no fifo)
 account      / product.category         / property_price_difference_account_id (many2one): previously in module stock_account
 # NOTHING TO DO: field moved stock_account -> account (same column, company dependent jsonb / related), handled natively
 account      / product.category         / property_stock_journal (many2one): previously in module stock_account
@@ -279,9 +279,9 @@ account_add_gln / res.partner              / global_location_number (char) : not
 account_add_gln / res.partner              / global_location_number (char) : now a function
 # DONE: post-migration: res_partner_global_location_number: copied to additional_identifiers['EAN_GLN'] (prod: 0 rows)
 stock_account / product.category         / property_cost_method (selection): selection_keys removed: [fifo]
-# DONE: pre-migration: stock_cost_method_fifo: fifo key removed, mapped to average in product_category jsonb, res_company and ir_default (prod: none in fifo)
+# NOTHING TO DO: 'fifo' is NOT removed in 20: account defines the base selection (standard/average) and stock_account adds 'fifo' via selection_add (ondelete 'set default'); the selection row of 'fifo' keeps its stock_account xmlid so it is never deleted and no value is touched (verified in ir_model.py _reflect_selections/_process_ondelete); no mapping (prod: 6 categories average, no fifo)
 stock_account / product.template         / cost_method (selection)       : selection_keys removed: [fifo]
-# DONE: pre-migration: stock_cost_method_fifo: fifo key removed, mapped to average in product_category jsonb, res_company and ir_default (prod: none in fifo)
+# NOTHING TO DO: 'fifo' is NOT removed in 20: account defines the base selection (standard/average) and stock_account adds 'fifo' via selection_add (ondelete 'set default'); the selection row of 'fifo' keeps its stock_account xmlid so it is never deleted and no value is touched (verified in ir_model.py _reflect_selections/_process_ondelete); no mapping (prod: 6 categories average, no fifo)
 stock_account / res.company              / account_stock_journal_id (many2one): not stored anymore
 # NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
 stock_account / res.company              / account_stock_journal_id (many2one): now a function
@@ -295,7 +295,7 @@ stock_account / res.company              / cost_method (selection)       : not s
 stock_account / res.company              / cost_method (selection)       : now a function
 # NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
 stock_account / res.company              / cost_method (selection)       : selection_keys removed: [fifo]
-# DONE: pre-migration: stock_cost_method_fifo (res_company.cost_method and ir_default fifo -> average; prod: average)
+# NOTHING TO DO: 'fifo' is NOT removed in 20: account defines the base selection (standard/average) and stock_account adds 'fifo' via selection_add (ondelete 'set default'); the selection row of 'fifo' keeps its stock_account xmlid so it is never deleted and no value is touched (verified in ir_model.py _reflect_selections/_process_ondelete); no mapping (prod: 6 categories average, no fifo)
 stock_account / res.company              / inventory_valuation (selection): not stored anymore
 # NOTHING TO DO: now computed from the ir.default of the product.category property (company_default_for); in 19 the company inverse already wrote those ir.default (verified in prod: company 1 has them all), old column left unused
 stock_account / res.company              / inventory_valuation (selection): now a function

@@ -1,3 +1,4 @@
+# DONE (general): pre-migration: open_sessions_warning logs a WARNING for every pos.session not closed (aquila: session 194) - close them before the production cutover; no abort
 ---Models in module 'point_of_sale'---
 obsolete model pos.close.session.wizard [transient]
 
@@ -230,7 +231,7 @@ point_of_sale / pos.order                / failed_pickings (boolean)     : modul
 
 point_of_sale / pos.order                / last_order_preparation_change (char): DEL
 
-# NOTHING TO DO: v19 kitchen change diff (json) replaced by pos.prep.order/pos.prep.line; 1705 rows, all orders are done/paid (no draft order), data dropped
+# NOTHING TO DO: decision (owner round 2): droppable, no legacy copy needed. v19 kitchen change diff (json) replaced by pos.prep.order/pos.prep.line; 1705 rows, all orders are done/paid (no draft order), data dropped
 
 point_of_sale / pos.order                / picking_count (integer)       : module is now 'pos_stock' ('point_of_sale')
 point_of_sale / pos.order                / picking_ids (one2many)        : module is now 'pos_stock' ('point_of_sale')
@@ -412,7 +413,7 @@ point_of_sale / pos.session              / cash_journal_id (many2one)    : DEL r
 
 point_of_sale / pos.session              / cash_real_transaction (float) : DEL
 
-# NOTHING TO DO: informational total (180 rows), derivable from the statement lines; data dropped
+# DONE: pre-migration: legacy_columns copies it to column openupgrade_legacy_20_0_cash_real_transaction (180 prod rows, informational total, derivable from the statement lines)
 
 point_of_sale / pos.session              / cash_register_balance_end_real (float): DEL
 

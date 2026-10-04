@@ -1,7 +1,11 @@
 # Copyright 2026 Hunki Enterprises BV
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import logging
+
 from openupgradelib import openupgrade
+
+_logger = logging.getLogger(__name__)
 
 
 # pos_stock is a new auto_install module (point_of_sale + stock_account) that
@@ -237,6 +241,40 @@ def new_uuid_columns(env):
         )
 
 
+def open_sessions_warning(env):
+    """Sessions still open at migration time are migrated as is (their cash
+    statement is created in post-migration) but they should be closed in 19.0
+    before the production cutover: log them (aquila rehearsal: session 194)."""
+    cr = env.cr
+    cr.execute(
+        """
+        SELECT id, name, state, start_at FROM pos_session
+        WHERE state != 'closed' ORDER BY id
+        """
+    )
+    for session_id, name, state, start_at in cr.fetchall():
+        _logger.warning(
+            "pos.session %s (id %s) is not closed (state %s, started %s): close it "
+            "before the production cutover.",
+            name,
+            session_id,
+            state,
+            start_at,
+        )
+
+
+def legacy_columns(env):
+    """pos.session.cash_real_transaction (informational total of the cash moves,
+    180 rows in aquila) has no 20.0 successor: keep a legacy copy.
+    pos.order.last_order_preparation_change (kitchen diff json, 1705 rows) is
+    deliberately NOT kept: it is only the transient state of the order
+    preparation of the old POS (successor models pos.prep.order/line), all
+    orders are done/paid."""
+    openupgrade.copy_columns(
+        env.cr, {"pos_session": [("cash_real_transaction", None, None)]}
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     move_modules(env)
@@ -245,3 +283,5 @@ def migrate(env, version):
     pos_payment_method_type(env)
     pos_payment_currency_rate(env)
     new_uuid_columns(env)
+    open_sessions_warning(env)
+    legacy_columns(env)

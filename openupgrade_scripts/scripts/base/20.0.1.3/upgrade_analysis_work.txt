@@ -70,7 +70,7 @@ base         / ir.actions.report        / explanation (text)            : NEW
 
 base         / ir.actions.report        / report_file (char)            : DEL
 
-# NOTHING TO DO: removed without successor in 20.0 (the field only repeated report_name: 60 of 62 reports had it set); data dropped
+# DONE: pre-migration: _legacy_columns copies it to column openupgrade_legacy_20_0_report_file (60 of 62 prod rows); no 20 successor
 
 base         / ir.actions.report        / save_as_attachment (boolean)  : NEW
 
@@ -191,7 +191,7 @@ base         / res.company              / font (selection)              : select
 
 base         / res.company              / layout_background (selection) : DEL required, selection_keys: ['Blank', 'Custom', 'Demo logo']
 
-# NOTHING TO DO: removed in 20.0, prod: the single company has 'Blank'; the NOT NULL constraint is dropped in pre-migration (_res_company) so new companies can be created. The custom module external_layout_custom still reads company.layout_background in its QWeb template: its owner must adapt it
+# DONE: pre-migration: _legacy_columns copies it to column openupgrade_legacy_20_0_layout_background (prod: single company 'Blank'); 20 has no report background at all, which is what 'Blank' meant (web report_templates 20 have no layout_background), so nothing is mapped; non-Blank values are logged as WARNING. The NOT NULL constraint of the original column is dropped in pre-migration (_res_company). The custom module external_layout_custom still reads company.layout_background in its QWeb template: its owner must adapt it
 
 base         / res.company              / layout_background_image (binary): DEL attachment: True
 
@@ -277,7 +277,7 @@ base         / res.partner              / contact_address_inline (char) : previo
 
 base         / res.partner              / is_company (boolean)          : now a function
 
-# NOTHING TO DO: stored column kept, values preserved. Open question: it is now computed from the VAT (commercial entity with a VAT): the 12 prod partners with is_company=True and no VAT will flip to False the next time their vat/commercial partner changes
+# DONE: end-migration: _res_partner_is_company recomputes the stored is_company of ALL partners (after every module is loaded) and logs each changed partner at INFO. Prod: 12 partners with is_company and no VAT flip True->False (owner decision 1, allowlist migration20/reports/is_company_no_vat.csv), 1 partner (id 52, VAT, no parent) flips False->True. commercial_partner_id is unaffected (20 computes it from parent_id only)
 
 base         / res.partner.bank         / acc_holder_name (char)        : DEL
 
@@ -323,7 +323,7 @@ base         / res.partner.bank         / country_id (many2one)         : NEW re
 
 base         / res.partner.bank         / currency_id (many2one)        : DEL relation: res.currency
 
-# NOTHING TO DO: removed without successor, data dropped (9 prod rows, all the same currency id 33); column kept
+# DONE: pre-migration: _legacy_columns copies it to column openupgrade_legacy_20_0_currency_id (9 prod rows, all MXN id 33); no 20 successor
 
 base         / res.partner.bank         / holder_name (char)            : NEW hasdefault: compute
 
