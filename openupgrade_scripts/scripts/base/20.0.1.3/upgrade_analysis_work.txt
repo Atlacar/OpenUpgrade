@@ -1749,3 +1749,5 @@ NEW website: base.default_website [renamed from website module] (noupdate switch
 
 # DONE: pre-migration: xmlid website.default_website renamed to base.default_website (_renamed_xmlids)
 
+
+# DONE: post-migration _api_keys_scope: res.users.apikeys.scope NULL -> rpc (20 _check_apikey_credentials requires scope = rpc; 19 accepted NULL). aquila: 1 key

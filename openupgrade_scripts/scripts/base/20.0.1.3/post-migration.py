@@ -315,8 +315,25 @@ def _commercial_company_name(env):
     )
 
 
+def _api_keys_scope(env):
+    """res.users.apikeys.scope is required in 20 and _check_apikey_credentials matches
+    `scope = 'rpc'` exactly (19 accepted `scope IS NULL`, a global key, in
+    `_check_credentials`): keep the existing keys usable over RPC. aquila: 1 key.
+    Also covers the trusted devices table (same column, same requirement)."""
+    cr = env.cr
+    for table in ("res_users_apikeys", "auth_totp_device"):
+        if openupgrade.table_exists(cr, table) and openupgrade.column_exists(
+            cr, table, "scope"
+        ):
+            openupgrade.logged_query(
+                cr,
+                "UPDATE %s SET scope = 'rpc' WHERE scope IS NULL" % table,  # noqa: E8103
+            )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.load_data(env, "base", "20.0.1.3/noupdate_changes.xml")
     _custom_accesses_to_ir_access(env)
     _commercial_company_name(env)
+    _api_keys_scope(env)
