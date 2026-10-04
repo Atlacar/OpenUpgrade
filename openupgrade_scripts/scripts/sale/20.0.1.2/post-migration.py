@@ -4,6 +4,8 @@ import json
 
 from openupgradelib import openupgrade
 
+from odoo.addons.openupgrade_framework import template_tools
+
 
 def product_template_sale_delay(env):
     """Restore the lead time as company dependent value (one entry for each
@@ -82,18 +84,7 @@ def res_company_sale_automatic_invoice(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.load_data(env, "sale", "20.0.1.2/noupdate_changes.xml")
-    openupgrade.delete_record_translations(
-        env.cr,
-        "sale",
-        [
-            "email_template_edi_sale",
-            "email_template_proforma",
-            "mail_template_sale_confirmation",
-            "mail_template_sale_payment_executed",
-        ],
-        ["body_html"],
-    )
+    template_tools.load_data_keep_customized(env, "sale", "20.0.1.2/noupdate_changes.xml")
     product_template_sale_delay(env)
     res_company_sale_invoice_policy(env)
     res_company_sale_automatic_invoice(env)

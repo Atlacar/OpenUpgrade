@@ -1,0 +1,15 @@
+{
+ "auth_totp_mail.mail_template_totp_invite": {
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ },
+ "auth_totp_mail.mail_template_totp_mail_code": {
+  "body_html": [
+   "bdabcf6e485ef057c05758d1d8634b4a3b83c313"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ }
+}

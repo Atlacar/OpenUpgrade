@@ -3,7 +3,9 @@
 
 from openupgradelib import openupgrade
 
+from odoo.addons.openupgrade_framework import template_tools
+
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.load_data(env, "purchase", "20.0.1.2/noupdate_changes.xml")
+    template_tools.load_data_keep_customized(env, "purchase", "20.0.1.2/noupdate_changes.xml")

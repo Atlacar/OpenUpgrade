@@ -3,6 +3,8 @@
 
 from openupgradelib import openupgrade
 
+from odoo.addons.openupgrade_framework import template_tools
+
 _deleted_xmlids = [
     # wave transfers are numbered with the batch sequence in Odoo 20
     "stock.seq_picking_wave",
@@ -45,5 +47,5 @@ def _compute_move_quantity_product_uom(env):
 def migrate(env, version):
     _convert_scrap_reason_tags(env)
     _compute_move_quantity_product_uom(env)
-    openupgrade.load_data(env, "stock", "20.0.1.1/noupdate_changes.xml")
+    template_tools.load_data_keep_customized(env, "stock", "20.0.1.1/noupdate_changes.xml")
     openupgrade.delete_records_safely_by_xml_id(env, _deleted_xmlids)

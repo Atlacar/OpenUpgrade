@@ -1,0 +1,48 @@
+{
+ "calendar.calendar_template_delete_event": {
+  "body_html": [
+   "f794c55e34e7c9ba46a9da6fb35565c06ea3ed34"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ],
+  "name": [
+   "ad3c2ddb82568124e5f53c93cd85ab2ae10d8a01"
+  ],
+  "subject": [
+   "e16bd4c2e581f578a0e052d0df47226ae187ba97"
+  ]
+ },
+ "calendar.calendar_template_meeting_changedate": {
+  "body_html": [
+   "343c237a99e71824d9721ed3f252f591aa4a43b0"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ },
+ "calendar.calendar_template_meeting_invitation": {
+  "body_html": [
+   "30022f7112c2551336f0763abd8b10ee03f12666"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ },
+ "calendar.calendar_template_meeting_reminder": {
+  "body_html": [
+   "a7995e8c33a1a20cd96e7df7cfc0331a4944cc11"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ },
+ "calendar.calendar_template_meeting_update": {
+  "body_html": [
+   "4a1c58e960df6042f417b40d4f71908de361cc7c"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ }
+}

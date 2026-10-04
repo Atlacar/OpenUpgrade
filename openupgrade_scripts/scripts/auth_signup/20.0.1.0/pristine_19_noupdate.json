@@ -1,0 +1,34 @@
+{
+ "auth_signup.mail_template_data_unregistered_users": {
+  "body_html": [
+   "f2dce04eb1c597e4d4b4a68e57c0f8cdbe0e3d5d"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ },
+ "auth_signup.mail_template_user_signup_account_created": {
+  "body_html": [
+   "a5fe7a1ce028e240b284cbe0401aaa18f9169c8e"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ },
+ "auth_signup.portal_set_password_email": {
+  "body_html": [
+   "1d292438c87ac49a4c5b653c1140ce0d7d70eae7"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ },
+ "auth_signup.set_password_email": {
+  "body_html": [
+   "c6e0df383874c2ff0a2be01699febb81b5305394"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ }
+}

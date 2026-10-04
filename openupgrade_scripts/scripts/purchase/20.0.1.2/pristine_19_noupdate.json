@@ -1,0 +1,20 @@
+{
+ "purchase.email_template_edi_purchase": {
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ],
+  "subject": [
+   "0f7a5c270cf268ded7f3673beb2ff9dd6160b893"
+  ]
+ },
+ "purchase.email_template_edi_purchase_done": {
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ },
+ "purchase.email_template_edi_purchase_reminder": {
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ }
+}

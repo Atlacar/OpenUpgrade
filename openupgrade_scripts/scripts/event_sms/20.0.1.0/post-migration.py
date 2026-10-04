@@ -3,10 +3,9 @@
 
 from openupgradelib import openupgrade
 
+from odoo.addons.openupgrade_framework import template_tools
+
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.load_data(env, "event_sms", "20.0.1.0/noupdate_changes.xml")
-    openupgrade.delete_record_translations(
-        env.cr, "event_sms", ["sms_template_data_event_reminder"], ["body"]
-    )
+    template_tools.load_data_keep_customized(env, "event_sms", "20.0.1.0/noupdate_changes.xml")

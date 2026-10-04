@@ -1,0 +1,13 @@
+{
+ "website_sale.mail_template_sale_cart_recovery": {
+  "body_html": [
+   "e9037b2d303852386fb2f7267f5687103f8c8304"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ],
+  "subject": [
+   "eb53b1791aff97aecf3f61f6043e204ef2e4f972"
+  ]
+ }
+}

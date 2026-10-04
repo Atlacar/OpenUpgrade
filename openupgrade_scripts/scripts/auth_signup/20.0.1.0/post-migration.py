@@ -3,18 +3,9 @@
 
 from openupgradelib import openupgrade
 
+from odoo.addons.openupgrade_framework import template_tools
+
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.load_data(env, "auth_signup", "20.0.1.0/noupdate_changes.xml")
-    openupgrade.delete_record_translations(
-        env.cr,
-        "auth_signup",
-        [
-            "mail_template_data_unregistered_users",
-            "mail_template_user_signup_account_created",
-            "portal_set_password_email",
-            "set_password_email",
-        ],
-        ["body_html"],
-    )
+    template_tools.load_data_keep_customized(env, "auth_signup", "20.0.1.0/noupdate_changes.xml")

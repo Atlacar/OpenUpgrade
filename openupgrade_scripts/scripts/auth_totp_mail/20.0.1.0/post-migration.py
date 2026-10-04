@@ -3,13 +3,9 @@
 
 from openupgradelib import openupgrade
 
+from odoo.addons.openupgrade_framework import template_tools
+
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.load_data(env, "auth_totp_mail", "20.0.1.0/noupdate_changes.xml")
-    openupgrade.delete_record_translations(
-        env.cr,
-        "auth_totp_mail",
-        ["mail_template_totp_mail_code"],
-        ["body_html"],
-    )
+    template_tools.load_data_keep_customized(env, "auth_totp_mail", "20.0.1.0/noupdate_changes.xml")

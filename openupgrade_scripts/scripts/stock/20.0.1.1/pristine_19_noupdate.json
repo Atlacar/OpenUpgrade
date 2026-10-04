@@ -1,0 +1,10 @@
+{
+ "stock.mail_template_data_delivery_confirmation": {
+  "body_html": [
+   "ea83126d830702074c58aae830be352391eb7dee"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ }
+}

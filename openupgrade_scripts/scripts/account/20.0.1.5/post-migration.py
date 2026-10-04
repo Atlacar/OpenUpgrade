@@ -5,6 +5,8 @@ from collections import defaultdict
 
 from openupgradelib import openupgrade
 
+from odoo.addons.openupgrade_framework import template_tools
+
 _logger = logging.getLogger(__name__)
 
 # account.account#account_type used for the parent accounts created from groups:
@@ -287,19 +289,7 @@ def res_partner_global_location_number(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.load_data(env, "account", "20.0.1.5/noupdate_changes.xml")
-    openupgrade.delete_record_translations(
-        env.cr,
-        "account",
-        [
-            "email_template_edi_credit_note",
-            "email_template_edi_invoice",
-            "email_template_edi_self_billing_credit_note",
-            "email_template_edi_self_billing_invoice",
-            "mail_template_data_payment_receipt",
-        ],
-        ["body_html"],
-    )
+    template_tools.load_data_keep_customized(env, "account", "20.0.1.5/noupdate_changes.xml")
     account_group_to_parent_accounts(env)
     account_report_line_foldability(env)
     account_bank_statement_is_statement_posted(env)

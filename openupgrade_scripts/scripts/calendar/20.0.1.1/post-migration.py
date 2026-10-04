@@ -3,6 +3,8 @@
 
 from openupgradelib import openupgrade
 
+from odoo.addons.openupgrade_framework import template_tools
+
 
 def generate_primary_calendars(env):
     """20.0 introduces calendar.calendar / calendar.user: every internal user
@@ -79,18 +81,7 @@ def calendar_event_calendar(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.load_data(env, "calendar", "20.0.1.1/noupdate_changes.xml")
-    openupgrade.delete_record_translations(
-        env.cr,
-        "calendar",
-        [
-            "calendar_template_delete_event",
-            "calendar_template_meeting_changedate",
-            "calendar_template_meeting_invitation",
-            "calendar_template_meeting_reminder",
-            "calendar_template_meeting_update",
-        ],
-    )
+    template_tools.load_data_keep_customized(env, "calendar", "20.0.1.1/noupdate_changes.xml")
     generate_primary_calendars(env)
     calendar_default_privacy(env)
     calendar_event_calendar(env)

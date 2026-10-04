@@ -1,0 +1,31 @@
+{
+ "account.email_template_edi_credit_note": {
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ },
+ "account.email_template_edi_invoice": {
+  "body_html": [
+   "7ccbead46b1ae5d2d22d3ed97f222f038196ff0f"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ },
+ "account.email_template_edi_self_billing_invoice": {
+  "body_html": [
+   "218d5f0b32e26545f6843f6c505edd08bea7fd64"
+  ]
+ },
+ "account.mail_template_data_payment_receipt": {
+  "body_html": [
+   "f91a3f3814d820e8ecfa9019646886d16dad3fb2"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ],
+  "subject": [
+   "f0d610b245b85d2d4afcc60309c1405008b61e6c"
+  ]
+ }
+}

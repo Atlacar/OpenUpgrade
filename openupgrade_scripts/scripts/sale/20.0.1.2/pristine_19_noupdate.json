@@ -1,0 +1,46 @@
+{
+ "sale.email_template_edi_sale": {
+  "body_html": [
+   "3f890b3b5ec7f443c2858c8779bc61afa5352d1a"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ],
+  "subject": [
+   "eb31e1b394023b75c94d4dfe874687e7e4250934"
+  ]
+ },
+ "sale.email_template_proforma": {
+  "body_html": [
+   "dbb866eb56fc8571ae6f6db89a6a09aad2895f39"
+  ],
+  "description": [
+   "3f71fc457931dba0d243e6f1de920b90087a873d"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ],
+  "name": [
+   "044c67bc98f8aa59f3f67459c159fdecb57ea3d5"
+  ],
+  "subject": [
+   "95c0abac13c4ba3ad901496734e9b2d9c09035be"
+  ]
+ },
+ "sale.mail_template_sale_confirmation": {
+  "body_html": [
+   "4f64620728837977ed0e35fd50b8c6e2d4355ca2"
+  ],
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ],
+  "subject": [
+   "8522f0637f9a5aecd93c02ea7c8d565c34e4f0c9"
+  ]
+ },
+ "sale.mail_template_sale_payment_executed": {
+  "email_layout_xmlid": [
+   "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  ]
+ }
+}

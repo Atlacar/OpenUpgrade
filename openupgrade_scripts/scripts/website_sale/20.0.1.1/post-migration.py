@@ -3,6 +3,8 @@
 
 from openupgradelib import openupgrade
 
+from odoo.addons.openupgrade_framework import template_tools
+
 # generic checkout steps new in 20.0 (hidden steps of the checkout flow)
 _NEW_CHECKOUT_STEP_HREFS = ("/shop/address", "/shop/payment/transaction")
 
@@ -121,13 +123,7 @@ def product_stock_notification(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
-    openupgrade.load_data(env, "website_sale", "20.0.1.1/noupdate_changes.xml")
-    openupgrade.delete_record_translations(
-        env.cr,
-        "website_sale",
-        ["mail_template_sale_cart_recovery"],
-        ["body_html"],
-    )
+    template_tools.load_data_keep_customized(env, "website_sale", "20.0.1.1/noupdate_changes.xml")
     website_prevent_sale(env)
     website_category_display(env)
     website_checkout_steps(env)
