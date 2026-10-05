@@ -429,3 +429,4 @@ NEW res.groups: sale.group_services_and_material
 
 # NOTHING TO DO: new record loaded by the module data
 
+# DONE (owner decision 2026-10-04): mail.template sale.email_template_edi_sale / body_html: the customized body (18 wording left by the 18 -> 19 step, differs from the pristine 19 one) is replaced by the Odoo 20 one: post-migration load_data_keep_customized(..., force=[('sale.email_template_edi_sale', 'body_html')]); its es_MX / zh_CN translations are dropped and reloaded from the 20 .po files. Logged at INFO 'customized template overwritten by owner decision'.
