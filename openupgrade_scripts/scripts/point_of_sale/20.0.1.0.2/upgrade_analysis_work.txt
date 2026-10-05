@@ -1,12 +1,13 @@
 # DONE (general): pre-migration: open_sessions_warning logs a WARNING for every pos.session not closed (aquila: session 194) - close them before the production cutover; no abort
-# KNOWN LIMITATION (accepted by owner decision 2026-10-04, no migration work): invoicing, in 20, a POS order of a session closed BEFORE the migration.
-#   Verified on aq19_e2e03 / the migrated DB: 1701 orders of closed sessions, none ever invoiced (account_move, to_invoice, partner_id, account.payment.pos_order_id,
-#   payment.transaction.pos_order_id all empty; the workflow was never used). Outcome of the backend 'Invoice' button (action_pos_order_invoice), measured on a throw-away copy:
-#     - 1587 plain sales: OK (invoice + partial reversal of the 19 closing entry, reconciled);
-#     - 87 sales with cash rounding: NotNullViolation (account_move_line.display_type): 20 reverses the 'rounding' line of the closing entry, the 19 closing entries have none;
-#     - 27 refunds: silent empty result: 20 looks for the closing entry in session.refund_move_ids, the 19 single closing entry is linked only as pos_session_sales_id.
-#   A session closed natively in 20 handles all four cases (separate sales/refunds entries, rounding line): the limitation comes from the shape of the 19 closing entries,
-#   which cannot be changed without editing posted journal entries (not done). Invoice such orders in 19 before the cutover, or in 20 with a normal customer invoice + manual reversal.
+# DONE (2026-10-05): invoicing, in 20, a POS order of a session closed BEFORE the migration. Cross-version experiment (docs/round2_data.md): 18 and 19 rebuild the reversal from the order data
+#   (closing entries of 18, migrated 19 and native 19 are identical), 20 reads a display_type='rounding' row of the closing entry and session.refund_move_ids -> lost by the 20 redesign, not by 18->19.
+#   post-migration pos_session_closing_entry_technical_flags: (a) re-type as 'rounding' the single 'Rounding line' of a posted closing entry when it is on the profit/loss account of the config rounding
+#   method and its amount equals the net rounding (paid - total) of the session orders (aquila: 11 of 13; sessions 14 and 15 do not match and are only logged); (b) link the single closing entry
+#   also as pos_session_refunds_id for sessions with refund orders (amount_total < 0 or is_refund; 45) - every 20 consumer uses the union sale_move_ids | refund_move_ids.
+#   pos_order_amount_difference: amount_difference = paid - total for the 11 rounded orders where 18/19 left 0 (decides whether the invoice gets the rounding method).
+#   No amount/account/date/reconciliation of any entry changes (line-level md5 identical before/after). Whole population of 1701 orders: baseline 1559 can be invoiced, now 1680 (all 27 refunds, 71 of 87 rounded sales,
+#   24 of 29 is_refund exchange orders). KNOWN LIMITATION (explicit errors, same as native 20 or as 18/19): 13 rounded sales of sessions 15 (rounding line 241.20 != orders) and 17 (zero net rounding, no rounding line),
+#   3 rounded sales paid by bank transfer (also fail in 18/19), 5 zero-total exchange orders ('already reconciled'). Workaround: invoice in 19 before the cutover, or normal invoice + manual reversal.
 ---Models in module 'point_of_sale'---
 obsolete model pos.close.session.wizard [transient]
 

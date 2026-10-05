@@ -179,6 +179,134 @@ def pos_session_move(env):
     )
 
 
+def pos_order_amount_difference(env):
+    """
+    pos.order#amount_difference is, in 20, the stored difference paid - total of the order
+    (pos.order#_compute_prices) and decides whether the invoice of a POS order gets the cash
+    rounding method (pos.config#_get_rounding_method_for_invoice: amount_difference != 0).
+    The v18/v19 data keeps 0 in some rounded orders (aquila: 11 of 89; the POS frontend did
+    not always fill it), then the 20 invoice of such an order has a rounding line without
+    account (CheckViolation). Restore the 20 definition for them. Nothing else reads it
+    (order form, rounding method choice), no journal entry is touched.
+    """
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE pos_order
+        SET amount_difference = round((amount_paid - amount_total)::numeric, 2)
+        WHERE round(COALESCE(amount_difference, 0)::numeric, 2) = 0
+        AND round((amount_paid - amount_total)::numeric, 2) <> 0
+        """,
+    )
+
+
+def pos_session_closing_entry_technical_flags(env):
+    """
+    Make the v19 session closing entries usable by the 20 'invoice after the session was
+    closed' flow (pos.order#_generate_invoice_after_session_closing and
+    pos.session#_create_partial_reversal_move_from_session_closing). Technical flags and
+    links only: no amount, account, date, partner or reconciliation of any posted entry
+    is touched, so the period totals per account stay identical.
+
+    1. v18/v19 write the cash rounding difference of the session in the closing entry as ONE
+       line named 'Rounding line' with display_type 'product' on the profit/loss account of
+       the config rounding method. 20 looks for display_type 'rounding' in the closing entry
+       to build the rounding reversal (without it the reversal line has no display_type:
+       NotNullViolation). Such a line is re-typed ONLY when identified with certainty: the
+       single 'Rounding line' of a posted entry, on the profit or loss account of the
+       rounding method of the session config, in company currency, and its amount equals the
+       net rounding of the session orders (paid - total). Any other one is only reported.
+    2. v19 has ONE closing entry per session (sales and refunds netted); it is linked as the
+       sales entry. 20 reads session.refund_move_ids for the refund orders (is_refund or
+       negative total): without it the invoice button silently returns nothing. The same
+       entry is linked as the refunds entry of the sessions that have such orders. Every 20
+       consumer works on the union sale_move_ids | refund_move_ids (pos.session#move_ids,
+       _get_session_and_order_account_moves, account.move#pos_session_ids search, l10n_in /
+       l10n_fr SQL with OR), so the entry is never counted twice.
+    """
+    cr = env.cr
+    cr.execute(
+        """
+        SELECT data_type FROM information_schema.columns
+        WHERE table_name = 'account_cash_rounding' AND column_name = 'profit_account_id'
+        """
+    )
+    row = cr.fetchone()
+    if not row or not openupgrade.column_exists(cr, "pos_config", "rounding_method"):
+        return
+    if row[0] == "jsonb":  # company_dependent in 20
+        profit = "NULLIF(r.profit_account_id->>m.company_id::text, '')::int"
+        loss = "NULLIF(r.loss_account_id->>m.company_id::text, '')::int"
+    else:
+        profit, loss = "r.profit_account_id", "r.loss_account_id"
+    openupgrade.logged_query(
+        cr,
+        f"""
+        UPDATE account_move_line SET display_type = 'rounding'
+        WHERE id IN (
+            SELECT l.id
+            FROM account_move m
+            JOIN pos_session s ON s.id = m.pos_session_sales_id
+            JOIN pos_config c ON c.id = s.config_id
+            JOIN account_cash_rounding r ON r.id = c.rounding_method
+            JOIN account_move_line l ON l.move_id = m.id
+            WHERE m.move_type = 'entry' AND m.state = 'posted'
+            AND l.display_type = 'product' AND l.name = 'Rounding line'
+            AND l.currency_id = l.company_currency_id
+            AND l.account_id IN ({profit}, {loss})
+            AND (
+                SELECT count(*) FROM account_move_line l2
+                WHERE l2.move_id = m.id AND l2.name = 'Rounding line'
+            ) = 1
+            AND NOT EXISTS (
+                SELECT 1 FROM account_move_line l3
+                WHERE l3.move_id = m.id AND l3.display_type = 'rounding'
+            )
+            AND l.credit - l.debit = (
+                SELECT round(COALESCE(sum(o.amount_paid - o.amount_total), 0)::numeric, 2)
+                FROM pos_order o
+                WHERE o.session_id = s.id AND o.state IN ('paid', 'done')
+            )
+        )
+        """,
+    )
+    cr.execute(
+        """
+        SELECT m.pos_session_sales_id
+        FROM account_move m
+        JOIN account_move_line l ON l.move_id = m.id
+        WHERE m.pos_session_sales_id IS NOT NULL AND l.name = 'Rounding line'
+        AND l.display_type = 'product'
+        ORDER BY 1
+        """
+    )
+    not_retyped = [r[0] for r in cr.fetchall()]
+    if not_retyped:
+        _logger.warning(
+            "POS sessions %s: the closing entry has a 'Rounding line' that does not match "
+            "the rounding of the session orders: left untouched. Invoicing a rounded order "
+            "of these sessions after the migration fails (docs: open_questions item 19).",
+            not_retyped,
+        )
+    if openupgrade.column_exists(cr, "pos_order", "is_refund"):
+        openupgrade.logged_query(
+            cr,
+            """
+            UPDATE account_move m
+            SET pos_session_refunds_id = m.pos_session_sales_id
+            WHERE m.pos_session_sales_id IS NOT NULL
+            AND m.pos_session_refunds_id IS NULL
+            AND m.move_type = 'entry' AND m.state = 'posted'
+            AND EXISTS (
+                SELECT 1 FROM pos_order o
+                WHERE o.session_id = m.pos_session_sales_id
+                AND (o.amount_total < 0 OR o.is_refund)
+                AND o.state IN ('paid', 'done')
+            )
+            """,
+        )
+
+
 def pos_config_preparation_devices(env):
     """
     New pos.config#preparation_devices switches the preparation printers feature
@@ -279,6 +407,8 @@ def migrate(env, version):
     pos_config_default_partner(env)
     pos_session_bank_statements(env)
     pos_session_move(env)
+    pos_session_closing_entry_technical_flags(env)
+    pos_order_amount_difference(env)
     pos_config_preparation_devices(env)
     pos_printer_fields(env)
     pos_config_sequences(env)
