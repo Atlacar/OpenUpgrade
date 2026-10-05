@@ -84,7 +84,14 @@ def res_company_sale_automatic_invoice(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
-    template_tools.load_data_keep_customized(env, "sale", "20.0.1.2/noupdate_changes.xml")
+    template_tools.load_data_keep_customized(
+        env,
+        "sale",
+        "20.0.1.2/noupdate_changes.xml",
+        # owner decision (2026-10-04): the customized quotation body (18 wording
+        # left by the 18 -> 19 step) is replaced by the Odoo 20 one
+        force=[("sale.email_template_edi_sale", "body_html")],
+    )
     product_template_sale_delay(env)
     res_company_sale_invoice_policy(env)
     res_company_sale_automatic_invoice(env)
