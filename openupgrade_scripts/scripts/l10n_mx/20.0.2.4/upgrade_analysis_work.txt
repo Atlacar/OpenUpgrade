@@ -7,7 +7,7 @@ l10n_mx      / res.bank                 / l10n_mx_edi_code (char)       : DEL
 l10n_mx      / res.partner.bank         / fiscal_country_codes (char)   : DEL stored: False
 # NOTHING TO DO: non stored field
 l10n_mx      / res.partner.bank         / l10n_mx_edi_clabe (char)      : DEL
-# DONE: post-migration: res_partner_bank_clabe: in 20 the CLABE is the account number (account_type 'clabe' is inferred, there is no separate clearing field for it): 8 of 9 prod accounts already have CLABE == account number; the 9th ('0123969479-Overland', CLABE 012210001239694792, used by 3 vendor bills) keeps its number and gets 'CLABE: ...' in the notes + a WARNING (owner decision: could instead be swapped to the CLABE as account number)
+# DONE: post-migration: res_partner_bank_clabe: in 20 the CLABE is the account number (account_type 'clabe' is inferred, there is no separate clearing field for it): 8 of 9 prod accounts already have CLABE == account number; the 9th ('0123969479-Overland', CLABE 012210001239694792, referenced by 2 outbound customer payments and 1 customer credit note, last use 2025-05-20, partner 31 archived) keeps its number and gets 'CLABE: ...' in the notes + a WARNING. OWNER DECISION 2026-10-04: keep as is (no swap, no second account, no delete); the ABM code 012 (BBVA) goes to clearing_number
 ---XML records in module 'l10n_mx'---
 DEL ir.ui.view: l10n_mx.view_partner_bank_form_l10n_mx_edi_bank
 # NOTHING TO DO: view/menu data, handled by the ORM load (not noupdate)

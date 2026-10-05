@@ -20,11 +20,10 @@ def res_partner_bank_clabe(env):
     So the ABM code goes to ``clearing_number`` (with the Mexican label), the
     CLABE stays where it is when it equals the account number (prod: 8 of 9
     accounts). The CLABE cannot be stored structurally when it differs from the
-    account number (prod: "0123969479-Overland", CLABE 012210001239694792, 3
-    vendor bills use the account): the account number is kept as is, it identifies
-    the account in bills/journals, and the CLABE is kept in the notes and in the legacy column
-    openupgrade_legacy_20_0_l10n_mx_edi_clabe (owner decision pending: make the
-    CLABE the account number, or create a second bank account)."""
+    account number (prod: "0123969479-Overland", CLABE 012210001239694792, partner 31): the account number is kept as is (it identifies
+    the account in the 2 outbound customer payments and the credit note that use it), and the CLABE
+    is kept in the notes and in the legacy column openupgrade_legacy_20_0_l10n_mx_edi_clabe.
+    Owner decision 2026-10-04: keep as is, do not restructure, add or delete."""
     cr = env.cr
     if not openupgrade.column_exists(cr, "res_partner_bank", "l10n_mx_edi_clabe"):
         return
