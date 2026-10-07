@@ -1,0 +1,4 @@
+---Models in module 'project_enterprise_hr'---
+---Fields in module 'project_enterprise_hr'---
+---XML records in module 'project_enterprise_hr'---
+DEL mail.alias: project_enterprise_hr.mail_alias_todo [renamed to project_enterprise_hr_todo module] (noupdate)

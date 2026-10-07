@@ -1,0 +1,4 @@
+---Models in module 'project_account_asset'---
+---Fields in module 'project_account_asset'---
+---XML records in module 'project_account_asset'---
+NEW ir.ui.view: project_account_asset.edit_project_account_asset_inherit

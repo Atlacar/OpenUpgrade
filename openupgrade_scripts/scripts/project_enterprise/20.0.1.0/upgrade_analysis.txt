@@ -1,0 +1,22 @@
+---Models in module 'project_enterprise'---
+---Fields in module 'project_enterprise'---
+---XML records in module 'project_enterprise'---
+ir.actions.act_window: project.action_view_all_task (deleted domain)
+ir.actions.act_window: project.action_view_my_task (deleted domain)
+ir.actions.act_window: project.action_view_task (deleted domain)
+ir.actions.act_window: project.action_view_task_from_milestone (deleted domain)
+ir.actions.act_window: project.open_view_project_all_config_group_stage (deleted domain)
+ir.actions.act_window: project.open_view_project_all_group_stage (deleted domain)
+ir.actions.act_window: project.project_task_action_from_partner (deleted domain)
+ir.actions.act_window: project.project_task_action_sub_task (deleted domain)
+DEL ir.actions.act_window.view: project_enterprise.project_milestone_action_view_tasks_gantt
+NEW ir.actions.report: project_enterprise.report_tasks
+ir.model.constraint: project_enterprise.constraint_project_task_planned_dates_check (changed definition: is now 'False' ('CHECK ((planned_date_begin <= date_deadline))'))
+NEW ir.ui.view: project_enterprise.project_sharing_project_task_view_card_inherited
+NEW ir.ui.view: project_enterprise.tasks_report
+NEW ir.ui.view: project_enterprise.view_task_card_inherit
+NEW ir.ui.view: project_enterprise.view_task_card_inherited
+DEL ir.ui.view: project_enterprise.project_sharing_project_task_view_kanban_inherited
+DEL ir.ui.view: project_enterprise.project_task_gantt_view_project_milestone
+DEL ir.ui.view: project_enterprise.view_task_kanban_inherited_project_enterprise
+NEW report.paperformat: project_enterprise.print_tasks_format

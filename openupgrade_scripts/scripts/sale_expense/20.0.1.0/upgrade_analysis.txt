@@ -1,0 +1,10 @@
+---Models in module 'sale_expense'---
+new model expense.attachment.selection.wizard [transient]
+---Fields in module 'sale_expense'---
+sale_expense / hr.expense               / attach_receipts_to_invoice (boolean): NEW
+---XML records in module 'sale_expense'---
+NEW ir.access: sale_expense.access_expense_attachment_selection_wizard
+ir.actions.act_window: hr_expense.hr_expense_product (deleted domain)
+ir.actions.act_window: sale_expense.hr_expense_action_from_sale_order (deleted domain)
+NEW ir.ui.view: sale_expense.expense_attachment_selection_wizard_view
+NEW ir.ui.view: sale_expense.sale_order_reinvoice_tree_view

@@ -1,0 +1,9 @@
+---Models in module 'l10n_eu_account_vies'---
+---Fields in module 'l10n_eu_account_vies'---
+base_vat     / res.company              / vat_check_vies (boolean)      : module is now 'account' ('base_vat')
+---XML records in module 'l10n_eu_account_vies'---
+NEW ir.cron: l10n_eu_account_vies.vies_iap_check_update [renamed from base_vat module]
+DEL ir.cron: base_vat.vies_iap_check_update [renamed to l10n_eu_account_vies module]
+NEW ir.ui.view: l10n_eu_account_vies.view_partner_l10n_eu_account_vies_form
+DEL ir.ui.view: base_vat.res_config_settings_view_form
+DEL ir.ui.view: base_vat.view_partner_base_vat_form
