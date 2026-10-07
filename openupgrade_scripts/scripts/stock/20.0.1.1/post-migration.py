@@ -43,8 +43,22 @@ def _compute_move_quantity_product_uom(env):
         moves.flush_recordset(["quantity_product_uom"])
 
 
+def _enable_picking_batch_group(env):
+    """Databases that had stock_picking_batch installed in 19.0 keep batch, wave
+    and cluster transfers: enable the 20.0 setting "Batch, Wave & Cluster
+    Transfers" exactly as res.config.settings does (implied_group on
+    base.group_user), so that all internal users get stock.group_stock_picking_batch."""
+    marker = openupgrade.get_legacy_name("stock_picking_batch_installed")
+    if not openupgrade.table_exists(env.cr, marker):
+        return
+    batch_group = env.ref("stock.group_stock_picking_batch")
+    env.ref("base.group_user").write({"implied_ids": [(4, batch_group.id)]})
+    openupgrade.logged_query(env.cr, f"DROP TABLE {marker}")
+
+
 @openupgrade.migrate()
 def migrate(env, version):
+    _enable_picking_batch_group(env)
     _convert_scrap_reason_tags(env)
     _compute_move_quantity_product_uom(env)
     template_tools.load_data_keep_customized(env, "stock", "20.0.1.1/noupdate_changes.xml")

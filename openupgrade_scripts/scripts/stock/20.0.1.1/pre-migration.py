@@ -32,6 +32,9 @@ _renamed_fields = [
 ]
 
 
+_PICKING_BATCH_MARKER = openupgrade.get_legacy_name("stock_picking_batch_installed")
+
+
 def _move_fields(env, model, fields, old_module, new_module):
     """Move the xmlid of the field definitions to the new module, tolerating
     that the new module reflected the field already (then the stale xmlid of
@@ -198,8 +201,21 @@ def _orphan_repair_picking_type(env):
     )
 
 
+def _remember_picking_batch(env):
+    """stock_picking_batch is merged into stock in 20.0, where batch transfers are
+    only available to stock.group_stock_picking_batch. Its 19.0 table exists here
+    (before the stock 20 models are loaded) only if the module was installed: keep
+    a marker for the post-migration, which enables the group."""
+    if openupgrade.table_exists(env.cr, "stock_picking_batch"):
+        openupgrade.logged_query(
+            env.cr,
+            f"CREATE TABLE IF NOT EXISTS {_PICKING_BATCH_MARKER} (id integer)",
+        )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
+    _remember_picking_batch(env)
     for model, fields, new_module in _moved_fields:
         _move_fields(env, model, fields, "stock", new_module)
     openupgrade.rename_fields(env, _renamed_fields)
