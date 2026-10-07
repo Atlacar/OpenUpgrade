@@ -15,3 +15,13 @@ def migrate(env, version):
          AND stock_confirmation_type = 'sms'
     """,
     )
+    # 18 SMS confirmation on -> 19 text confirmation on (stock_text_confirmation is new in stock)
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE res_company
+        SET stock_text_confirmation = TRUE
+        WHERE stock_move_sms_validation IS TRUE
+         AND stock_confirmation_type = 'sms'
+    """,
+    )
