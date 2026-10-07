@@ -123,6 +123,20 @@ _deleted_xmlids = [
 ]
 
 
+def ir_sequence_package_code(env):
+    """stock.quant.package -> stock.package: the noupdate sequence stock.seq_package
+    (renamed from seq_quant_package) keeps its 18 code, so next_by_code('stock.package')
+    returns nothing and creating a package fails (stock_package.name NOT NULL)."""
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE ir_sequence
+        SET code = 'stock.package'
+        WHERE code = 'stock.quant.package'
+        """,
+    )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.load_data(env, "stock", "19.0.1.1/noupdate_changes.xml")
@@ -141,4 +155,5 @@ def migrate(env, version):
     uom_uom_package_type_id(env)
     stock_packaging_type_route_ids(env)
     stock_package_history_package_name(env)
+    ir_sequence_package_code(env)
     openupgrade.delete_records_safely_by_xml_id(env, _deleted_xmlids)
