@@ -42,6 +42,19 @@ def _res_partner_is_company(env):
     env.add_to_compute(field, partners)
     partners.mapped("is_company")
     env.flush_all()
+    # Owner decision (2026-10-07): the partner of a res.company that was a company
+    # in 19.0 stays a company even without VAT (20.0 would turn it into a person).
+    # Plain write of the stored column: a later change of vat / parent_id
+    # recomputes it with the 20.0 rule.
+    was_company = [partner_id for partner_id, value in before.items() if value]
+    cr.execute(
+        """
+        UPDATE res_partner p SET is_company = TRUE
+        FROM res_company c
+        WHERE c.partner_id = p.id AND NOT p.is_company AND p.id = ANY(%s)
+        """,
+        (was_company,),
+    )
     cr.execute("SELECT id, name, is_company FROM res_partner ORDER BY id")
     changed = 0
     for partner_id, name, value in cr.fetchall():
