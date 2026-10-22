@@ -5,6 +5,7 @@ import logging
 import re
 
 from openupgradelib import openupgrade
+from psycopg2.extras import Json
 
 from odoo.orm.commands import Command
 
@@ -230,6 +231,91 @@ def account_move_line_no_followup(env):
     )
 
 
+def account_account_tag_unsigned(env):
+    """
+    Tax tags lost their +/- sign (and tax_negate): the tax_tags engine now looks
+    for the unsigned tag only, the sign lives in the report expression formula.
+    Link the repartition lines to the unsigned tag (created if needed) instead of
+    '+tag'/'-tag', and archive the signed tags no journal item uses
+    """
+    env.cr.execute(
+        r"""
+        SELECT id, name, country_id
+        FROM account_account_tag
+        WHERE applicability = 'taxes' AND name->>'en_US' ~ '^[+-]'
+        ORDER BY name->>'en_US' ~ '^-', id
+        """
+    )
+    unsigned = {}
+    for tag_id, name, country_id in env.cr.fetchall():
+        unsigned_name = {lang: value[1:] for lang, value in name.items()}
+        key = (unsigned_name["en_US"], country_id)
+        if key not in unsigned:
+            env.cr.execute(
+                """
+                SELECT id FROM account_account_tag
+                WHERE applicability = 'taxes' AND name->>'en_US' = %s
+                AND country_id IS NOT DISTINCT FROM %s
+                ORDER BY active DESC, id LIMIT 1
+                """,
+                key,
+            )
+            row = env.cr.fetchone()
+            unsigned[key] = (
+                row[0]
+                if row
+                else env["account.account.tag"]
+                .with_context(lang="en_US")
+                .create(
+                    {
+                        "name": key[0],
+                        "applicability": "taxes",
+                        "country_id": country_id,
+                    }
+                )
+                .id
+            )
+            if not row:
+                env.cr.execute(
+                    "UPDATE account_account_tag SET name = %s WHERE id = %s",
+                    (Json(unsigned_name), unsigned[key]),
+                )
+        env.cr.execute(
+            """
+            INSERT INTO account_account_tag_account_tax_repartition_line_rel
+            (account_tax_repartition_line_id, account_account_tag_id)
+            SELECT account_tax_repartition_line_id, %(new)s
+            FROM account_account_tag_account_tax_repartition_line_rel
+            WHERE account_account_tag_id = %(old)s
+            ON CONFLICT DO NOTHING;
+            DELETE FROM account_account_tag_account_tax_repartition_line_rel
+            WHERE account_account_tag_id = %(old)s;
+            """,
+            {"old": tag_id, "new": unsigned[key]},
+        )
+        env.cr.execute(
+            """
+            SELECT count(*) FROM account_account_tag_account_move_line_rel
+            WHERE account_account_tag_id = %s
+            """,
+            (tag_id,),
+        )
+        (aml_count,) = env.cr.fetchone()
+        if aml_count:
+            _logger.warning(
+                "Tax tag %s (id %s) stays active: %s journal items still use it",
+                name["en_US"],
+                tag_id,
+                aml_count,
+            )
+        else:
+            env.cr.execute(
+                "UPDATE account_account_tag SET active = False WHERE id = %s",
+                (tag_id,),
+            )
+    env["account.account.tag"].invalidate_model()
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.load_data(env, "account", "19.0.1.4/noupdate_changes.xml")
@@ -251,3 +337,4 @@ def migrate(env, version):
     account_tax_original_tax_ids(env)
     account_full_reconcile_exchange_move_id(env)
     account_move_line_no_followup(env)
+    account_account_tag_unsigned(env)

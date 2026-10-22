@@ -85,7 +85,8 @@ def account_report(env):
     """
     Map account.report#default_opening_date_filter values 'previous_tax_period',
     'this_tax_period' to 'previous_return_period', 'this_return_period'
-    Map account.report#filter_multi_company value 'disabled' to None
+    Map account.report#filter_multi_company value 'disabled' to 'selector', which
+    is what 19 does for any value but 'tax_units'
     """
     openupgrade.copy_columns(
         env.cr, {"account_report": [("default_opening_date_filter", None, None)]}
@@ -108,7 +109,7 @@ def account_report(env):
         openupgrade.get_legacy_name("filter_multi_company"),
         "filter_multi_company",
         [
-            ("disabled", False),
+            ("disabled", "selector"),
         ],
         table="account_report",
     )
