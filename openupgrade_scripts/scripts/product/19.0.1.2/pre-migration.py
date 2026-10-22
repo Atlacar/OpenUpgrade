@@ -90,6 +90,18 @@ def _prepare_product_packaging_migration(env):
     )
 
 
+def _product_tag_visible_to_customers(env):
+    """
+    website_sale's product.tag#visible_on_ecommerce became
+    product.tag#visible_to_customers in product: keep the hidden tags hidden
+    """
+    if openupgrade.column_exists(env.cr, "product_tag", "visible_on_ecommerce"):
+        openupgrade.copy_columns(
+            env.cr,
+            {"product_tag": [("visible_on_ecommerce", "visible_to_customers", None)]},
+        )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.delete_sql_constraint_safely(
@@ -118,5 +130,6 @@ def migrate(env, version):
         ],
     )
     _product_product_is_favorite(env)
+    _product_tag_visible_to_customers(env)
     _product_supplierinfo_product_tmpl_id(env)
     _prepare_product_packaging_migration(env)

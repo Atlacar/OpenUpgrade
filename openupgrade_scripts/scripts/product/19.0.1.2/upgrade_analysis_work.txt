@@ -52,7 +52,7 @@ product      / product.tag              / image (binary)                : previo
 
 product      / product.tag              / visible_to_customers (boolean): NEW hasdefault: default
 
-# NOTHING TO DO
+# DONE: pre-migration: copied from website_sale visible_on_ecommerce
 
 product      / product.template         / pricelist_rule_ids (one2many) : NEW relation: product.pricelist.item
 

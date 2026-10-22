@@ -61,7 +61,7 @@ website_sale / product.ribbon           / style (selection)             : NEW re
 website_sale / product.tag              / image (binary)                : module is now 'product' ('website_sale')
 website_sale / product.tag              / visible_on_ecommerce (boolean): DEL
 
-# NOTHING TO DO
+# DONE: product pre-migration: copied to visible_to_customers
 
 website_sale / product.template         / is_seo_optimized (boolean)    : is now stored
 website_sale / product.template         / publish_date (datetime)       : NEW required, isfunction: function, stored
