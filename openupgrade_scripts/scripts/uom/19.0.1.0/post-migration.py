@@ -55,6 +55,34 @@ def _uom_relative_uom_id_relative_factor(env):
             )
 
 
+def _uom_square_foot(env):
+    """
+    ft² had another xmlid in 18 (renamed in pre-migration), so it's missing from
+    noupdate_changes.xml: hang it under m² like 19's data does
+    """
+    square_foot = env.ref("uom.product_uom_square_foot", raise_if_not_found=False)
+    square_meter = env.ref("uom.product_uom_square_meter", raise_if_not_found=False)
+    if not square_foot or not square_meter or square_foot.relative_uom_id:
+        return
+    category_id = openupgrade.get_legacy_name("category_id")
+    factor = openupgrade.get_legacy_name("factor")
+    env.cr.execute(
+        f"""
+        SELECT square_meter.{factor} / square_foot.{factor}
+        FROM uom_uom square_foot
+        JOIN uom_uom square_meter
+        ON square_meter.{category_id} = square_foot.{category_id}
+        WHERE square_foot.id = %s AND square_meter.id = %s
+        """,
+        (square_foot.id, square_meter.id),
+    )
+    row = env.cr.fetchone()
+    if row:
+        square_foot.write(
+            {"relative_uom_id": square_meter.id, "relative_factor": row[0]}
+        )
+
+
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.load_data(
@@ -64,3 +92,4 @@ def migrate(env, version):
         xml_transformation_filename="19.0.1.0/noupdate_changes-transformation.xml",
     )
     _uom_relative_uom_id_relative_factor(env)
+    _uom_square_foot(env)
