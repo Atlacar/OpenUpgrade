@@ -1,6 +1,7 @@
 # Copyright 2026 Hunki Enterprises BV
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from odoo.tools import html2plaintext, is_html_empty
 from openupgradelib import openupgrade
 
 
@@ -22,12 +23,48 @@ def _keep_sms_confirmation_off(env):
     )
 
 
+def _18_default_descriptions(move):
+    """What 18 wrote on the move by itself (stock_rule._get_stock_move_values,
+    product._get_description, purchase_stock): such a value is no manual edit,
+    and keeping it would stop 19 from merging new moves into this one."""
+    product = move.product_id.with_context(lang=move._get_lang())
+    code = move.picking_type_id.code
+    text = (
+        html2plaintext(product.description)
+        if not is_html_empty(product.description)
+        else product.name
+    )
+    if code == "incoming":
+        default = product.description_pickingin or text
+    elif code == "outgoing":
+        default = product.description_pickingout or product.name
+    elif code == "internal":
+        default = product.description_picking or text
+    else:
+        default = text
+    defaults = {default}
+    sale_line = move.sudo().sale_line_id if "sale_line_id" in move._fields else False
+    if sale_line:
+        variants = sale_line.with_context(
+            lang=sale_line.order_id.partner_id.lang
+        )._get_sale_order_line_multiline_description_variants()
+        if variants.strip():
+            defaults.add(default + variants)
+    purchase_line = (
+        move.sudo().purchase_line_id if "purchase_line_id" in move._fields else False
+    )
+    if purchase_line:
+        defaults.add(product.description_pickingin or purchase_line.name)
+    return defaults
+
+
 def _keep_description_picking(env):
     """18 stored stock.move#description_picking as written on the move (vendor
     product name, manual edits, product name at the time); 19 computes it from
     the current product unless description_picking_manual is set. Keep the 18
-    value where it differs from the 19 one. Runs here so that every override of
-    _compute_description_picking (purchase_stock, sale_stock, mrp...) is loaded."""
+    value where it differs from the 19 one and is not what 18 wrote by default.
+    Runs here so that every override of _compute_description_picking
+    (purchase_stock, sale_stock, mrp...) is loaded."""
     if not openupgrade.column_exists(env.cr, "stock_move", "description_picking"):
         return
     env.cr.execute(
@@ -48,6 +85,7 @@ def _keep_description_picking(env):
             (batch[move.id], move.id)
             for move in moves
             if move.description_picking != batch[move.id]
+            and batch[move.id] not in _18_default_descriptions(move)
         ]
         if to_keep:
             env.cr.executemany(
